@@ -1,15 +1,12 @@
 package com.kyllian.islesextra.islesextra.client;
 
-import com.google.common.eventbus.Subscribe;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
-;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class ClientData {
@@ -19,13 +16,26 @@ public abstract class ClientData {
     public static void addPickedUpItem(ItemStack itemStack) {
         for (PickedUpItem pItem : pickedUpItems) {
             if (pItem.name.equals(itemStack.getName())) {
-                PickedUpItem newItem = pItem;
-                newItem.count = newItem.count + itemStack.getCount();
-                newItem.deleteTime = System.currentTimeMillis() + 5000;
+                pItem.count = pItem.count + itemStack.getCount();
+                pItem.deleteTime = System.currentTimeMillis() + 5000;
                 return;
             }
         }
         pickedUpItems.add(new PickedUpItem(itemStack));
+    }
+
+    // This would be used for negative "count" values
+    public static void addPickedUpItem(ItemStack singleItem, int count) {
+        for (PickedUpItem pItem : pickedUpItems) {
+            if (pItem.name.equals(singleItem.getName())) {
+                pItem.count = pItem.count + count;
+                pItem.deleteTime = System.currentTimeMillis() + 5000;
+                return;
+            }
+        }
+        PickedUpItem newItem = new PickedUpItem(singleItem);
+        newItem.count = count;
+        pickedUpItems.add(newItem);
     }
 
     public static void updatePickedUpItems() {
@@ -61,12 +71,31 @@ public abstract class ClientData {
                             if (difference <= 0) break;
                             ItemStack diffItem = item.copy();
                             diffItem.setCount(difference);
-                            ClientData.addPickedUpItem(diffItem);
+                            ClientData.addPickedUpItem(diffItem, difference);
+                            //System.out.println("item added: " + difference + "x " + diffItem);
                             break;
                         }
                     }
                 }
-                if (!hadItem) ClientData.addPickedUpItem(item.copy());
+                if (!hadItem) ClientData.addPickedUpItem(item.copy(), item.getCount());
+            }
+            for (ItemStack oldItem : oldInventory) {
+                boolean hasItem = false;
+                for (ItemStack item : inventory) {
+                    if (item.getName().equals(oldItem.getName())) {
+                        hasItem = true;
+                        if (oldItem.getCount() != item.getCount()) {
+                            int difference = oldItem.getCount() - item.getCount();
+                            if (difference <= 0) break;
+                            ItemStack single = oldItem.copy();
+                            single.setCount(1);
+                            ClientData.addPickedUpItem(single, -difference);
+                            //System.out.println("item removed: " + difference + "x " + single);
+                            break;
+                        }
+                    }
+                }
+                if (!hasItem) ClientData.addPickedUpItem(oldItem.copy(), -oldItem.getCount());
             }
         }
         oldInventory = inventory;
@@ -77,16 +106,18 @@ public abstract class ClientData {
         public Text name;
         long deleteTime;
         public int count;
+        public int customModelData;
 
         public PickedUpItem(ItemStack stack) {
-            this(stack.getItem(), stack.getName(), System.currentTimeMillis() + 5000, stack.getCount());
+            this(stack.getItem(), stack.getName(), System.currentTimeMillis() + 5000, stack.getCount(), stack.getOrCreateNbt().contains("CustomModelData") ? stack.getOrCreateNbt().getInt("CustomModelData") : -1);
         }
 
-        public PickedUpItem(Item item, Text name, long deleteTime, int count) {
+        public PickedUpItem(Item item, Text name, long deleteTime, int count, int customModelData) {
             this.item = item;
             this.name = name;
             this.deleteTime = deleteTime;
             this.count = count;
+            this.customModelData = customModelData;
         }
 
     }
