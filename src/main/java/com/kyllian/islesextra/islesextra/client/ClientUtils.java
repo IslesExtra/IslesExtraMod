@@ -1,7 +1,6 @@
 package com.kyllian.islesextra.islesextra.client;
 
 import com.kyllian.islesextra.islesextra.IslesExtra;
-import com.kyllian.islesextra.islesextra.gui.CustomGui;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;

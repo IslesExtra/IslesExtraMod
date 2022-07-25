@@ -72,7 +72,6 @@ public abstract class ClientData {
                             ItemStack diffItem = item.copy();
                             diffItem.setCount(difference);
                             ClientData.addPickedUpItem(diffItem, difference);
-                            //System.out.println("item added: " + difference + "x " + diffItem);
                             break;
                         }
                     }
@@ -90,7 +89,6 @@ public abstract class ClientData {
                             ItemStack single = oldItem.copy();
                             single.setCount(1);
                             ClientData.addPickedUpItem(single, -difference);
-                            //System.out.println("item removed: " + difference + "x " + single);
                             break;
                         }
                     }
