@@ -1,6 +1,7 @@
 package com.kyllian.islesextra.islesextra.gui;
 
 import com.kyllian.islesextra.islesextra.IslesExtra;
+import com.kyllian.islesextra.islesextra.client.ClientUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.MinecraftClient;
@@ -9,169 +10,141 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.*;
 import java.util.*;
 
 public class MapGui extends Screen {
 
-    private float zoomLevel = 36;
+    private final static Identifier MAP_IMAGE = new Identifier(IslesExtra.MOD_ID, "/images/map.png");
+    private final static Identifier PLAYER_IMAGE = new Identifier(IslesExtra.MOD_ID, "/images/tracker.png");
+    public double offsetX = 0;
+    public double offsetY = 0;
+    private final double defaultScale = 2176;
 
-    private final int defaultOffsetX = 214;
-    private final int defaultOffsetY = 138;
+    public void shiftZoomLevel(int shift, double x, double y) {
+        if (!(zoomLevel+shift<=2 || zoomLevel+shift>=56)) {
+            Vector2f v1 = getPoint(x, y);
+            zoomLevel += shift;
+            Vector2f v2 = translatePoint(v1.getX(), v1.getY());
 
-    public void shiftZoomLevel(int shift) {
-        if (zoomLevel + shift <= 8) {
-            zoomLevel = 8;
-        } else zoomLevel += shift;
+            offsetX -= v2.getX()-x;
+            offsetY -= v2.getY()-y;
+        }
     }
-
-    public float offsetX = 0;
-    public float offsetY = 0;
+    private int zoomLevel = 36;
 
     public MapGui() {
         super(new LiteralText("MapGui"));
-
-        URL url = IslesExtra.class.getResource("/assets/islesextra/tiles/");
-
-        try {
-            if (url != null) {
-                URI uri = url.toURI();
-                Path path;
-
-                System.out.println(uri.getScheme());
-                path = Paths.get(Objects.requireNonNull(IslesExtra.class.getResource("/assets/islesextra/tiles/")).toURI());
-
-                Iterator<Path> it = Files.walk(path).iterator();
-
-                while (it.hasNext()) {
-                    Path p = it.next();
-                    System.out.println(p.toString());
-                    if (!p.toString().endsWith(".jpg")) continue;
-                    String s = p.toString().split("tiles")[1].replace('\\', '.');
-                    tiles.put(s.substring(1, s.length() - 4), new Identifier(IslesExtra.MOD_ID, p.toString().split("islesextra")[1].replace("\\", "/")));
-                }
-                System.out.println(tiles.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
-    HashMap<String, Identifier> tiles = new HashMap<>();
+    public void onClick(int button, double x, double y) {
+        if (button!=0) return;
+        Vector2f point = getPoint(x,y);
+        double a = point.getX();
+        double b = point.getY();
+        System.out.println(a + " / " + b);
+        ClientUtils.setTracker(new Vec3d(a, client.player.getY(), b));
+    }
+
+    private Vector2f getPoint(double x, double y) {
+        assert client != null;
+        int w  = client.getWindow().getScaledWidth();
+        int h = client.getWindow().getScaledHeight();
+        double size = (double) 24*w/zoomLevel;
+        double f = size/defaultScale;
+        double a = (x-(double)w/2-size/2-offsetX)/f + 1839;
+        double b = (y-(double)h/2-size/2-offsetY)/f + 719;
+        return new Vector2f((float) a, (float) b);
+    }
+
+    private Vector2f translatePoint(double a, double b) {
+        assert client != null;
+        int w  = client.getWindow().getScaledWidth();
+        int h = client.getWindow().getScaledHeight();
+        double size = (double) 24*w/zoomLevel;
+        double f = size/defaultScale;
+        double x = (a - 1839)*f + (float) w/2 +size/2 + offsetX;
+        double y = (b - 719)*f + (float) h/2 +size/2 + offsetY;
+        return new Vector2f((float) x, (float) y);
+    }
 
     @Override
-    public void render(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        MinecraftClient mc = MinecraftClient.getInstance();
-        int width = mc.getWindow().getScaledWidth();
-        int height = mc.getWindow().getScaledHeight();
+    public void render(MatrixStack ms, int mouseX, int mouseY, float pTicks) {
+        assert client != null && client.player != null;
 
-        //System.out.println("Rendering");
+        int width = client.getWindow().getScaledWidth();
+        int height = client.getWindow().getScaledHeight();
 
-        // First draw the background of the screen
-        int bgX1 = 0;
-        int bgY1 = 0;
-        int bgX2 = width;
-        int bgY2 = height;
-        drawRectangle(poseStack, bgX1, bgY1, bgX2, bgY2, 0xFF000000);
+        drawBackdrop(ms, width, height);
+        drawMap(ms, width, height);
+        drawPlayer(ms, width, height, client.player.getX(), client.player.getZ());
 
-        // Draw tiles
-        for (String tile : tiles.keySet()) {
-            if (tile.startsWith("6")) {
-                Identifier image = tiles.get(tile);
-                String[] values = tile.split("\\.");
-                if (values.length<3) continue;
-                int sizeX = Math.round(width / zoomLevel);
-                int sizeY = Math.round(width / zoomLevel);
-                int xPos = Math.round(Integer.parseInt(values[1]) * sizeX - (32 * sizeX) + offsetX + defaultOffsetX);
-                int yPos = Math.round(Integer.parseInt(values[2]) * sizeY - (32 * sizeY) + offsetY + defaultOffsetY);
-                if (xPos + sizeX > bgX1 && xPos < bgX2 && yPos + sizeY > bgY1 && yPos < bgY2) {
-                    drawImage(poseStack, xPos, yPos, 0, 0f, 0f, sizeX, sizeY, sizeX, sizeY, image);
-                }
-            }
+        //drawLocations(ms);
+    }
+
+    /*private void drawLocations(MatrixStack ms) {
+        for (String location : LocationData.getTownLocations().keySet()) {
+            Vector2f lP = translatePoint(LocationData.getTownLocations().get(location).getX(), LocationData.getTownLocations().get(location).getY());
+            drawCenteredString(ms, Minecraft.getInstance().font, location, (int) lP.x, (int) lP.y, 0xFFFFFF);
         }
+    }*/
 
-        //System.out.println(mouseX + " / " + mouseY);
-
-        // Call the super class' method to complete rendering
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+    private void drawBackdrop(MatrixStack ms, int width, int height) {
+        fill(ms, 0,0, width, height, 0xFF000000);
     }
 
-    public void getPosition(double iX, double iY, int button) {
-        if (button == 0) {
-            //System.out.println(mouseX + " / " + mouseY);
-            MinecraftClient mc = MinecraftClient.getInstance();
-            int width = mc.getWindow().getScaledWidth();
-            int height = mc.getWindow().getScaledHeight();
+    public void drawMap(MatrixStack ms, int w, int h) {
+        RenderSystem.setShaderTexture(0, MAP_IMAGE);
 
-            int sizeX = Math.round(width / zoomLevel);
-            int sizeY = Math.round(width / zoomLevel);
+        int size = 24*w/zoomLevel;
 
-            double x = (iX + 32 * sizeX - offsetX - defaultOffsetX) / sizeX;
-            double y = (iY + 32 * sizeY - offsetY - defaultOffsetY) / sizeY;
-
-            new Vector2f((float) x, (float) y);
-        }
+        int xPos = (int) (w/2-size/2+offsetX);
+        int yPos = (int) (h/2-size/2+offsetY);
+        drawTexture(ms, xPos, yPos, 0, 0, 0, size, size, size, size);
     }
 
-    private void drawRectangle(MatrixStack ms, int x1, int y1, int x2, int y2, int color) {
-        fill(ms, x1, y1, x2, y2, color);
+    private void drawPlayer(MatrixStack ms, int w, int h, double x, double y) {
+        RenderSystem.setShaderTexture(0, PLAYER_IMAGE);
+
+        int size = 10;
+
+        Vector2f PlayerCoords = translatePoint(x, y);
+        float xPos = PlayerCoords.getX() - (float) size/2;
+        float yPos = PlayerCoords.getY() - (float) size/2;
+        ms.push();
+
+        ms.translate((xPos+(double)size/2), (yPos+(double)size/2), 0);
+        assert client != null && client.player != null;
+        ms.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(-client.player.getHeadYaw()));
+        ms.translate(-(xPos+(float)size/2), -(yPos+(float)size/2), 0);
+
+        drawTexture(ms, Math.round(xPos), Math.round(yPos), 1, 0, 0, size, size, size, size);
+
+        ms.pop();
     }
 
-    private void drawText(MatrixStack ms, String s, int x, int y, int c, int fontSize) {
-        drawCenteredText(ms, MinecraftClient.getInstance().textRenderer, s, x, y, c);
-    }
-
-    private void drawImage(MatrixStack ms, int xPos, int yPos, int blitOffset, float textureX, float textureY, int imgSizeX, int imgSizeY, int scaleX, int scaleY, Identifier image) {
-        //Minecraft.getInstance().getTextureManager().bindForSetup(image);
-        RenderSystem.setShaderTexture(0, image);
-        drawTexture(ms, xPos, yPos, blitOffset, textureX, textureY, imgSizeX, imgSizeY, scaleX, scaleY);
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        this.offsetX += deltaX;
+        this.offsetY += deltaY;
+        return this.getFocused() != null && this.isDragging() && button == 0 && this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
     @Override
     protected void init() {
 
         ScreenMouseEvents.allowMouseScroll(this).register(((screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-            shiftZoomLevel(-Math.round(Math.round(verticalAmount)));
+            shiftZoomLevel(-Math.round(Math.round(verticalAmount)), mouseX, mouseY);
             return false;
         }));
 
         ScreenMouseEvents.allowMouseClick(this).register(((screen, mouseX, mouseY, button) -> {
-            oldX = MinecraftClient.getInstance().mouse.getX();
-            oldY = MinecraftClient.getInstance().mouse.getY();
-
-            System.out.println(oldX + " - " + MinecraftClient.getInstance().mouse.getX());
-
-            task = new DraggingTask();
-            timer.scheduleAtFixedRate(task, 0, 10);
-
+            this.onClick(button, mouseX, mouseY);
             return false;
         }));
 
-        ScreenMouseEvents.allowMouseRelease(this).register(((screen, mouseX, mouseY, button) -> {
-            if (task != null) task.cancel();
-            return false;
-        }));
-
-    }
-
-    double oldX;
-    double oldY;
-
-    private final Timer timer = new Timer();
-    private DraggingTask task;
-
-    private class DraggingTask extends TimerTask {
-        public void run() {
-            offsetX += MinecraftClient.getInstance().mouse.getX() - oldX;
-            offsetY += MinecraftClient.getInstance().mouse.getY() - oldY;
-
-            oldX = MinecraftClient.getInstance().mouse.getX();
-            oldY = MinecraftClient.getInstance().mouse.getY();
-        }
     }
 
 }
