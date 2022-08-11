@@ -1,9 +1,6 @@
 package com.kyllian.islesextra.islesextra.client;
 
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
+import net.minecraft.text.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,10 +8,10 @@ import java.util.ArrayList;
 public class CustomText {
     private final Text value;
     public CustomText(String text, int r, int g, int b) {
-        value = new LiteralText(text).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(new Color(r,g,b).getRGB())).withItalic(false));
+        value = Text.literal(text).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(new Color(r,g,b).getRGB())).withItalic(false));
     }
     public CustomText(Text... texts) {
-        LiteralText finalText = new LiteralText("");
+        MutableText finalText = Text.literal("");
         for (Text text : texts) { finalText.append(text); }
         value = finalText;
     }
@@ -31,12 +28,12 @@ public class CustomText {
             if (firstChar=='#') {
                 String hex = part.substring(0,6);
                 Color color = Color.decode(hex);
-                texts.add(new LiteralText(part.substring(7)).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.getRGB())).withItalic(false)));
+                texts.add(Text.literal(part.substring(7)).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(color.getRGB())).withItalic(false)));
             } else {
-                texts.add(new LiteralText("§"+part));
+                texts.add(Text.literal("§"+part));
             }
         }
-        LiteralText finalText = new LiteralText("");
+        MutableText finalText = Text.literal("");
         for (Text text : texts) { finalText.append(text); }
         value = finalText;
     }

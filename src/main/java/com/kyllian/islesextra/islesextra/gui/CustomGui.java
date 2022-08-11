@@ -49,4 +49,9 @@ public class CustomGui extends GenericContainerScreen {
         ScreenKeyboardEvents.allowKeyPress(this).register(((screen, key, scancode, modifiers) -> key == 256));
     }
 
+    @Override
+    public boolean shouldPause() {
+        return false;
+    }
+
 }

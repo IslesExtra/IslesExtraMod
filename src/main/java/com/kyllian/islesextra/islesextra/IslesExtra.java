@@ -2,14 +2,15 @@ package com.kyllian.islesextra.islesextra;
 
 import com.kyllian.islesextra.islesextra.client.ClientData;
 import com.kyllian.islesextra.islesextra.client.CustomText;
+import com.kyllian.islesextra.islesextra.entity.ModEntities;
+import com.kyllian.islesextra.islesextra.entity.custom.queen_bee.QueenBeeEntity;
+import com.kyllian.islesextra.islesextra.rendering.RenderingUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-
-import java.util.List;
 
 public class IslesExtra implements ModInitializer {
 
@@ -19,13 +20,13 @@ public class IslesExtra implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (nextScreen!=null) {
                 client.setScreen(nextScreen);
                 nextScreen = null;
             }
 
-            ClientData.getInventoryDifference();
             ClientData.updatePickedUpItems();
         }));
         ItemTooltipCallback.EVENT.register(((stack, context, lines) -> {
@@ -39,5 +40,11 @@ public class IslesExtra implements ModInitializer {
             }
         }));
 
+        registerAttributes();
+
+    }
+
+    private static void registerAttributes() {
+        FabricDefaultAttributeRegistry.register(ModEntities.QUEEN_BEE, QueenBeeEntity.createMobAttributes());
     }
 }

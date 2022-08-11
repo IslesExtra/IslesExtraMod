@@ -10,12 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class TextInputGui extends AnvilScreen {
 
     public TextInputGui(PlayerInventory inventory) {
-        super(new AnvilScreenHandler(0, inventory), inventory, new LiteralText("Text Input"));
+        super(new AnvilScreenHandler(0, inventory), inventory, Text.literal("Text Input"));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class TextInputGui extends AnvilScreen {
 
         cancelEvents();
         ItemStack placeholder = new ItemStack(Items.PAPER);
-        placeholder.setCustomName(new LiteralText(""));
+        placeholder.setCustomName(Text.literal(""));
         getScreenHandler().setStackInSlot(0, 0, placeholder);
         getScreenHandler().updateResult();
     }

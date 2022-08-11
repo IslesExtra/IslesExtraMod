@@ -5,7 +5,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 public class ItemEditor {
@@ -25,7 +24,7 @@ public class ItemEditor {
     }
 
     public ItemEditor setName(String name) {
-        result.setCustomName(new LiteralText(name));
+        result.setCustomName(Text.literal(name));
         return this;
     }
 

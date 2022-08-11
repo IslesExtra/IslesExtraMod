@@ -1,19 +1,16 @@
 package com.kyllian.islesextra.islesextra.gui;
 
 import com.kyllian.islesextra.islesextra.IslesExtra;
-import com.kyllian.islesextra.islesextra.client.ClientUtils;
+import com.kyllian.islesextra.islesextra.rendering.TrackerRenderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector2f;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
-
-import java.util.*;
 
 public class MapGui extends Screen {
 
@@ -36,7 +33,7 @@ public class MapGui extends Screen {
     private int zoomLevel = 36;
 
     public MapGui() {
-        super(new LiteralText("MapGui"));
+        super(Text.literal("MapGui"));
     }
 
     public void onClick(int button, double x, double y) {
@@ -45,7 +42,8 @@ public class MapGui extends Screen {
         double a = point.getX();
         double b = point.getY();
         System.out.println(a + " / " + b);
-        ClientUtils.setTracker(new Vec3d(a, client.player.getY(), b));
+        assert client != null && client.player != null;
+        TrackerRenderer.getInstance().setTracker(new Vec3d(a, client.player.getY(), b));
     }
 
     private Vector2f getPoint(double x, double y) {

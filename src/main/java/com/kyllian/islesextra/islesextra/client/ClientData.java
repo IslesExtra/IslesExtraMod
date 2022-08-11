@@ -30,6 +30,8 @@ public abstract class ClientData {
             if (pItem.name.equals(singleItem.getName())) {
                 pItem.count = pItem.count + count;
                 pItem.deleteTime = System.currentTimeMillis() + 5000;
+
+                if (pItem.count == 0) pickedUpItems.remove(pItem);
                 return;
             }
         }
@@ -39,6 +41,7 @@ public abstract class ClientData {
     }
 
     public static void updatePickedUpItems() {
+        getInventoryDifference();
         pickedUpItems.removeIf(pItem -> pItem.deleteTime <= System.currentTimeMillis());
     }
 

@@ -1,12 +1,12 @@
 package com.kyllian.islesextra.islesextra.client;
 
 import com.kyllian.islesextra.islesextra.IslesExtra;
+import com.kyllian.islesextra.islesextra.rendering.TrackerRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
@@ -17,7 +17,7 @@ public abstract class ClientUtils {
 
     public static void sendMessage(String message) {
         assert MinecraftClient.getInstance().player != null;
-        MinecraftClient.getInstance().player.sendMessage(new LiteralText(message), false);
+        MinecraftClient.getInstance().player.sendMessage(Text.of(message), false);
     }
 
     public static void sendMessage(Text message) {
@@ -41,11 +41,15 @@ public abstract class ClientUtils {
         IslesExtra.nextScreen = screen;
     }
 
+    public static Point targetPoint;
     public static void setTracker(Vec3d target) {
         assert MinecraftClient.getInstance().player != null;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-        Point targetPoint = new Point(target.getX(), target.getZ());
+        targetPoint = new Point(target.getX(), target.getZ());
+        Point thisPoint = new Point(target.getX(), target.getZ());
+
+        TrackerRenderer.getInstance().setTracker(target);
 
         ArmorStandEntity ent = new ArmorStandEntity(player.clientWorld, player.getX(), player.getY(), player.getZ());
         player.clientWorld.addEntity(99999, ent);
@@ -57,6 +61,12 @@ public abstract class ClientUtils {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
+                if (!thisPoint.equals(targetPoint)) {
+                    System.out.println("Overwritten");
+                    ent.remove(Entity.RemovalReason.DISCARDED);
+                    this.cancel();
+                    return;
+                }
                 int radius = 10;
                 Vec3d pos = player.getPos();
                 Point playerPoint = new Point(pos.getX(), pos.getZ());
@@ -64,6 +74,7 @@ public abstract class ClientUtils {
                 if (pos.distanceTo(target) <= 1) {
                     ClientUtils.sendMessage("§aDestination reached!");
                     ent.remove(Entity.RemovalReason.DISCARDED);
+                    targetPoint = null;
                     this.cancel();
                     return;
                 }
@@ -80,7 +91,7 @@ public abstract class ClientUtils {
                         ent.setPosition(point2.x, pos.getY() - 1, point2.y);
                     }
                 }
-                ent.setCustomName(new LiteralText("§7Tracker - §f" + Math.round(Math.round(distance(playerPoint, targetPoint))) + "§7m"));
+                ent.setCustomName(Text.of("§7Tracker - §f" + Math.round(Math.round(distance(playerPoint, targetPoint))) + "§7m"));
             }
         }, 0, 100);
 
@@ -125,12 +136,14 @@ public abstract class ClientUtils {
     }
 
     static class Point {
-        double x, y;
+        public double x, y;
+        public double getX() { return x; }
         public Point(double x, double y) { this.x = x; this.y = y; }
         @Override
         public String toString() {
             return "Point [x=" + x + ", y=" + y + "]";
         }
+        public boolean equals(Point other) { return this.x == other.x && this.y == other.y; }
     }
 
 }
