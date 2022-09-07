@@ -1,14 +1,15 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.kyllian.islesextra.islesextra.mixin",
+  "package": "com.kyllian.skyblockisles.islesextra.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-
   ],
   "client": [
+    "ClientJoinServer",
+    "OverlayGui",
     "RenderCalls",
-    "OverlayGui"
+    "entity.EntityRenderDispatcherMixin"
   ],
   "injectors": {
     "defaultRequire": 1

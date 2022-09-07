@@ -185,6 +185,14 @@
       "position_offset": [338, 201],
       "texture_size": [16, 16],
       "action": "addPokemon"
+    },
+    {
+      "name": "test_switch",
+      "type": "switch",
+      "disabled": [191, 312],
+      "enabled": [223, 312],
+      "position_offset": [338, 201],
+      "texture_size": [16, 16]
     }
   ]
 }

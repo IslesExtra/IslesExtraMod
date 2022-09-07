@@ -10,10 +10,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.kyllian.islesextra.islesextra.client.IslesExtraClient"
+      "com.kyllian.skyblockisles.islesextra.client.IslesExtraClient"
     ],
     "main": [
-      "com.kyllian.islesextra.islesextra.IslesExtra"
+      "com.kyllian.skyblockisles.islesextra.IslesExtra"
     ]
   },
   "mixins": [
