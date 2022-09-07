@@ -16,7 +16,6 @@ import net.minecraft.util.Identifier;
 
 import java.awt.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,22 +32,13 @@ public class TexturedGui extends Screen {
 
     @Override
     public void init() {
-        ScreenMouseEvents.beforeMouseRelease(this).register(((screen, mouseX, mouseY, button) -> {
-            isMouseDown = false;
-        }));
+        ScreenMouseEvents.beforeMouseRelease(this).register(((screen, mouseX, mouseY, button) -> isMouseDown = false));
 
-        JsonObject root;
         InputStream is = IslesExtra.class.getClassLoader().getResourceAsStream("assets/islesextra/textures/gui/" + textureName + ".json");
-        JsonParser jsonParser = new JsonParser();
         assert is != null;
-        root = (JsonObject) jsonParser.parse(
-                new InputStreamReader(is, StandardCharsets.UTF_8));
+        JsonObject root = (JsonObject) JsonParser.parseReader(new InputStreamReader(is));
 
-        try {
-            is.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        try { is.close(); } catch (IOException e) { throw new RuntimeException(e); }
 
         if (root == null) return;
         JsonObject vars = root.getAsJsonObject("variables");
@@ -197,9 +187,7 @@ public class TexturedGui extends Screen {
     }
 
     public void renderElements(MatrixStack matrixStack, int mouseX, int mouseY, boolean isMouseDown) {
-        elements.forEach((guiElement -> {
-            guiElement.render(matrixStack, defaultX, defaultY, textureSizeX, textureSizeY, mouseX, mouseY, isMouseDown);
-        }));
+        elements.forEach((guiElement -> guiElement.render(matrixStack, defaultX, defaultY, textureSizeX, textureSizeY, mouseX, mouseY, isMouseDown)));
     }
 
     public void addElement(GuiElement element) { elements.add(element); }
