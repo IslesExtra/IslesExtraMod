@@ -6,8 +6,8 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class QueenBeeModel extends EntityModel<QueenBeeEntity> {
-	private ModelPart body;
-	private ModelPart hip;
+	private final ModelPart body;
+	private final ModelPart hip;
 	public QueenBeeModel(ModelPart root) {
 		this.body = root.getChild("body");
 		this.hip = root.getChild("hip");

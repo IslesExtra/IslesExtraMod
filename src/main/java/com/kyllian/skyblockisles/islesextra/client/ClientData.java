@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class ClientData {
 
-    public static List<PickedUpItem> pickedUpItems = new ArrayList<>();
+    public static final List<PickedUpItem> pickedUpItems = new ArrayList<>();
     private static final MinecraftClient client = MinecraftClient.getInstance();
     private static final int DELETE_MILLIS = 5000;
 
@@ -93,11 +93,11 @@ public abstract class ClientData {
     }
 
     public static class PickedUpItem {
-        public Item item;
-        public Text name;
+        public final Item item;
+        public final Text name;
         long deleteTime;
         public int count;
-        public int customModelData;
+        public final int customModelData;
 
         public PickedUpItem(ItemStack stack) {
             this(stack.getItem(), stack.getName(), System.currentTimeMillis() + DELETE_MILLIS, stack.getCount(), stack.getOrCreateNbt().contains("CustomModelData") ? stack.getOrCreateNbt().getInt("CustomModelData") : -1);

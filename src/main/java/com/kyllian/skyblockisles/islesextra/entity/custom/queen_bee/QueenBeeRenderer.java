@@ -11,9 +11,7 @@ public class QueenBeeRenderer extends MobEntityRenderer<QueenBeeEntity, QueenBee
     public QueenBeeRenderer(EntityRendererFactory.Context context) {
         super(context, new QueenBeeModel(context.getPart(IslesExtraClient.MODEL_QUEEN_BEE_LAYER)), 2);
 
-        ClientTickEvents.END_CLIENT_TICK.register((client -> {
-            flap = !flap;
-        }));
+        ClientTickEvents.END_CLIENT_TICK.register((client -> flap = !flap));
     }
 
     boolean flap = false;

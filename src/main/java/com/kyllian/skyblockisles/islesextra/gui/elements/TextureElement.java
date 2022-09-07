@@ -1,15 +1,12 @@
 package com.kyllian.skyblockisles.islesextra.gui.elements;
 
-import com.kyllian.skyblockisles.islesextra.gui.GuiData;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-import javax.annotation.Nullable;
-
 public class TextureElement extends GuiElement {
 
-    int textureX, textureY, offsetX, offsetY, sizeX, sizeY;
-    Identifier texture;
+    final int textureX, textureY, offsetX, offsetY, sizeX, sizeY;
+    final Identifier texture;
 
     public TextureElement(int textureX, int textureY, int textureSizeX, int textureSizeY, int offsetX, int offsetY, Identifier texture) {
         this.offsetX = offsetX;

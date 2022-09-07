@@ -27,9 +27,7 @@ public class GuiData {
     }
 
     public void renderElements(MatrixStack matrixStack, int mouseX, int mouseY, boolean isMouseDown) {
-        elements.forEach((guiElement -> {
-            guiElement.render(matrixStack, defaultX, defaultY, textureSizeX, textureSizeY, mouseX, mouseY, isMouseDown);
-        }));
+        elements.forEach((guiElement -> guiElement.render(matrixStack, defaultX, defaultY, textureSizeX, textureSizeY, mouseX, mouseY, isMouseDown)));
     }
 
     public void addElement(GuiElement element) { elements.add(element); }

@@ -6,8 +6,8 @@ import net.minecraft.util.Identifier;
 
 public class SwitchElement extends GuiElement implements Interactable {
 
-    int offsetX, offsetY, enabledX, enabledY, disabledX, disabledY, sizeX, sizeY;
-    Identifier texture;
+    final int offsetX, offsetY, enabledX, enabledY, disabledX, disabledY, sizeX, sizeY;
+    final Identifier texture;
 
     boolean enabled;
 

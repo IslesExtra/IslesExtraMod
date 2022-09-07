@@ -6,8 +6,8 @@ import net.minecraft.util.Identifier;
 
 public class ButtonElement extends GuiElement implements Interactable {
 
-    int offsetX, offsetY, normalX, normalY, hoverX, hoverY, clickX, clickY, sizeX, sizeY;
-    Identifier texture;
+    final int offsetX, offsetY, normalX, normalY, hoverX, hoverY, clickX, clickY, sizeX, sizeY;
+    final Identifier texture;
 
     public ButtonElement(int normalX, int normalY, int hoverX, int hoverY, int clickX, int clickY, int offsetX, int offsetY, int sizeX, int sizeY, Identifier texture) {
         this.normalX = normalX;

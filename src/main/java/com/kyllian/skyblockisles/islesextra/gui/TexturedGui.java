@@ -21,7 +21,7 @@ import java.util.List;
 
 public class TexturedGui extends Screen {
 
-    String textureName;
+    private final String textureName;
 
     public TexturedGui(String textureName) {
         super(Text.literal("png"));
@@ -159,9 +159,7 @@ public class TexturedGui extends Screen {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        //if (gui_texture == null) return;
         renderElements(matrices, mouseX, mouseY, isMouseDown);
-
     }
 
     @Override

@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {
 
-    public static MapGui map = new MapGui();
+    public static final MapGui map = new MapGui();
 
     @Override
     public void onInitializeClient() {
@@ -36,6 +36,7 @@ public class IslesExtraClient implements ClientModInitializer {
                 ClientUtils.sendMessage("input");
                 ClientUtils.sendMessage(new CustomText("&#4287f5Test &fHey &#5af542Welp").getValue());
 
+                assert MinecraftClient.getInstance().player != null;
                 IslesExtra.nextScreen = new TextInputGui(MinecraftClient.getInstance().player.getInventory());
                 return 1;
             }));

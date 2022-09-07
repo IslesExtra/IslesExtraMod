@@ -18,7 +18,7 @@ public class ClientCommand implements Command {
     }
 
     public void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
-        dispatcher.register(ClientCommandManager.literal(this.getCommandName()).executes(this::run));
+        dispatcher.register(ClientCommandManager.literal(this.getCommandName()).executes(this));
     }
 
 }

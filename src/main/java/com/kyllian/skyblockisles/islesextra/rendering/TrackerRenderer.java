@@ -19,6 +19,7 @@ public class TrackerRenderer {
     public void render() {
         if (tracker == null) return;
         MinecraftClient client = MinecraftClient.getInstance();
+        assert client.player != null;
         double distance = client.player.getPos().distanceTo(tracker);
         DebugRenderer.drawBox(new BlockPos(tracker.x, tracker.y, tracker.z), 0f , 69/255f, 217/255f, 209/255f, .5f);
         DebugRenderer.drawString("§7Tracker - §f" + Math.round(distance) +"§7m", tracker.x, tracker.y + 1, tracker.z, new Color(255,255,255).getRGB(), (float) (0.01 * distance), true, 0.0F, true);

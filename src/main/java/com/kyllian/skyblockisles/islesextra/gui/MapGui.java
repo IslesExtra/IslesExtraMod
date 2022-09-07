@@ -85,16 +85,7 @@ public class MapGui extends Screen {
         drawBackdrop(ms, width, height);
         drawMap(ms, width, height);
         drawPlayer(ms, width, height, client.player.getX(), client.player.getZ());
-
-        //drawLocations(ms);
     }
-
-    /*private void drawLocations(MatrixStack ms) {
-        for (String location : LocationData.getTownLocations().keySet()) {
-            Vector2f lP = translatePoint(LocationData.getTownLocations().get(location).getX(), LocationData.getTownLocations().get(location).getY());
-            drawCenteredString(ms, Minecraft.getInstance().font, location, (int) lP.x, (int) lP.y, 0xFFFFFF);
-        }
-    }*/
 
     private void drawBackdrop(MatrixStack ms, int width, int height) {
         fill(ms, 0,0, width, height, 0xFF000000);

@@ -5,8 +5,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class TextElement extends GuiElement {
-    String text;
-    int x, y, color;
+    final String text;
+    final int x, y, color;
 
     public TextElement(String value, int x, int y, int color) {
         this.text = value;
