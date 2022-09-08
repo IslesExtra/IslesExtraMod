@@ -44,9 +44,7 @@ public class IslesExtra implements ModInitializer {
                 }
             }
         }));
-
         registerAttributes();
-
     }
 
     private static void registerAttributes() {
