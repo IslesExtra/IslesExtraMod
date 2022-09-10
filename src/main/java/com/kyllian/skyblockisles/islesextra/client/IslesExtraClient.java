@@ -12,11 +12,14 @@ import com.kyllian.skyblockisles.islesextra.utility.Dialogue;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
+
+import java.nio.charset.StandardCharsets;
 
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {
@@ -31,15 +34,6 @@ public class IslesExtraClient implements ClientModInitializer {
         ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
             new TestCommand().register(dispatcher);
             new MapCommand().register(dispatcher);
-
-            dispatcher.register(ClientCommandManager.literal("input").executes(context -> {
-                ClientUtils.sendMessage("input");
-                ClientUtils.sendMessage(new CustomText("&#4287f5Test &fHey &#5af542Welp").getValue());
-
-                assert MinecraftClient.getInstance().player != null;
-                IslesExtra.nextScreen = new TextInputGui(MinecraftClient.getInstance().player.getInventory());
-                return 1;
-            }));
         }));
 
         EntityRendererRegistry.register(IslesEntities.QUEEN_BEE, QueenBeeRenderer::new);

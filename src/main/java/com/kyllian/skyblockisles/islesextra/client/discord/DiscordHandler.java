@@ -1,4 +1,4 @@
-package com.kyllian.skyblockisles.islesextra.entity.custom.discord;
+package com.kyllian.skyblockisles.islesextra.client.discord;
 
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
@@ -7,8 +7,12 @@ import com.jagrosh.discordipc.entities.RichPresenceButton;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 import com.kyllian.skyblockisles.islesextra.client.ClientUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.Identifier;
+
+import java.nio.charset.StandardCharsets;
 
 public class DiscordHandler {
 
@@ -25,10 +29,18 @@ public class DiscordHandler {
 
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             String ip = handler.getConnection().getAddress().toString();
-            if (ip.contains("isles")) {
+            if (ip.contains("isles") || ip.contains("localhost")) {
                 enable();
                 setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
             }
+
+            ClientPlayNetworking.registerReceiver(new Identifier("minecraft", "isles"), ((client1, handler1, buf, responseSender) -> {
+                String data = new String(buf.readByteArray(256));
+                String[] parts = data.split("/");
+                if (parts[0].equalsIgnoreCase("set_rp")) {
+                    setRichPresence((parts.length > 3 && parts[3].equalsIgnoreCase("true")), parts[1], parts[2]);
+                }
+            }));
         }));
 
         ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {

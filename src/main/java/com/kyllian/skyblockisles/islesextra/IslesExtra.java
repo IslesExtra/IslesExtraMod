@@ -2,7 +2,7 @@ package com.kyllian.skyblockisles.islesextra;
 
 import com.kyllian.skyblockisles.islesextra.client.ClientData;
 import com.kyllian.skyblockisles.islesextra.client.CustomText;
-import com.kyllian.skyblockisles.islesextra.entity.custom.discord.DiscordHandler;
+import com.kyllian.skyblockisles.islesextra.client.discord.DiscordHandler;
 import com.kyllian.skyblockisles.islesextra.entity.IslesEntities;
 import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeEntity;
 import net.fabricmc.api.ModInitializer;
