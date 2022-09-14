@@ -24,7 +24,9 @@ import java.nio.charset.StandardCharsets;
 @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {
 
-    public static final MapGui map = new MapGui();
+    private static boolean ISLES = false;
+    public static boolean isOnIsles() { return ISLES; }
+    public static void setOnIsles(boolean onIsles) { ISLES = onIsles; }
 
     @Override
     public void onInitializeClient() {

@@ -4,11 +4,13 @@
   "package": "com.kyllian.skyblockisles.islesextra.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "slots.SlotAccessor"
   ],
   "client": [
     "OverlayGui",
     "RenderCalls",
-    "entity.EntityRenderDispatcherMixin"
+    "entity.EntityRenderDispatcherMixin",
+    "slots.HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

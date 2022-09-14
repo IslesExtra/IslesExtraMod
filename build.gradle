@@ -12,7 +12,6 @@ repositories {
 }
 
 dependencies {
-    // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
@@ -24,7 +23,8 @@ dependencies {
     modImplementation "com.ptsmods:devlogin:3.1"
     // discord IPC
     include ( implementation 'com.github.ThatGravyBoat:DiscordIPC:d813b27fef' )
-
+    // reflections
+    include ( implementation 'org.reflections:reflections:0.10.2')
 }
 
 processResources {

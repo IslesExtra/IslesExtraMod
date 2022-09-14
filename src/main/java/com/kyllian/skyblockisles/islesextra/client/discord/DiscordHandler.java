@@ -5,52 +5,44 @@ import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.entities.RichPresenceButton;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
+import com.kyllian.skyblockisles.islesextra.annotation.OnIslesJoin;
+import com.kyllian.skyblockisles.islesextra.annotation.OnIslesLeave;
 import com.kyllian.skyblockisles.islesextra.client.ClientUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.Identifier;
-
-import java.nio.charset.StandardCharsets;
 
 public class DiscordHandler {
 
     // Discord Rich Presence handler
 
     public static IPCClient discordClient;
-    private boolean ready = false;
+    private static boolean ready = false;
+
     public DiscordHandler() {
         discordClient = new IPCClient(1015667892601241640L);
         discordClient.setListener(new IPCListener(){
             @Override
             public void onReady(IPCClient client) { ready = true; }
         });
+    }
 
-        ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
-            String ip = handler.getConnection().getAddress().toString();
-            if (ip.contains("isles") || ip.contains("localhost")) {
-                enable();
-                setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
-            }
+    @OnIslesJoin
+    public static void start() {
+        System.out.println("invoked start");
+        enable();
+        setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
+    }
 
-            ClientPlayNetworking.registerReceiver(new Identifier("minecraft", "isles"), ((client1, handler1, buf, responseSender) -> {
-                String data = new String(buf.readByteArray(256));
-                String[] parts = data.split("/");
-                if (parts[0].equalsIgnoreCase("set_rp")) {
-                    setRichPresence((parts.length > 3 && parts[3].equalsIgnoreCase("true")), parts[1], parts[2]);
-                }
-            }));
-        }));
-
-        ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {
-            if (active) disable();
-        }));
+    @OnIslesLeave
+    public static void stop() {
+        if (active) disable();
     }
 
 
-    private final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(System.currentTimeMillis());
-    public void setRichPresence(boolean reset, String ... lines) {
+    private static final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(System.currentTimeMillis());
+    public static void setRichPresence(boolean reset, String... lines) {
         if (!ready) {
             if (reset) ClientUtils.sendMessage("§4Discord not found.");
             return;
@@ -68,17 +60,17 @@ public class DiscordHandler {
                         "https://crafatar.com/renders/head/" + player.getUuidAsString() + "?overlay&default=MHF_Steve",
                                     player.getName().getString()
                 )
-                .setButtons(new RichPresenceButton[]{BUTTON, new RichPresenceButton("https://www.google.com", player.getName().getString() + " - Stats")});
+                .setButtons(new RichPresenceButton[]{BUTTON, new RichPresenceButton("https://www.youtube.com/watch?v=lpiB2wMc49g", player.getName().getString() + " - Stats")});
         if (reset) richPresenceBuilder.setStartTimestamp(System.currentTimeMillis());
         discordClient.sendRichPresence(richPresenceBuilder.build());
     }
 
-    private boolean active;
-    public void disable() {
+    private static boolean active;
+    public static void disable() {
         discordClient.close();
         ready = active = false;
     }
-    public void enable() {
+    public static void enable() {
         try {
             discordClient.connect();
             active = true;

@@ -19,7 +19,7 @@ public class MapCommand extends ClientCommand {
 
     @Override
     public int run(CommandContext context) {
-        ClientUtils.openScreen(IslesExtraClient.map);
+        //ClientUtils.openScreen(IslesExtraClient.map);
         return 0;
     }
 
