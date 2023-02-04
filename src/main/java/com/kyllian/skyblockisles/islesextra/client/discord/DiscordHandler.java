@@ -8,8 +8,6 @@ import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 import com.kyllian.skyblockisles.islesextra.annotation.OnIslesJoin;
 import com.kyllian.skyblockisles.islesextra.annotation.OnIslesLeave;
 import com.kyllian.skyblockisles.islesextra.client.ClientUtils;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 
@@ -20,17 +18,15 @@ public class DiscordHandler {
     public static IPCClient discordClient;
     private static boolean ready = false;
 
-    public DiscordHandler() {
-        discordClient = new IPCClient(1015667892601241640L);
-        discordClient.setListener(new IPCListener(){
-            @Override
-            public void onReady(IPCClient client) { ready = true; }
-        });
-    }
-
     @OnIslesJoin
     public static void start() {
-        System.out.println("invoked start");
+        if (discordClient == null) {
+            discordClient = new IPCClient(1015667892601241640L);
+            discordClient.setListener(new IPCListener(){
+                @Override
+                public void onReady(IPCClient client) { ready = true; }
+            });
+        }
         enable();
         setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
     }
@@ -39,7 +35,6 @@ public class DiscordHandler {
     public static void stop() {
         if (active) disable();
     }
-
 
     private static final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(System.currentTimeMillis());
     public static void setRichPresence(boolean reset, String... lines) {

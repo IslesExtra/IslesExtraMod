@@ -40,7 +40,7 @@ public class RenderingUtils {
 
         RenderSystem.enableBlend();
 
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         bufferBuilder.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION_COLOR);
         bufferBuilder.vertex(box.minX,box.minY,box.minZ).color(r,g,b,a).next();
         bufferBuilder.vertex(box.maxX,box.maxY,box.maxZ).color(r,g,b,a).next();

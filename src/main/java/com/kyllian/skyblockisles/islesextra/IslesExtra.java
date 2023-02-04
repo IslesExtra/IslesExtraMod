@@ -1,30 +1,40 @@
 package com.kyllian.skyblockisles.islesextra;
 
-import com.kyllian.skyblockisles.islesextra.annotation.OnIsles;
-import com.kyllian.skyblockisles.islesextra.annotation.OnIslesJoin;
-import com.kyllian.skyblockisles.islesextra.annotation.OnIslesLeave;
-import com.kyllian.skyblockisles.islesextra.client.ClientData;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.kyllian.skyblockisles.islesextra.client.PickupLogger;
 import com.kyllian.skyblockisles.islesextra.client.CustomText;
-import com.kyllian.skyblockisles.islesextra.client.IslesExtraClient;
+import com.kyllian.skyblockisles.islesextra.client.IslesEventHandler;
 import com.kyllian.skyblockisles.islesextra.client.discord.DiscordHandler;
 import com.kyllian.skyblockisles.islesextra.entity.IslesEntities;
 import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.block.*;
+import net.minecraft.block.enums.Instrument;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.Scanners;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.core.jackson.Log4jYamlObjectMapper;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class IslesExtra implements ModInitializer {
 
@@ -37,29 +47,13 @@ public class IslesExtra implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        discord = new DiscordHandler();
-
-        ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
-            String ip = handler.getConnection().getAddress().toString();
-            if (ip.contains("isles") || ip.contains("localhost")) {
-                invokeIslesJoinMethods();
-                IslesExtraClient.setOnIsles(true);
-            }
-        }));
-
-        ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {
-            String ip = handler.getConnection().getAddress().toString();
-            if (ip.contains("isles") || ip.contains("localhost")) {
-                invokeIslesLeaveMethods();
-                IslesExtraClient.setOnIsles(false);
-            }
-        }));
+        IslesEventHandler.init();
 
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (nextScreen!=null) client.setScreen(nextScreen);
             nextScreen = null;
             if (client.player == null) return;
-            ClientData.updatePickedUpItems();
+            PickupLogger.updatePickedUpItems();
         }));
         ItemTooltipCallback.EVENT.register(((stack, context, lines) -> {
             NbtCompound nbt = stack.getNbt();
@@ -72,50 +66,60 @@ public class IslesExtra implements ModInitializer {
             }
         }));
         registerAttributes();
+        registerCustomItems();
     }
 
     private static void registerAttributes() {
-        FabricDefaultAttributeRegistry.register(IslesEntities.QUEEN_BEE, QueenBeeEntity.createMobAttributes());
+        // TODO; UNCOMMENT
+        //FabricDefaultAttributeRegistry.register(IslesEntities.QUEEN_BEE, QueenBeeEntity.createMobAttributes());
     }
 
-    private void invokeIslesJoinMethods() {
-        invokeIslesMethods("JOIN");
-        Reflections reflections = new Reflections(
-                new ConfigurationBuilder()
-                        .setUrls(ClasspathHelper.forJavaClassPath())
-                        .setScanners(Scanners.ConstructorsAnnotated, Scanners.MethodsAnnotated)
-        );
-        Set<Method> methods = reflections.getMethodsAnnotatedWith(OnIslesJoin.class);
+    public static final List<CustomItem> customItems = new ArrayList<>();
+    private static void registerCustomItems() {
+        File file = new File("mods/isles/custom_blocks.json");
+        Gson gson = new Gson();
         try {
-            for (Method method : methods) method.invoke(null);
-        } catch (InvocationTargetException | IllegalAccessException e) { throw new RuntimeException(e); }
-    }
-
-    private void invokeIslesLeaveMethods() {
-        invokeIslesMethods("LEAVE");
-        Reflections reflections = new Reflections(
-                new ConfigurationBuilder()
-                        .setUrls(ClasspathHelper.forJavaClassPath())
-                        .setScanners(Scanners.ConstructorsAnnotated, Scanners.MethodsAnnotated)
-        );
-        Set<Method> methods = reflections.getMethodsAnnotatedWith(OnIslesLeave.class);
-        try {
-            for (Method method : methods) method.invoke(null);
-        } catch (InvocationTargetException | IllegalAccessException e) { throw new RuntimeException(e); }
-    }
-
-    private void invokeIslesMethods(String action) {
-        Reflections reflections = new Reflections(
-                new ConfigurationBuilder()
-                        .setUrls(ClasspathHelper.forJavaClassPath())
-                        .setScanners(Scanners.ConstructorsAnnotated, Scanners.MethodsAnnotated)
-        );
-        Set<Method> methods = reflections.getMethodsAnnotatedWith(OnIsles.class);
-        try {
-            for (Method method : methods) {
-                if (method.getAnnotation(OnIsles.class).action().equalsIgnoreCase(action) || method.getAnnotation(OnIsles.class).action().equalsIgnoreCase("ALL"))
-                    method.invoke(null);
+            JsonObject itemList = gson.fromJson(new FileReader(file), JsonObject.class);
+            for (Map.Entry<String, JsonElement> entry : itemList.entrySet()) {
+                String id = entry.getKey();
+                JsonObject data = entry.getValue().getAsJsonObject();
+                int modelData = data.get("Model").getAsInt();
+                String name = data.get("Display").getAsString();
+                customItems.add(new CustomItem(id, name, modelData));
             }
-        } catch (InvocationTargetException | IllegalAccessException e) { throw new RuntimeException(e); }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(file.getAbsolutePath());
+        ItemGroup group = FabricItemGroup.builder(new Identifier("isles", "building_blocks"))
+                        .icon(() -> new ItemStack(Items.DIAMOND)).displayName(Text.of("Skyblock Isles")).build();
+        ItemGroupEvents.modifyEntriesEvent(group).register(content -> {
+            for (CustomItem customItem : customItems) {
+                ItemStack item = new ItemStack(Items.STONE);
+                Text text = Text.of(customItem.display()).copyContentOnly().setStyle(Style.EMPTY.withItalic(false));
+                item.setCustomName(text);
+                NbtCompound nbt = item.getOrCreateNbt();
+                nbt.putString("MYTHIC_TYPE", customItem.id());
+                nbt.putInt("CustomModelData", customItem.model());
+                item.setNbt(nbt);
+                content.add(item);
+            }
+        });
     }
+
+    private static final String[] instruments = new String[] {"basedrum", "snare", "hat", "bass", "flute"};
+    public static String getId(String instrument, int note) {
+        int m = 0;
+        for (int i = 0; i<instruments.length; i++) {
+            if (instrument.equalsIgnoreCase(instruments[i])) m = i;
+        }
+        int index = m*24 + note;
+        if (m==0) index -= 2;
+        return IslesExtra.customItems.get(index).id();
+    }
+
+     public record CustomItem(String id, String display, int model) { }
+
+    // this.setDefaultState(((BlockState)this.stateManager.getDefaultState()).with(INSTRUMENT, Instrument.HARP)).with(NOTE, 0)).with(POWERED, false));
+
 }

@@ -1,6 +1,6 @@
 package com.kyllian.skyblockisles.islesextra.mixin;
 
-import com.kyllian.skyblockisles.islesextra.client.ClientData;
+import com.kyllian.skyblockisles.islesextra.client.PickupLogger;
 import com.kyllian.skyblockisles.islesextra.utility.Dialogue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -28,11 +28,11 @@ abstract class OverlayGui {
 
         Dialogue.render(matrices);
 
-        if (ClientData.pickedUpItems.size()==0) return;
+        if (PickupLogger.pickedUpItems.size()==0) return;
         ItemRenderer itemRenderer = client.getItemRenderer();
         int offset = 0;
-        List<ClientData.PickedUpItem> pickedUpItems = new ArrayList<>(ClientData.pickedUpItems);
-        for (ClientData.PickedUpItem item : pickedUpItems) {
+        List<PickupLogger.PickedUpItem> pickedUpItems = new ArrayList<>(PickupLogger.pickedUpItems);
+        for (PickupLogger.PickedUpItem item : pickedUpItems) {
 
             // Hard-coded values for top left layout.
 

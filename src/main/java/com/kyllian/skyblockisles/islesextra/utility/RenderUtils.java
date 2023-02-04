@@ -7,12 +7,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
 
 public class RenderUtils {
 
-    public static void drawEntityMojang(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
+    //  TODO; UNCOMMENT
+    /*public static void drawEntityMojang(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
         float f = (float)Math.atan(mouseX / 40.0f);
         float g = (float)Math.atan(mouseY / 40.0f);
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
@@ -23,9 +22,10 @@ public class RenderUtils {
         MatrixStack matrixStack2 = new MatrixStack();
         matrixStack2.translate(0.0, 0.0, 1000.0);
         matrixStack2.scale(size, size, size);
-        Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0f);
-        Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0f);
-        quaternion.hamiltonProduct(quaternion2);
+        Quaternionf quaternion = RotationAxis.POSITIVE_Z.rotationDegrees(180.0f);
+        Quaternionf quaternion2 = RotationAxis.POSITIVE_X.rotationDegrees(g * 20.0f);
+        // TODO; FIX THIS
+        //quaternion.hamiltonProduct(quaternion2);
         matrixStack2.multiply(quaternion);
         float h = entity.bodyYaw;
         float i = entity.getYaw();
@@ -54,10 +54,11 @@ public class RenderUtils {
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
         DiffuseLighting.enableGuiDepthLighting();
-    }
+    }*/
 
     public static void drawEntity(int x, int y, int size, LivingEntity entity, float yaw, float pitch) {
-        float g = (float)Math.atan(pitch / 40.0f);
+        // TODO; FIX ALL OF THIS
+        /*float g = (float)Math.atan(pitch / 40.0f);
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
         matrixStack.translate(x, y, 1500.0);
@@ -96,7 +97,7 @@ public class RenderUtils {
 
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
-        DiffuseLighting.enableGuiDepthLighting();
+        DiffuseLighting.enableGuiDepthLighting();*/
     }
 
 }

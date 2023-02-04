@@ -7,12 +7,12 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class IslesEntities {
-    public static final EntityType<QueenBeeEntity> QUEEN_BEE = Registry.register(
+    // TODO; FIX THIS TOO
+    /*public static final EntityType<QueenBeeEntity> QUEEN_BEE = Registry.register(
             Registry.ENTITY_TYPE,
             new Identifier(IslesExtra.MOD_ID, "queen_bee"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, QueenBeeEntity::new).dimensions(EntityDimensions.fixed(2, 5)).build()
-    );
+    );*/
 }

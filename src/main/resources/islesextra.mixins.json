@@ -7,10 +7,16 @@
     "slots.SlotAccessor"
   ],
   "client": [
+    "ClientPlayerEntityMixin",
+    "DebugHudMixin",
+    "InventoryScreenMixin",
     "OverlayGui",
     "RenderCalls",
+    "chat_preview.ChatScreenMixin",
     "entity.EntityRenderDispatcherMixin",
-    "slots.HandledScreenMixin"
+    "slots.ClientPlayerEntityMixin",
+    "slots.HandledScreenMixin",
+    "slots.InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
