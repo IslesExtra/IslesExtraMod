@@ -23,10 +23,12 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(InGameHud.class)
 abstract class InGameHudMixin {
 
+    // TODO: FIX THIS ENTIRE CLASS
+
     @Shadow @Final private ItemRenderer itemRenderer;
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(
+    /*@Inject(
             method = "renderHotbar",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderHotbarItem(IIFLnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;I)V", shift = At.Shift.AFTER),
             locals = LocalCapture.CAPTURE_FAILSOFT
@@ -41,7 +43,7 @@ abstract class InGameHudMixin {
         client.getItemRenderer().zOffset += 50;
         client.getItemRenderer().renderInGui(new ItemStack(Items.BARRIER), o, p);
         client.getItemRenderer().zOffset -= 50;
-    }
+    }*/
 
 
 }

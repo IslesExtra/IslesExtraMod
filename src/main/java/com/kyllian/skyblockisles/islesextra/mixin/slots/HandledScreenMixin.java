@@ -4,6 +4,7 @@ import com.kyllian.skyblockisles.islesextra.client.IslesExtraClient;
 import com.kyllian.skyblockisles.islesextra.client.LockSlots;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.network.PlayerListEntry;
@@ -36,20 +37,21 @@ abstract class HandledScreenMixin {
 
     private static void drawImage(MatrixStack matrixStack, int screenX, int screenY, int imgX, int imgY, int width, int height, int regionWidth, int regionHeight, int imgWidth, int imgHeight, Identifier texture) {
         RenderSystem.setShaderTexture(0, texture);
-        Screen.drawTexture(matrixStack, screenX, screenY, width, height, imgX, imgY, regionWidth, regionHeight, imgWidth, imgHeight);
+        // TODO: fix
+        //Screen.drawTexture(matrixStack, screenX, screenY, width, height, imgX, imgY, regionWidth, regionHeight, imgWidth, imgHeight);
     }
 
     @Shadow @Nullable protected Slot focusedSlot;
 
     @Inject(method = "drawSlot", at = @At("TAIL"))
-    void drawLock(MatrixStack matrices, Slot slot, CallbackInfo ci) {
+    void drawLock(DrawContext context, Slot slot, CallbackInfo ci) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (!IslesExtraClient.isOnIsles()) return;
         if (client.player == null || client.getNetworkHandler() == null) return;
         PlayerListEntry playerListEntry = client.getNetworkHandler().getPlayerListEntry(client.player.getGameProfile().getId());
         if (playerListEntry == null || (playerListEntry.getGameMode() != GameMode.SURVIVAL && playerListEntry.getGameMode() != GameMode.ADVENTURE)) return;
         if (!(slot.inventory instanceof PlayerInventory)) return;
-        if (LockSlots.isLocked(((SlotAccessor) slot).getIndex())) drawItem(new ItemStack(Items.BARRIER), slot.x, slot.y, matrices);
+        if (LockSlots.isLocked(((SlotAccessor) slot).getIndex())) drawItem(new ItemStack(Items.BARRIER), slot.x, slot.y, context.getMatrices());
     }
 
     @Inject(method = "onMouseClick(Lnet/minecraft/screen/slot/Slot;IILnet/minecraft/screen/slot/SlotActionType;)V", at = @At("HEAD"), cancellable = true)

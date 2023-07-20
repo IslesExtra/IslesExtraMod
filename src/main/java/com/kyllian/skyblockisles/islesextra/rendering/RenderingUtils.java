@@ -2,6 +2,7 @@ package com.kyllian.skyblockisles.islesextra.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.debug.DebugRenderer;
@@ -11,7 +12,7 @@ import java.awt.*;
 
 public class RenderingUtils {
 
-    public static void renderAll() {
+    public static void renderAll(DrawContext ctx) {
 
         MinecraftClient client = MinecraftClient.getInstance();
         ClientPlayerEntity player = client.player;
@@ -20,7 +21,7 @@ public class RenderingUtils {
         assert player != null;
 
         Color color = new Color(3, 219, 252, 50);
-        drawBox(0, 100, 0, 1, 102, 1, color);
+        drawBox(ctx, 0, 100, 0, 1, 102, 1, color);
         drawLine(0, 100, 0, 5, 105, 0, color);
 
     }
@@ -29,7 +30,7 @@ public class RenderingUtils {
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         if (camera.isReady()) {
             Vec3d vec3d = camera.getPos().negate();
-            Box box = (new Box(new BlockPos(xStart, yStart, zStart), new BlockPos(xEnd, yEnd, zEnd))).offset(vec3d);
+            Box box = (new Box(new Vec3d(xStart, yStart, zStart), new Vec3d(xEnd, yEnd, zEnd))).offset(vec3d);
             drawLine(box, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         }
     }
@@ -47,12 +48,12 @@ public class RenderingUtils {
         tessellator.draw();
     }
 
-    public static void drawBox(double xStart, double yStart, double zStart, double xEnd, double yEnd, double zEnd, Color color) {
+    public static void drawBox(DrawContext ctx, double xStart, double yStart, double zStart, double xEnd, double yEnd, double zEnd, Color color) {
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         if (camera.isReady()) {
             Vec3d vec3d = camera.getPos().negate();
-            Box box = (new Box(new BlockPos(xStart, yStart, zStart), new BlockPos(xEnd, yEnd, zEnd))).offset(vec3d);
-            DebugRenderer.drawBox(box, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+            Box box = (new Box(new Vec3d(xStart, yStart, zStart), new Vec3d(xEnd, yEnd, zEnd))).offset(vec3d);
+            DebugRenderer.drawBox(ctx.getMatrices(), ctx.getVertexConsumers(), box, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
         }
     }
 

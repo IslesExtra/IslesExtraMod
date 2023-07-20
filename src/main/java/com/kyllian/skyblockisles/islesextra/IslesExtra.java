@@ -22,6 +22,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -91,9 +95,10 @@ public class IslesExtra implements ModInitializer {
             throw new RuntimeException(e);
         }
         System.out.println(file.getAbsolutePath());
-        ItemGroup group = FabricItemGroup.builder(new Identifier("isles", "building_blocks"))
+        ItemGroup group = FabricItemGroup.builder()
                         .icon(() -> new ItemStack(Items.DIAMOND)).displayName(Text.of("Skyblock Isles")).build();
-        ItemGroupEvents.modifyEntriesEvent(group).register(content -> {
+        RegistryKey<ItemGroup> key = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("isles", "building_blocks"));
+        ItemGroupEvents.modifyEntriesEvent(key).register(content -> {
             for (CustomItem customItem : customItems) {
                 ItemStack item = new ItemStack(Items.STONE);
                 Text text = Text.of(customItem.display()).copyContentOnly().setStyle(Style.EMPTY.withItalic(false));
@@ -105,6 +110,7 @@ public class IslesExtra implements ModInitializer {
                 content.add(item);
             }
         });
+        Registry.register(Registries.ITEM_GROUP, key, group);
     }
 
     private static final String[] instruments = new String[] {"basedrum", "snare", "hat", "bass", "flute"};

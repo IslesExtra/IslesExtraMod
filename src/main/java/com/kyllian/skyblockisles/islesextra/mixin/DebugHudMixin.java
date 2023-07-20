@@ -51,7 +51,10 @@ public class DebugHudMixin {
             else if (line.startsWith("#minecraft:mineable/axe")) removal.add(line);
         }
         if (note == -1 || instrument.equals("")) list.set(idPos, "isles:unknown");
-        else list.set(idPos, "isles:" + IslesExtra.getId(instrument, note));
+        else {
+            list.set(idPos, "isles:" + IslesExtra.getId(instrument, note));
+
+        }
         list.removeAll(removal);
         ci.setReturnValue(list);
     }

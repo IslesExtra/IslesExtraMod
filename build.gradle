@@ -25,6 +25,8 @@ dependencies {
     include ( implementation 'com.github.ThatGravyBoat:DiscordIPC:d813b27fef' )
     // reflections
     include ( implementation 'org.reflections:reflections:0.10.2')
+
+    include( implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2' )
 }
 
 processResources {

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
@@ -40,8 +41,8 @@ public class Dialogue {
         }));
     }
 
-    public static void render(MatrixStack matrices) {
-
+    public static void render(DrawContext ctx) {
+        MatrixStack matrices = ctx.getMatrices();
         if (components.size()==0) return;
         DialogueComponent current = components.get(0);
         Text currentText = Text.literal(current.participant)
@@ -68,7 +69,7 @@ public class Dialogue {
 
         int m = l << 24 & -16777216;
         int n = textRenderer.getWidth(currentText);
-        textRenderer.drawWithShadow(matrices, currentText, (float)(-n / 2), -8.0F, k | m);
+        ctx.drawText(textRenderer, currentText, (-n / 2), -8, k | m, false);
         RenderSystem.disableBlend();
         matrices.pop();
     }

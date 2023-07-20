@@ -17,6 +17,7 @@ public class TextElement extends GuiElement {
 
     @Override
     public void render(MatrixStack matrices, int defaultX, int defaultY, int textureWidth, int textureHeight, int mouseX, int mouseY, boolean isMouseDown) {
-        Screen.drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, text, x + defaultX, y + defaultY, color);
+        // TODO: fix
+        //Screen.drawCenteredText(matrices, MinecraftClient.getInstance().textRenderer, text, x + defaultX, y + defaultY, color);
     }
 }

@@ -1,14 +1,17 @@
 package com.kyllian.skyblockisles.islesextra.client.commands;
 
-import com.kyllian.skyblockisles.islesextra.IslesExtra;
+import com.google.gson.JsonObject;
 import com.kyllian.skyblockisles.islesextra.client.ClientCommand;
-import com.kyllian.skyblockisles.islesextra.client.ClientUtils;
-import com.kyllian.skyblockisles.islesextra.gui.TexturedGui;
-import com.kyllian.skyblockisles.islesextra.utility.Dialogue;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.item.ItemStack;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Base64;
 
 public class TestCommand extends ClientCommand {
 
@@ -19,15 +22,66 @@ public class TestCommand extends ClientCommand {
         return "test";
     }
 
+    public static void main(String[] args) {
+        try {
+            URL url = new URL("https://24a9cdc8-dd75-4e92-8cbc-3353a9c4ec76.lumine.io/player/profile/Joshinn");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            int status = con.getResponseCode();
+
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+
+            JsonObject object = (JsonObject) com.google.gson.JsonParser.parseString(content.toString());
+            JsonObject metadata = object.getAsJsonObject("metadata");
+            String islesDataString = metadata.get("isles").getAsString();
+
+            JsonObject islesData = (JsonObject) com.google.gson.JsonParser.parseString(islesDataString);
+            JsonObject gameProfileSlots = islesData.getAsJsonObject("gameProfileSlots");
+            JsonObject firstSlot = gameProfileSlots.getAsJsonObject("1");
+            String encodedInventoryString = firstSlot.get("inventory").getAsString();
+            System.out.println(encodedInventoryString);
+            System.out.println("Result: " + new String(decode(encodedInventoryString)));
+
+            decodeInventory(decode(encodedInventoryString));
+
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public int run(CommandContext context) {
-        IslesExtra.discord.setRichPresence(false, "test", "this was test yepge");
+        /*IslesExtra.discord.setRichPresence(false, "test", "this was test yepge");
 
         Dialogue.addDialogue(new Dialogue.DialogueComponent("Well, hello there", "JoshuaS"));
         Dialogue.addDialogue(new Dialogue.DialogueComponent("Go to the mines, or else...", "JoshuaS"));
 
-        ClientUtils.openScreen(new TexturedGui("globaltradesystem"));
+        ClientUtils.openScreen(new TexturedGui("globaltradesystem"));*/
+
         return 0;
+    }
+
+    public static byte[] decode(String src) {
+        return Base64.getDecoder().decode(src);
+    }
+
+    public static ItemStack[] decodeInventory(byte[] in) throws IOException, ClassNotFoundException {
+        ObjectInputStream s = new ObjectInputStream(new ByteArrayInputStream(in));
+        int length = s.readInt();
+        for (int i = 0; i<length; i++) {
+            Object o = s.readObject();
+        }
+
+        return null;
     }
 
     public void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {

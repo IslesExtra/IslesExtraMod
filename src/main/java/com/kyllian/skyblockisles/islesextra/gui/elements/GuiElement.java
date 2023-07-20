@@ -25,7 +25,8 @@ public abstract class GuiElement {
      */
     public static void drawImage(MatrixStack matrixStack, int screenX, int screenY, int imgX, int imgY, int width, int height, int regionWidth, int regionHeight, int imgWidth, int imgHeight, Identifier texture) {
         RenderSystem.setShaderTexture(0, texture);
-        Screen.drawTexture(matrixStack, screenX, screenY, width, height, imgX, imgY, regionWidth, regionHeight, imgWidth, imgHeight);
+        // TODO: fix
+        //Screen.drawTexture(matrixStack, screenX, screenY, width, height, imgX, imgY, regionWidth, regionHeight, imgWidth, imgHeight);
     }
 
 }

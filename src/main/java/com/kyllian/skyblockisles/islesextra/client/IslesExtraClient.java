@@ -5,14 +5,11 @@ import com.kyllian.skyblockisles.islesextra.annotation.OnIsles;
 import com.kyllian.skyblockisles.islesextra.annotation.OnIslesJoin;
 import com.kyllian.skyblockisles.islesextra.annotation.OnIslesLeave;
 import com.kyllian.skyblockisles.islesextra.client.commands.TestCommand;
-import com.kyllian.skyblockisles.islesextra.entity.IslesEntities;
 import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeModel;
-import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeRenderer;
 import com.kyllian.skyblockisles.islesextra.utility.Dialogue;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 

@@ -33,6 +33,7 @@ public class IslesEventHandler {
             String ip = handler.getConnection().getAddress().toString();
             if (ip.contains("isles")) invokeIslesLeaveMethods();
         }));
+
     }
 
     public static Reflections reflections;

@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WorldRenderer.class)
 abstract class RenderCalls {
 
-    @Inject(
+    // TODO: fix
+
+    /*@Inject(
             method = "render",
             at = @At(
                     value = "INVOKE",
@@ -23,6 +25,6 @@ abstract class RenderCalls {
     public void onRenderLast(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
         TrackerRenderer.getInstance().render();
         RenderingUtils.renderAll();
-    }
+    }*/
 
 }
