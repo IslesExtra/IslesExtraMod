@@ -23,6 +23,7 @@ public class CustomGui extends GenericContainerScreen {
 
     @Override
     public void init() {
+
         super.init();
         this.x = (this.width - this.backgroundWidth) / 2;
         this.y = (this.height - this.backgroundHeight) / 2;
