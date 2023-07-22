@@ -5,7 +5,6 @@ import com.kyllian.skyblockisles.islesextra.client.commands.TestCommand;
 import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeModel;
 import com.kyllian.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.kyllian.skyblockisles.islesextra.event.LeftIslesCallback;
-import com.kyllian.skyblockisles.islesextra.utility.Dialogue;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -22,7 +21,6 @@ public class IslesExtraClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        Dialogue.setupDialogue();
         LockSlots.init();
 
         ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {

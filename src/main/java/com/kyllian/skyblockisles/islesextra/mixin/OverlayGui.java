@@ -1,13 +1,10 @@
 package com.kyllian.skyblockisles.islesextra.mixin;
 
 import com.kyllian.skyblockisles.islesextra.client.PickupLogger;
-import com.kyllian.skyblockisles.islesextra.utility.Dialogue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
