@@ -4,22 +4,15 @@
   "package": "com.kyllian.skyblockisles.islesextra.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "ItemStackMixin",
-    "slots.SlotAccessor"
+    "ItemStackMixin"
   ],
   "client": [
     "ClientPlayNetworkHandlerMixin",
     "DebugHudMixin",
-    "InventoryScreenMixin",
     "OverlayGui",
     "PlayerListHudMixin",
     "RenderCalls",
-    "chat_preview.ChatScreenMixin",
-    "entity.EntityRenderDispatcherMixin",
-    "slots.ClientPlayerEntityMixin",
-    "slots.HandledScreenMixin",
-    "slots.InGameHudMixin",
-    "temp.RecipeBookWidgetMixin"
+    "chat_preview.ChatScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
