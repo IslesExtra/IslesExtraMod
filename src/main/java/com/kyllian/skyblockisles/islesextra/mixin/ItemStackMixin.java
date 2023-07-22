@@ -33,7 +33,6 @@ public abstract class ItemStackMixin {
     @Inject(method = "getTooltip", at = @At("HEAD"), cancellable = true)
     void getIslesTooltip(@Nullable PlayerEntity player, TooltipContext context, CallbackInfoReturnable<List<Text>> cir) {
         if (!context.isAdvanced()) return;
-        if (nbt != null) System.out.println(nbt);
         if (nbt == null || !nbt.contains("MYTHIC_TYPE")) return;
         List<Text> list = getTooltip(player, TooltipContext.BASIC);
         if (isDamaged()) {

@@ -7,13 +7,15 @@ import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeMode
 import com.kyllian.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.kyllian.skyblockisles.islesextra.event.LeftIslesCallback;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
-@net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
+@Environment(EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {
 
     private static boolean ON_ISLES = false;
