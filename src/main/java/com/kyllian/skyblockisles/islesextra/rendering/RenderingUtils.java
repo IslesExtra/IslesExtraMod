@@ -12,20 +12,6 @@ import java.awt.*;
 
 public class RenderingUtils {
 
-    public static void renderAll(DrawContext ctx) {
-
-        MinecraftClient client = MinecraftClient.getInstance();
-        ClientPlayerEntity player = client.player;
-        Camera camera = client.gameRenderer.getCamera();
-
-        assert player != null;
-
-        Color color = new Color(3, 219, 252, 50);
-        drawBox(ctx, 0, 100, 0, 1, 102, 1, color);
-        drawLine(0, 100, 0, 5, 105, 0, color);
-
-    }
-
     public static void drawLine(double xStart, double yStart, double zStart, double xEnd, double yEnd, double zEnd, Color color) {
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         if (camera.isReady()) {
