@@ -2,14 +2,10 @@ package com.kyllian.skyblockisles.islesextra.client;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kyllian.skyblockisles.islesextra.annotation.OnIslesLeave;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,11 +30,6 @@ public abstract class PickupLogger {
         PickedUpItem newItem = new PickedUpItem(singleItem);
         newItem.count = count;
         pickedUpItems.add(newItem);
-    }
-
-    @OnIslesLeave
-    static void clearLogger() {
-        oldItemMap.clear();
     }
 
     public static void updatePickedUpItems() {

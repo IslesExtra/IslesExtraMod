@@ -5,39 +5,43 @@ import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.entities.RichPresenceButton;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
-import com.kyllian.skyblockisles.islesextra.annotation.OnIslesJoin;
-import com.kyllian.skyblockisles.islesextra.annotation.OnIslesLeave;
 import com.kyllian.skyblockisles.islesextra.client.ClientUtils;
+import com.kyllian.skyblockisles.islesextra.event.JoinedIslesCallback;
+import com.kyllian.skyblockisles.islesextra.event.LeftIslesCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.ActionResult;
 
 public class DiscordHandler {
 
     // Discord Rich Presence handler
 
-    public static IPCClient discordClient;
-    private static boolean ready = false;
+    public IPCClient discordClient;
+    private boolean ready = false;
 
-    @OnIslesJoin
-    public static void start() {
-        if (discordClient == null) {
-            discordClient = new IPCClient(1015667892601241640L);
-            discordClient.setListener(new IPCListener(){
-                @Override
-                public void onReady(IPCClient client) { ready = true; }
-            });
-        }
-        enable();
-        setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
+    public DiscordHandler() {
+        JoinedIslesCallback.EVENT.register(() -> {
+            if (discordClient == null) {
+                discordClient = new IPCClient(1015667892601241640L);
+                discordClient.setListener(new IPCListener(){
+                    @Override
+                    public void onReady(IPCClient client) { ready = true; }
+                });
+            }
+            enable();
+            setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
+            return ActionResult.SUCCESS;
+        });
+
+        LeftIslesCallback.EVENT.register(() -> {
+            if (active) disable();
+            return ActionResult.SUCCESS;
+        });
     }
 
-    @OnIslesLeave
-    public static void stop() {
-        if (active) disable();
-    }
 
     private static final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(System.currentTimeMillis());
-    public static void setRichPresence(boolean reset, String... lines) {
+    public void setRichPresence(boolean reset, String... lines) {
         if (!ready) {
             if (reset) ClientUtils.sendMessage("§4Discord not found.");
             return;
@@ -61,11 +65,11 @@ public class DiscordHandler {
     }
 
     private static boolean active;
-    public static void disable() {
+    public void disable() {
         discordClient.close();
         ready = active = false;
     }
-    public static void enable() {
+    public void enable() {
         try {
             discordClient.connect();
             active = true;

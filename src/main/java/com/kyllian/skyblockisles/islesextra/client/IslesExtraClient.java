@@ -2,6 +2,7 @@ package com.kyllian.skyblockisles.islesextra.client;
 
 import com.kyllian.skyblockisles.islesextra.IslesExtra;
 import com.kyllian.skyblockisles.islesextra.client.commands.TestCommand;
+import com.kyllian.skyblockisles.islesextra.client.discord.DiscordHandler;
 import com.kyllian.skyblockisles.islesextra.entity.custom.queen_bee.QueenBeeModel;
 import com.kyllian.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.kyllian.skyblockisles.islesextra.event.LeftIslesCallback;
@@ -21,7 +22,7 @@ public class IslesExtraClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        LockSlots.init();
+        new DiscordHandler();
 
         ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
             new TestCommand().register(dispatcher);
