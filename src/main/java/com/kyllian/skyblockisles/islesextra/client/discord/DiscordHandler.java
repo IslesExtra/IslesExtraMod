@@ -22,7 +22,7 @@ public class DiscordHandler {
     public DiscordHandler() {
         JoinedIslesCallback.EVENT.register(() -> {
             if (discordClient == null) {
-                discordClient = new IPCClient(1015667892601241640L);
+                discordClient = new IPCClient(1128526559016394874L);
                 discordClient.setListener(new IPCListener(){
                     @Override
                     public void onReady(IPCClient client) { ready = true; }
