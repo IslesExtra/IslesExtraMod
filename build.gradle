@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -9,6 +9,7 @@ group = project.maven_group
 repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
+    maven { url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1" }
 }
 
 dependencies {
@@ -20,7 +21,9 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Dev env: DevLogin
-    modImplementation "com.ptsmods:devlogin:3.1"
+    //modImplementation "com.ptsmods:devlogin:3.5"
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.0")
+
     // discord IPC
     include ( implementation 'com.github.ThatGravyBoat:DiscordIPC:d813b27fef' )
 

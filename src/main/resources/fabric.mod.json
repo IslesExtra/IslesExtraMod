@@ -10,17 +10,17 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.kyllian.skyblockisles.islesextra.client.IslesExtraClient"
+      "com.isles.skyblockisles.islesextra.client.IslesExtraClient"
     ],
     "main": [
-      "com.kyllian.skyblockisles.islesextra.IslesExtra"
+      "com.isles.skyblockisles.islesextra.IslesExtra"
     ]
   },
   "mixins": [
     "islesextra.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.21",
+    "fabricloader": ">=0.15.6",
     "fabric": "*",
     "minecraft": "1.20.x",
     "java": ">=17"
