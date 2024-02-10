@@ -4,11 +4,11 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.util.ActionResult;
 
-public interface PartyLeftCallback {
+public interface PartyLeaveCallback {
 
-    Event<PartyLeftCallback> EVENT = EventFactory.createArrayBacked(PartyLeftCallback.class,
+    Event<PartyLeaveCallback> EVENT = EventFactory.createArrayBacked(PartyLeaveCallback.class,
             (listeners) -> (playerName, kicked) -> {
-                for (PartyLeftCallback listener : listeners) {
+                for (PartyLeaveCallback listener : listeners) {
                     ActionResult result = listener.interact(playerName, kicked);
                     if (result != ActionResult.PASS && result != ActionResult.SUCCESS) return result;
                 }
