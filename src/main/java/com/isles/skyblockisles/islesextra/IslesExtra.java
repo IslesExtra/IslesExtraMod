@@ -21,6 +21,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.text.Style;
@@ -41,6 +42,8 @@ public class IslesExtra implements ModInitializer {
 
     // TODO; move
     public static Set<String> emojis = new HashSet<>();
+
+    // TODO; move like 90% of the code in this class to new / different classes
 
     @Override
     public void onInitialize() {
@@ -75,10 +78,12 @@ public class IslesExtra implements ModInitializer {
             public void reload(ResourceManager manager) {
                 HashMap<String, String> emojiMap = new HashMap<>();
                 for (Identifier id : manager.findResources("font", path -> path.getPath().endsWith(".json")).keySet()) {
-                    try (InputStream stream = manager.getResource(id).get().getInputStream()) {
-                        JsonParser jsonParser = new JsonParser();
+                    Optional<Resource> resource = manager.getResource(id);
+                    if (resource.isEmpty()) continue;
+                    try (InputStream stream = resource.get().getInputStream()) {
+                        //JsonParser jsonParser = new JsonParser(); // TODO; make sure static method works fine
                         if (stream == null) continue;
-                        JsonObject o = (JsonObject) jsonParser.parse(new InputStreamReader(stream, StandardCharsets.UTF_8));
+                        JsonObject o = (JsonObject) JsonParser.parseReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                         JsonArray providers = o.getAsJsonArray("providers");
                         for (JsonElement e : providers) {
                             // TODO; add some more checks here to prevent errors
@@ -91,7 +96,7 @@ public class IslesExtra implements ModInitializer {
                             emojiMap.put(":" + emojiName + ":", provider.getAsJsonArray("chars").get(0).getAsString());
                         }
                     } catch(Exception e) {
-                        e.printStackTrace();
+                        e.printStackTrace(); // TODO; make this better, perhaps implement a LOGGER
                     }
                 }
                 emojis.clear();
