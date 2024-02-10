@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen;
+package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;

@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen;
+package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -2,6 +2,7 @@ package com.isles.skyblockisles.islesextra.client;
 
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
+import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
@@ -14,6 +15,7 @@ public class IslesEventHandler {
             String ip = handler.getConnection().getAddress().toString();
             if (ip.contains("isles")) {
                 if (!IslesExtraClient.isOnIsles()) JoinedIslesCallback.EVENT.invoker().interact();
+                else SwitchedIslesServerCallback.EVENT.invoker().interact(); // already on isles, so server switch
                 return;
             }
             if (!IslesExtraClient.isOnIsles()) return;
@@ -24,7 +26,8 @@ public class IslesEventHandler {
             if (!IslesExtraClient.isOnIsles()) return;
             ClientUtils.scheduleNextTick(() -> {
                 ServerInfo serverInfo = MinecraftClient.getInstance().getCurrentServerEntry();
-                if (serverInfo == null || !serverInfo.address.contains("isles")) LeftIslesCallback.EVENT.invoker().interact();
+                System.out.println(serverInfo == null);
+                if (serverInfo == null || !serverInfo.address.contains("isles")) LeftIslesCallback.EVENT.invoker().interact(); // no longer on isles so client left server
             });
         }));
 

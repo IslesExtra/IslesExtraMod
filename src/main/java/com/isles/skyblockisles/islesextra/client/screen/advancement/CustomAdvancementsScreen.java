@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen;
+package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -22,9 +22,6 @@ import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
-import java.nio.DoubleBuffer;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

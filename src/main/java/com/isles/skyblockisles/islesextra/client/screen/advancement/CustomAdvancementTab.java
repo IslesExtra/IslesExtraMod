@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen;
+package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import com.google.common.collect.Maps;
 import java.util.Map;
