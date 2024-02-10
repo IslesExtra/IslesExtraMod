@@ -4,8 +4,10 @@ import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
 import com.isles.skyblockisles.islesextra.isles.IslesConstants;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
@@ -24,7 +26,7 @@ public class IslesHudHandler {
                 freezeTime = 0;
                 startMillis = System.currentTimeMillis() + 5000;
             }
-            else if (timer && !IslesExtraClient.getOpenedGui().equals(IslesConstants.Gui.BOSS_RUSH_DIFFICULTY_SELECTOR)) {
+            else if (timer) {
                 timer = false;
             }
             return ActionResult.PASS;
@@ -33,17 +35,21 @@ public class IslesHudHandler {
             timer = false;
             return ActionResult.PASS;
         });
+        ClientEntityEvents.ENTITY_LOAD.register(((entity, world) -> {
+            if (entity instanceof ItemEntity) freezeTime();
+        }));
     }
 
     public static void freezeTime() {
-        if (timer) freezeTime = System.currentTimeMillis();
+        if (timer && freezeTime == 0) freezeTime = System.currentTimeMillis();
     }
 
     public static void renderHud(DrawContext context, TextRenderer textRenderer) {
         if (!timer) return;
         context.drawTexture(background, (int) (context.getScaledWindowWidth()/2f - 65/2f), context.getScaledWindowHeight() - 90, 0, 0, 65, 11, 65, 11);
         long time = freezeTime == 0 ? System.currentTimeMillis() : freezeTime;
-        context.drawCenteredTextWithShadow(textRenderer, formatMillisMMSS(time - startMillis), (int) (context.getScaledWindowWidth()/2f), context.getScaledWindowHeight() - 90 + 2, 0xFFFFFF);
+        int color = freezeTime == 0 ? 0xFFFFFF : 0x7dde2f;
+        context.drawCenteredTextWithShadow(textRenderer, formatMillisMMSS(time - startMillis), (int) (context.getScaledWindowWidth()/2f), context.getScaledWindowHeight() - 90 + 2, color);
     }
 
     private static String formatMillisMMSS(long millis) {
