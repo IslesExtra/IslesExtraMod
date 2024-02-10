@@ -1,7 +1,7 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
-import com.isles.skyblockisles.islesextra.client.ClientUtils;
+import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import net.minecraft.client.network.ClientCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

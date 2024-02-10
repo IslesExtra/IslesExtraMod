@@ -1,16 +1,27 @@
-package com.isles.skyblockisles.islesextra.client;
+package com.isles.skyblockisles.islesextra.utils;
 
 import com.isles.skyblockisles.islesextra.IslesExtra;
+import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class ClientUtils {
+
+    public static MinecraftClient getClient() {return MinecraftClient.getInstance();}
+    public static PlayerEntity getPlayer() {return getClient().player;}
+    public static World getWorld() {return getClient().world;}
+    public static InGameHud getHUD() {return getClient().inGameHud;}
+    public static Boolean inBoss() {return IslesHudHandler.inBoss;}
 
     public static void sendMessage(String message) {
         sendMessage(Text.of(message));
@@ -34,6 +45,14 @@ public abstract class ClientUtils {
             if (!playerListEntry.getProfile().getName().startsWith("|")) list.add((at ? "@" : "") + playerListEntry.getProfile().getName());
         }
         return list;
+    }
+
+    public static void sendTitle(String title, int fade, int stay, int leave) {
+        getHUD().setTitleTicks(fade, stay, leave);
+        getHUD().setTitle(Text.of(title));
+    }
+    public static void sendTitle(String title){
+        sendTitle(title, 5, 30, 5);
     }
 
 }

@@ -5,7 +5,7 @@ import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.entities.RichPresenceButton;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
-import com.isles.skyblockisles.islesextra.client.ClientUtils;
+import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

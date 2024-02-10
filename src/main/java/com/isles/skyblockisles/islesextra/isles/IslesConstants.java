@@ -1,6 +1,7 @@
 package com.isles.skyblockisles.islesextra.isles;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class IslesConstants {
 
@@ -34,5 +35,7 @@ public class IslesConstants {
         }
         return Gui.NONE;
     }
+
+    public static final List<String> rarities = List.of("Common","Uncommon","Rare","Epic","Legendary","Mythic");
 
 }

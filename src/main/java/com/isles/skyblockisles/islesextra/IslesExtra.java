@@ -5,9 +5,11 @@ import com.isles.skyblockisles.islesextra.client.CustomText;
 import com.isles.skyblockisles.islesextra.client.IslesEventHandler;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.client.discord.DiscordHandler;
+import com.isles.skyblockisles.islesextra.features.bossrush.general.LowAmmoWarning;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -26,7 +28,11 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -64,6 +70,11 @@ public class IslesExtra implements ModInitializer {
             for (int i = 0; nbt.contains(IslesExtra.MOD_ID + ".lore." + i); i++) {
                 lines.add(new CustomText(nbt.getString(IslesExtra.MOD_ID + ".lore." + i)).getValue());
             }
+        }));
+        UseItemCallback.EVENT.register(((player, world, hand) -> {
+            ItemStack itemStack = player.getStackInHand(hand);
+            LowAmmoWarning.warnOnLowAmmo();
+            return TypedActionResult.pass(itemStack);
         }));
         registerAttributes();
         registerCustomItems();
