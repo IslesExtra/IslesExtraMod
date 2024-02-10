@@ -1,10 +1,14 @@
 package com.isles.skyblockisles.islesextra.utils;
 
 import com.isles.skyblockisles.islesextra.IslesExtra;
+import com.isles.skyblockisles.islesextra.bossrush.general.OnlyPartyMessages;
 import com.isles.skyblockisles.islesextra.client.CustomText;
 import com.isles.skyblockisles.islesextra.bossrush.general.LowAmmoWarning;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -35,6 +39,18 @@ public class InitUtils {
             LowAmmoWarning.warnOnLowAmmo();
             return TypedActionResult.pass(itemStack);
         }));
+
+        ClientReceiveMessageEvents.ALLOW_GAME.register(((message, overlay) -> {
+        return true;
+        //To enable, just remove Comment
+        //Don't quite know if it works yet, but you can definitely see messages with your name in it tho
+        //return OnlyPartyMessages.onlyPartyMessages(message.getString());
+
+        }));
+
+        ClientSendMessageEvents.MODIFY_CHAT.register(message -> {
+            return "&6" + message;
+        });
 
     }
 

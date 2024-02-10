@@ -12,6 +12,7 @@
     "InGameHudMixin",
     "MinecraftClientMixin",
     "PlayerListHudMixin",
+    "TitleScreenMixin",
     "chat.ChatHudMixin",
     "chat.ChatScreenMixin",
     "chat.ClientCommandSourceMixin",
