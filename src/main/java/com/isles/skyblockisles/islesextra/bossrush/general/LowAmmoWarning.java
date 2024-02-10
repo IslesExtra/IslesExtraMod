@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.features.bossrush.general;
+package com.isles.skyblockisles.islesextra.bossrush.general;
 
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import net.minecraft.item.Item;

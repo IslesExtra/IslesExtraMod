@@ -1,6 +1,5 @@
 package com.isles.skyblockisles.islesextra.utils;
 
-import com.isles.skyblockisles.islesextra.isles.IslesConstants;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;

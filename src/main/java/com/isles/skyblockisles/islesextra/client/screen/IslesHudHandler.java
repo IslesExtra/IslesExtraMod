@@ -3,7 +3,7 @@ package com.isles.skyblockisles.islesextra.client.screen;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
-import com.isles.skyblockisles.islesextra.isles.IslesConstants;
+import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.isles;
+package com.isles.skyblockisles.islesextra.utils;
 
 import java.util.Arrays;
 import java.util.List;
