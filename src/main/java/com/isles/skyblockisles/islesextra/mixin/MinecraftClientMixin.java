@@ -2,7 +2,7 @@ package com.isles.skyblockisles.islesextra.mixin;
 
 import com.isles.skyblockisles.islesextra.client.screen.advancement.CustomAdvancementsScreen;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
-import com.isles.skyblockisles.islesextra.isles.IslesConstants;
+import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;

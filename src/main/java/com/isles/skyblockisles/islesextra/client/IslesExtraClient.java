@@ -6,12 +6,11 @@ import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
-import com.isles.skyblockisles.islesextra.isles.IslesConstants;
+import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.util.ActionResult;
 
 @Environment(EnvType.CLIENT)

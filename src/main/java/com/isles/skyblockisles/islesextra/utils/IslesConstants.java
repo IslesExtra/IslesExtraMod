@@ -1,6 +1,4 @@
-package com.isles.skyblockisles.islesextra.isles;
-
-import java.util.Arrays;
+package com.isles.skyblockisles.islesextra.utils;
 
 public class IslesConstants {
 
@@ -33,6 +31,22 @@ public class IslesConstants {
             if (gui.matches(screenName)) return gui;
         }
         return Gui.NONE;
+    }
+    public enum Rarity{
+        NONE("None"),
+
+        COMMON("Common"),
+        UNCOMMON("Uncommon"),
+        RARE("Rare"),
+        EPIC("Epic"),
+        LEGENDARY("Legendary"),
+        MYTHIC("Mythic");
+
+
+        private final String rarity;
+        Rarity(String rarity) {
+            this.rarity = rarity;
+        }
     }
 
 }

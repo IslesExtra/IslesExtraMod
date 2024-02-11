@@ -1,6 +1,6 @@
 package com.isles.skyblockisles.islesextra.event;
 
-import com.isles.skyblockisles.islesextra.isles.IslesConstants;
+import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.util.ActionResult;
