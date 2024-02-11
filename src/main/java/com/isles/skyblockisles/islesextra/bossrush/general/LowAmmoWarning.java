@@ -8,7 +8,7 @@ import net.minecraft.item.Items;
 public class LowAmmoWarning {
 
     //TODO: ADD CONFIGURABILITY && ADD CHECK FOR ACTUAL ITEM INSTEAD OF JUST TYPE
-    public static void warnOnLowAmmo() {
+    public static void init() {
         int copperArrows = countItem(Items.SPECTRAL_ARROW);
         int honingStones = countItem(Items.NETHERITE_SCRAP);
         int magicRunes = countItem(Items.PHANTOM_MEMBRANE);

@@ -48,5 +48,22 @@ public class IslesConstants {
             this.rarity = rarity;
         }
     }
+    public enum Boss{
+
+        REAPER("Haunted Reaper"),
+        QUEEN_BEE("Queen Bee"),
+        NANOOK("Ice Bear Nanook"),
+        FROG("Frog"),
+        TURTLE("Torturious"),
+        CRIMSON_DRAGON("Crimson Dragon Fafnir"),
+        //Weird registry Name to not get caught in getBoss()
+        NOBOSS072("None");
+
+        public final String fullName;
+        Boss(String fullName) {
+            this.fullName = fullName;
+        }
+
+    }
 
 }
