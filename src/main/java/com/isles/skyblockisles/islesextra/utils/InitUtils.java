@@ -39,7 +39,6 @@ public class InitUtils {
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack itemStack = player.getStackInHand(hand);
             LowAmmoWarning.init();
-            ClientUtils.sendTitle(ClientUtils.getBoss().fullName, 0, 100, 0);
             return TypedActionResult.pass(itemStack);
         }));
 
