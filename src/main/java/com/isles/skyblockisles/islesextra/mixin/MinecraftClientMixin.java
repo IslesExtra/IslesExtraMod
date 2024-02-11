@@ -1,17 +1,24 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
 import com.isles.skyblockisles.islesextra.client.screen.advancement.CustomAdvancementsScreen;
+import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
+import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
@@ -34,6 +41,21 @@ public class MinecraftClientMixin {
         OpenedIslesGuiCallback.EVENT.invoker().interact(IslesConstants.guiFromScreenName(screenName));
 
         return screen;
+    }
+
+    @Inject(method = "joinWorld", at = @At("HEAD"))
+    void onJoinWorld(ClientWorld world, CallbackInfo ci) {
+        RegistryKey<World> key = world.getRegistryKey();
+        String[] parts = key.getValue().getPath().split("-");
+        if (parts.length < 2) {
+            ClientUtils.updateLocationData("", "");
+            IslesLocationChangedCallback.EVENT.invoker().interact("");
+            return;
+        }
+        String location = parts[0];
+        String instanceId = parts[1];
+        ClientUtils.updateLocationData(location, instanceId);
+        IslesLocationChangedCallback.EVENT.invoker().interact(location);
     }
 
 }

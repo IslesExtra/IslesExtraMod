@@ -23,6 +23,15 @@ public abstract class ClientUtils {
     public static InGameHud getHUD() {return getClient().inGameHud;}
     public static Boolean inBoss() {return IslesHudHandler.inBoss;}
 
+    private static String location = "";
+    public static String getLocation() { return location; }
+    private static String instanceId = "";
+    public static String getInstanceId() { return instanceId; }
+    public static void updateLocationData(String loc, String id) {
+        location = loc;
+        instanceId = id;
+    }
+
     public static void sendMessage(String message) {
         sendMessage(Text.of(message));
     }
