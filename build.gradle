@@ -27,6 +27,8 @@ dependencies {
     // discord IPC
     include ( implementation 'com.github.ThatGravyBoat:DiscordIPC:d813b27fef' )
 
+    implementation(files('lib/fancymenu_fabric_3.0.6_MC_1.20.4.jar'))
+
     include( implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2' )
 }
 
