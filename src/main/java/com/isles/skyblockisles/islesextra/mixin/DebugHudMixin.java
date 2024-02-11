@@ -1,6 +1,7 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
 import com.isles.skyblockisles.islesextra.IslesExtra;
+import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.NoteBlock;
@@ -52,7 +53,7 @@ public class DebugHudMixin {
         }
         if (note == -1 || instrument.isEmpty()) list.set(idPos, "isles:unknown");
         else {
-            list.set(idPos, "isles:" + IslesExtra.getId(instrument, note));
+            list.set(idPos, "isles:" + CustomBlockListener.getId(instrument, note));
         }
         list.removeAll(removal);
         ci.setReturnValue(list);
