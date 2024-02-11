@@ -3,6 +3,7 @@ package com.isles.skyblockisles.islesextra.mixin.chat;
 import com.isles.skyblockisles.islesextra.IslesExtra;
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
+import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -62,7 +63,7 @@ public abstract class ChatScreenMixin {
         String currentWord = getCurrentWord(chatText);
         // emoji completing
         if (currentWord.startsWith(":")) {
-            ChatSuggestions.setSuggestions(IslesExtra.emojis);
+            ChatSuggestions.setSuggestions(EmojiListener.getEmojis());
             ChatSuggestions.setSuggestingEmojis(true);
             completingSuggestions.setCompletingSuggestions(true);
             this.chatInputSuggestor.refresh();
