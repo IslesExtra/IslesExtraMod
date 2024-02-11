@@ -3,7 +3,7 @@ package com.isles.skyblockisles.islesextra.client.screen;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
-import com.isles.skyblockisles.islesextra.isles.IslesConstants;
+import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -14,25 +14,25 @@ import net.minecraft.util.Identifier;
 public class IslesHudHandler {
 
     private static final Identifier background = new Identifier("happyhud:textures/font/assets/isles/transparent_bg.png");
-    private static boolean timer = false;
+    public static boolean inBoss = false;
     private static long freezeTime = 0;
     private static long startMillis = 0;
 
     public static void register() {
         SwitchedIslesServerCallback.EVENT.register(() -> {
             System.out.println("switched isles server with gui: " + IslesExtraClient.getOpenedGui());
-            if (!timer && IslesExtraClient.getOpenedGui().equals(IslesConstants.Gui.BOSS_RUSH_DIFFICULTY_SELECTOR)) {
-                timer = true;
+            if (!inBoss && IslesExtraClient.getOpenedGui().equals(IslesConstants.Gui.BOSS_RUSH_DIFFICULTY_SELECTOR)) {
+                inBoss = true;
                 freezeTime = 0;
                 startMillis = System.currentTimeMillis() + 5000;
             }
-            else if (timer) {
-                timer = false;
+            else if (inBoss) {
+                inBoss = false;
             }
             return ActionResult.PASS;
         });
         LeftIslesCallback.EVENT.register(() -> {
-            timer = false;
+            inBoss = false;
             return ActionResult.PASS;
         });
         ClientEntityEvents.ENTITY_LOAD.register(((entity, world) -> {
@@ -41,11 +41,11 @@ public class IslesHudHandler {
     }
 
     public static void freezeTime() {
-        if (timer && freezeTime == 0) freezeTime = System.currentTimeMillis();
+        if (inBoss && freezeTime == 0) freezeTime = System.currentTimeMillis();
     }
 
     public static void renderHud(DrawContext context, TextRenderer textRenderer) {
-        if (!timer) return;
+        if (!inBoss) return;
         context.drawTexture(background, (int) (context.getScaledWindowWidth()/2f - 65/2f), context.getScaledWindowHeight() - 90, 0, 0, 65, 11, 65, 11);
         long time = freezeTime == 0 ? System.currentTimeMillis() : freezeTime;
         int color = freezeTime == 0 ? 0xFFFFFF : 0x7dde2f;

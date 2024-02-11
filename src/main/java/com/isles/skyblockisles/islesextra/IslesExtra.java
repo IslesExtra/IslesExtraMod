@@ -1,18 +1,15 @@
 package com.isles.skyblockisles.islesextra;
 
 import com.google.gson.*;
-import com.isles.skyblockisles.islesextra.client.CustomText;
 import com.isles.skyblockisles.islesextra.client.IslesEventHandler;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.client.discord.DiscordHandler;
+import com.isles.skyblockisles.islesextra.utils.InitUtils;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -51,20 +48,8 @@ public class IslesExtra implements ModInitializer {
         IslesEventHandler.init();
         IslesExtraClient.registerClientEvents();
 
-        ClientTickEvents.END_CLIENT_TICK.register((client -> {
-            if (!tasks.isEmpty()) {
-                tasks.forEach(Runnable::run);
-                tasks.clear();
-            }
-        }));
-        ItemTooltipCallback.EVENT.register(((stack, context, lines) -> {
-            NbtCompound nbt = stack.getNbt();
-            if (nbt == null) return;
-            // TODO; figure out wtf this does again
-            for (int i = 0; nbt.contains(IslesExtra.MOD_ID + ".lore." + i); i++) {
-                lines.add(new CustomText(nbt.getString(IslesExtra.MOD_ID + ".lore." + i)).getValue());
-            }
-        }));
+        InitUtils.events();
+
         registerAttributes();
         registerCustomItems();
 
