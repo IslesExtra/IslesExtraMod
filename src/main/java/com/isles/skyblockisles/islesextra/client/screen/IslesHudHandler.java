@@ -1,10 +1,13 @@
 package com.isles.skyblockisles.islesextra.client.screen;
 
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
+import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
+import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.entity.ItemEntity;
@@ -19,16 +22,13 @@ public class IslesHudHandler {
     private static long startMillis = 0;
 
     public static void register() {
-        SwitchedIslesServerCallback.EVENT.register(() -> {
-            System.out.println("switched isles server with gui: " + IslesExtraClient.getOpenedGui());
-            if (!inBoss && IslesExtraClient.getOpenedGui().equals(IslesConstants.Gui.BOSS_RUSH_DIFFICULTY_SELECTOR)) {
+        IslesLocationChangedCallback.EVENT.register(location -> {
+            if (!location.isEmpty()) { // TODO; do additional boss check
                 inBoss = true;
                 freezeTime = 0;
                 startMillis = System.currentTimeMillis() + 5000;
             }
-            else if (inBoss) {
-                inBoss = false;
-            }
+            else if (inBoss) inBoss = false;
             return ActionResult.PASS;
         });
         LeftIslesCallback.EVENT.register(() -> {

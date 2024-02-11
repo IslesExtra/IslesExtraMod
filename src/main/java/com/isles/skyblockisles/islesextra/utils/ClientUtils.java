@@ -26,6 +26,15 @@ public abstract class ClientUtils {
                 .orElse(IslesConstants.Boss.NOBOSS072);
     }
 
+    private static String location = "";
+    public static String getLocation() { return location; }
+    private static String instanceId = "";
+    public static String getInstanceId() { return instanceId; }
+    public static void updateLocationData(String loc, String id) {
+        location = loc;
+        instanceId = id;
+    }
+
     public static void sendMessage(String message) {
         sendMessage(Text.of(message));
     }
