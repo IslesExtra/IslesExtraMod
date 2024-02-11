@@ -50,20 +50,18 @@ public class IslesConstants {
     }
     public enum Boss{
 
-        REAPER("Haunted Reaper", "reaper"),
-        BEE("Queen Bee", "queen_bee"),
-        NANOOK("Ice Bear Nanook", "nanook"),
-        FROG("Frog", "frog"),
-        TORTURIOUS("Torturious", "turtle"),
-        FAFNIR("Crimson Dragon Fafnir", "crimson_dragon"),
+        REAPER("Haunted Reaper"),
+        QUEEN_BEE("Queen Bee"),
+        NANOOK("Ice Bear Nanook"),
+        FROG("Frog"),
+        TURTLE("Torturious"),
+        CRIMSON_DRAGON("Crimson Dragon Fafnir"),
         //Weird registry Name to not get caught in getBoss()
-        NONE("None", "--no--boss--");
+        NOBOSS072("None");
 
         public final String fullName;
-        public final String registryName;
-        Boss(String fullName, String registryName) {
+        Boss(String fullName) {
             this.fullName = fullName;
-            this.registryName = registryName;
         }
 
     }

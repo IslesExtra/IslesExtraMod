@@ -53,6 +53,8 @@ public class IslesExtra implements ModInitializer {
         
         registerCustomItems();
 
+        //Identifier panoramaImage = new Identifier(MOD_ID, );
+
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
             @Override
             public Identifier getFabricId() {

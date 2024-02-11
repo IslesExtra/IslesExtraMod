@@ -39,6 +39,7 @@ public class InitUtils {
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack itemStack = player.getStackInHand(hand);
             LowAmmoWarning.init();
+            ClientUtils.sendTitle(ClientUtils.getBoss().fullName, 0, 100, 0);
             return TypedActionResult.pass(itemStack);
         }));
 
@@ -46,12 +47,12 @@ public class InitUtils {
             if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
             if (!IslesHudHandler.inBoss) return;
             if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
-            if (ClientUtils.getBoss() == IslesConstants.Boss.TORTURIOUS) CoconutBombWarning.init();
+            if (ClientUtils.getBoss() == IslesConstants.Boss.TURTLE) CoconutBombWarning.init();
         });
 
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 
-            if (entity instanceof MagmaCubeEntity && ClientUtils.getBoss() == IslesConstants.Boss.FAFNIR) {
+            if (entity instanceof MagmaCubeEntity && ClientUtils.getBoss() == IslesConstants.Boss.CRIMSON_DRAGON) {
                 MagmaBombWarning.init();
             }
 

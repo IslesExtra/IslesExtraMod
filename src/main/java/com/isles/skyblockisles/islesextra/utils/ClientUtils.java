@@ -21,9 +21,9 @@ public abstract class ClientUtils {
     public static Boolean inBoss() {return IslesHudHandler.inBoss;}
     public static IslesConstants.Boss getBoss() {
         return Arrays.stream(IslesConstants.Boss.values())
-                .filter(boss -> getWorld().getRegistryKey().toString().contains(boss.registryName))
+                .filter(boss -> getWorld().getRegistryKey().toString().toLowerCase().contains(boss.toString().toLowerCase()))
                 .findFirst()
-                .orElse(IslesConstants.Boss.NONE);
+                .orElse(IslesConstants.Boss.NOBOSS072);
     }
 
     public static void sendMessage(String message) {
