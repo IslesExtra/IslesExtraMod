@@ -9,6 +9,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
@@ -65,7 +66,6 @@ public class IslesExtra implements ModInitializer {
                 lines.add(new CustomText(nbt.getString(IslesExtra.MOD_ID + ".lore." + i)).getValue());
             }
         }));
-        registerAttributes();
         registerCustomItems();
 
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
@@ -107,32 +107,47 @@ public class IslesExtra implements ModInitializer {
         });
     }
 
-    private static void registerAttributes() {
-        // TODO; UNCOMMENT, just kidding lol!
-        //FabricDefaultAttributeRegistry.register(IslesEntities.QUEEN_BEE, QueenBeeEntity.createMobAttributes());
-    }
-
     public static final List<CustomItem> customItems = new ArrayList<>();
+    private static FabricItemGroupEntries entries;
     private static void registerCustomItems() {
-        File file = new File("mods/isles/custom_blocks.json");
-        Gson gson = new Gson();
-        try {
-            JsonObject itemList = gson.fromJson(new FileReader(file), JsonObject.class);
-            for (Map.Entry<String, JsonElement> entry : itemList.entrySet()) {
-                String id = entry.getKey();
-                JsonObject data = entry.getValue().getAsJsonObject();
-                int modelData = data.get("Model").getAsInt();
-                String name = data.get("Display").getAsString();
-                customItems.add(new CustomItem(id, name, modelData));
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println(file.getAbsolutePath());
-        ItemGroup group = FabricItemGroup.builder()
-                        .icon(() -> new ItemStack(Items.DIAMOND)).displayName(Text.of("Skyblock Isles")).build();
+
         RegistryKey<ItemGroup> key = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("isles", "building_blocks"));
+        ItemGroup group = FabricItemGroup.builder()
+                .icon(() -> new ItemStack(Items.DIAMOND)).displayName(Text.of("Skyblock Isles")).build();
+
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+            @Override
+            public Identifier getFabricId() {
+                return new Identifier("isles", "custom_block_listener");
+            }
+
+            @Override
+            public void reload(ResourceManager manager) {
+                Optional<Resource> resource = manager.getResource(new Identifier("minecraft:models/item/stone.json"));
+                if (resource.isPresent()) {
+                    try {
+                        JsonObject object = JsonParser.parseReader(new InputStreamReader(resource.get().getInputStream(), StandardCharsets.UTF_8)).getAsJsonObject();
+                        System.out.println(object);
+                        if (object.has("overrides")) {
+                            JsonArray overrides = object.getAsJsonArray("overrides");
+                            for (JsonElement element : overrides) {
+                                JsonObject customBlock = element.getAsJsonObject();
+                                String id = customBlock.get("model").getAsString().replace("block/custom/", "");
+                                int modelData = customBlock.getAsJsonObject("predicate").get("custom_model_data").getAsInt();
+                                customItems.add(new CustomItem(id, convertToTitleCase(id), modelData));
+                            }
+                            if (entries != null) ItemGroupEvents.modifyEntriesEvent(key).invoker().modifyEntries(entries);
+                        }
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
         ItemGroupEvents.modifyEntriesEvent(key).register(content -> {
+            entries = content;
             for (CustomItem customItem : customItems) {
                 ItemStack item = new ItemStack(Items.STONE);
                 Text text = Text.of(customItem.display()).copyContentOnly().setStyle(Style.EMPTY.withItalic(false));
@@ -146,6 +161,22 @@ public class IslesExtra implements ModInitializer {
         });
         Registry.register(Registries.ITEM_GROUP, key, group);
     }
+
+    public static String convertToTitleCase(String input) {
+        String[] parts = input.split("_");
+        StringBuilder titleCase = new StringBuilder();
+
+        for (String part : parts) {
+            if (!part.isEmpty()) {
+                String firstLetter = part.substring(0, 1).toUpperCase();
+                String restLetters = part.substring(1).toLowerCase();
+                titleCase.append(firstLetter).append(restLetters).append(" ");
+            }
+        }
+
+        return titleCase.toString().trim();
+    }
+
 
     private static final String[] instruments = new String[] {"basedrum", "snare", "hat", "bass", "flute"};
     public static String getId(String instrument, int note) {
