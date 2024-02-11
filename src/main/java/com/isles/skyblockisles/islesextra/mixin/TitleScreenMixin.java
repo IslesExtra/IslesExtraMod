@@ -25,6 +25,8 @@ public class TitleScreenMixin extends Screen {
 
     @Unique
     private static final ServerInfo islesInfo = new ServerInfo("Skyblock Isles", "play.skyblockisles.net", ServerInfo.ServerType.OTHER);
+    static { islesInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED); }
+
     @Inject(at = @At("RETURN"), method = "initWidgetsNormal")
     private void addConnectButton(int y, int spacingY, CallbackInfo ci) {
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("text.islesextra.connectButton"), (button) ->

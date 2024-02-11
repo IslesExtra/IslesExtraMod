@@ -23,7 +23,7 @@ public class StomachExplodeWarning {
 
         String warningMessage = BLOCK_WARNING_MAP.get(blockUnderPlayer);
         if (warningMessage != null) {
-            ClientUtils.sendTitle(warningMessage);
+            ClientUtils.sendTitle(warningMessage, 0, 2, 0);
         }
     }
 }

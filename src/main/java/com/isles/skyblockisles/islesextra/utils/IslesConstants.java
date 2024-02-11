@@ -1,8 +1,5 @@
 package com.isles.skyblockisles.islesextra.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class IslesConstants {
 
     // Every screen seems to have 2 unicodes as a title, we'll just evaluate the first one and second as ints
@@ -35,7 +32,21 @@ public class IslesConstants {
         }
         return Gui.NONE;
     }
+    public enum Rarity{
+        NONE("None"),
 
-    public static final List<String> rarities = List.of("Common","Uncommon","Rare","Epic","Legendary","Mythic");
+        COMMON("Common"),
+        UNCOMMON("Uncommon"),
+        RARE("Rare"),
+        EPIC("Epic"),
+        LEGENDARY("Legendary"),
+        MYTHIC("Mythic");
+
+
+        private final String rarity;
+        Rarity(String rarity) {
+            this.rarity = rarity;
+        }
+    }
 
 }
