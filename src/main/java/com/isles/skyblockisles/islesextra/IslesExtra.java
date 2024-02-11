@@ -50,8 +50,7 @@ public class IslesExtra implements ModInitializer {
         IslesExtraClient.registerClientEvents();
 
         InitUtils.events();
-
-        registerAttributes();
+        
         registerCustomItems();
 
         ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener() {
