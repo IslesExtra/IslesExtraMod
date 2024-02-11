@@ -4,16 +4,13 @@ import com.isles.skyblockisles.islesextra.IslesExtra;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public abstract class ClientUtils {
 
@@ -22,6 +19,12 @@ public abstract class ClientUtils {
     public static World getWorld() {return getClient().world;}
     public static InGameHud getHUD() {return getClient().inGameHud;}
     public static Boolean inBoss() {return IslesHudHandler.inBoss;}
+    public static IslesConstants.Boss getBoss() {
+        return Arrays.stream(IslesConstants.Boss.values())
+                .filter(boss -> getWorld().getRegistryKey().toString().contains(boss.registryName))
+                .findFirst()
+                .orElse(IslesConstants.Boss.NONE);
+    }
 
     public static void sendMessage(String message) {
         sendMessage(Text.of(message));

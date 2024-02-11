@@ -1,13 +1,17 @@
 package com.isles.skyblockisles.islesextra.utils;
 
 import com.isles.skyblockisles.islesextra.IslesExtra;
-import com.isles.skyblockisles.islesextra.bossrush.frog.StomachExplodeWarning;
+import com.isles.skyblockisles.islesextra.bossrush.dragon.MagmaBombWarning;
+import com.isles.skyblockisles.islesextra.bossrush.frog.StomachExplosionWarning;
+import com.isles.skyblockisles.islesextra.bossrush.turtle.CoconutBombWarning;
 import com.isles.skyblockisles.islesextra.client.CustomText;
 import com.isles.skyblockisles.islesextra.bossrush.general.LowAmmoWarning;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.TypedActionResult;
@@ -34,18 +38,24 @@ public class InitUtils {
 
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack itemStack = player.getStackInHand(hand);
-            LowAmmoWarning.warnOnLowAmmo();
+            LowAmmoWarning.init();
             return TypedActionResult.pass(itemStack);
         }));
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
             if (!IslesHudHandler.inBoss) return;
-            StomachExplodeWarning.stomachExplodeWarn();
-
+            if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
+            if (ClientUtils.getBoss() == IslesConstants.Boss.TORTURIOUS) CoconutBombWarning.init();
         });
 
+        ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 
+            if (entity instanceof MagmaCubeEntity && ClientUtils.getBoss() == IslesConstants.Boss.FAFNIR) {
+                MagmaBombWarning.init();
+            }
+
+        });
 
     }
 
