@@ -1,7 +1,6 @@
 package com.isles.skyblockisles.islesextra.utils;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import org.spongepowered.asm.mixin.Mutable;
 
@@ -34,7 +33,6 @@ public class PartyUtils {
         for (PlayerListEntry playerListEntry : ClientUtils.getClient().getNetworkHandler().getPlayerList()) {
             if(playerListEntry.getProfile() != null)
                 if(playerListEntry.getProfile().getName().equalsIgnoreCase(username)) {
-                System.out.println("Found Player: " + playerListEntry.getProfile().getName());
                 player = playerListEntry.getProfile();
             }
         }
@@ -43,10 +41,8 @@ public class PartyUtils {
 
         if(message.contains(joinMessage)) {
             addMember(player);
-            System.out.println("Add User from Party list: " + player.getName());
         } else
             removeMember(player);
-            System.out.println("Remove User from Party list: " + player.getName());
     }
 
 
