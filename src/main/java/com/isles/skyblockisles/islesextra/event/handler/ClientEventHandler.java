@@ -5,8 +5,10 @@ import com.isles.skyblockisles.islesextra.bossrush.frog.StomachExplosionWarning;
 import com.isles.skyblockisles.islesextra.bossrush.turtle.CoconutBombWarning;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.constants.IslesBoss;
+import com.isles.skyblockisles.islesextra.party.IslesParty;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 
 public final class ClientEventHandler implements EventHandler {
@@ -35,5 +37,9 @@ public final class ClientEventHandler implements EventHandler {
             MagmaBombWarning.init();
           }
         }));
+
+    ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+      IslesParty.handleMember(message.getString());
+    });
   }
 }
