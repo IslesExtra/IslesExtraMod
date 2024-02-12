@@ -3,13 +3,15 @@ package com.isles.skyblockisles.islesextra.utils;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
-import java.util.List;
-import java.util.Objects;
+import org.spongepowered.asm.mixin.Mutable;
+
+import java.util.*;
 
 public class PartyUtils {
 
 
-    public static List<GameProfile> partyMembers = List.of(MinecraftClient.getInstance().getGameProfile());
+    @Mutable
+    public static List<GameProfile> partyMembers = new ArrayList<>();
     public static void addMember(GameProfile profile) {partyMembers.add(profile);}
     public static void removeMember(GameProfile profile) {partyMembers.remove(profile);}
 
@@ -40,9 +42,10 @@ public class PartyUtils {
         if (player == null) return;
 
         if(message.contains(joinMessage)) {
-            //addMember(player);
+            addMember(player);
             System.out.println("Add User from Party list: " + player.getName());
-        } else //removeMember(player);
+        } else
+            removeMember(player);
             System.out.println("Remove User from Party list: " + player.getName());
     }
 
