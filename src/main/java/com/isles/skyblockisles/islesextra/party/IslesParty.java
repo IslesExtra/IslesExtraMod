@@ -2,16 +2,17 @@ package com.isles.skyblockisles.islesextra.party;
 
 import com.isles.skyblockisles.islesextra.constants.IslesRank;
 import com.mojang.authlib.GameProfile;
+import java.util.ArrayList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import java.util.List;
 import java.util.Objects;
+import org.spongepowered.asm.mixin.Mutable;
 
 public class IslesParty {
 
-
-  public static List<GameProfile> partyMembers = List.of(
-      MinecraftClient.getInstance().getGameProfile());
+  @Mutable
+  public static List<GameProfile> partyMembers = new ArrayList<>();
 
   public static void addMember(GameProfile profile) {
     partyMembers.add(profile);
