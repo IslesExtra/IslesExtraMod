@@ -64,13 +64,9 @@ public class IslesParty {
     }
 
     if (message.contains(joinMessage)) {
-      //addMember(player);
-      System.out.println("Add User from Party list: " + player.name());
-    } else //removeMember(player);
-    {
-      System.out.println("Remove User from Party list: " + player.name());
+      addMember(player);
+    } else {
+      removeMember(player);
     }
   }
-
-
 }
