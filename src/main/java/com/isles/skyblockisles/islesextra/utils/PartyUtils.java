@@ -34,7 +34,6 @@ public class PartyUtils {
         for (PlayerListEntry playerListEntry : ClientUtils.getClient().getNetworkHandler().getPlayerList()) {
             if(playerListEntry.getProfile() != null)
                 if(playerListEntry.getProfile().getName().equalsIgnoreCase(username)) {
-                System.out.println("Found Player: " + playerListEntry.getProfile().getName());
                 player = playerListEntry.getProfile();
             }
         }
@@ -43,10 +42,8 @@ public class PartyUtils {
 
         if(message.contains(joinMessage)) {
             addMember(player);
-            System.out.println("Add User from Party list: " + player.getName());
         } else
             removeMember(player);
-            System.out.println("Remove User from Party list: " + player.getName());
     }
 
 
