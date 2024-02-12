@@ -21,7 +21,7 @@ public abstract class ClientUtils {
     public static Boolean inBoss() {return IslesHudHandler.inBoss;}
     public static IslesConstants.Boss getBoss() {
         return Arrays.stream(IslesConstants.Boss.values())
-                .filter(boss -> getWorld().getRegistryKey().toString().toLowerCase().contains(boss.toString().toLowerCase()))
+                .filter(boss -> getLocation().equalsIgnoreCase(boss.toString()))
                 .findFirst()
                 .orElse(IslesConstants.Boss.NOBOSS072);
     }
@@ -50,7 +50,7 @@ public abstract class ClientUtils {
     }
 
     public static Set<String> getPlayerNames(boolean at) {
-        ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+        ClientPlayNetworkHandler networkHandler = getClient().getNetworkHandler();
         if (networkHandler == null) return Set.of();
         Set<String> list = new HashSet<>();
         for (PlayerListEntry playerListEntry : networkHandler.getPlayerList()) {

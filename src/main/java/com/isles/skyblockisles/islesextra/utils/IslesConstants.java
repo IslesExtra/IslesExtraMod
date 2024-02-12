@@ -66,4 +66,20 @@ public class IslesConstants {
 
     }
 
+    public enum Rank{
+
+        ADVENTURER(""),
+        FOUNDER("\uE045"),
+        GAME_TESTER("\uE044"),
+        DEVELOPER("\uE041"),
+        OWNER("\uE049"),
+        DISCORD("[Discord]");
+
+        public final String icon;
+        Rank(String icon) {
+            this.icon = icon;
+        }
+
+    }
+
 }

@@ -10,6 +10,7 @@ import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.item.ItemStack;
@@ -39,7 +40,6 @@ public class InitUtils {
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack itemStack = player.getStackInHand(hand);
             LowAmmoWarning.init();
-            ClientUtils.sendTitle(ClientUtils.getBoss().fullName, 0, 100, 0);
             return TypedActionResult.pass(itemStack);
         }));
 
@@ -56,6 +56,10 @@ public class InitUtils {
                 MagmaBombWarning.init();
             }
 
+        });
+
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+            PartyUtils.handleMember(message.getString());
         });
 
     }
