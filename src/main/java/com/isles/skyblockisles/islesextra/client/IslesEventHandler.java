@@ -4,6 +4,7 @@ import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
+import com.isles.skyblockisles.islesextra.utils.PartyUtils;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
@@ -30,6 +31,9 @@ public class IslesEventHandler {
                 System.out.println(serverInfo == null);
                 if (serverInfo == null || !serverInfo.address.contains("isles")) LeftIslesCallback.EVENT.invoker().interact(); // no longer on isles so client left server
             });
+
+            PartyUtils.clearMembers();
+
         }));
 
     }

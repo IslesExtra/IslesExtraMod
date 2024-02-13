@@ -13,6 +13,7 @@ public class PartyUtils {
     public static List<GameProfile> partyMembers = new ArrayList<>();
     public static void addMember(GameProfile profile) {partyMembers.add(profile);}
     public static void removeMember(GameProfile profile) {partyMembers.remove(profile);}
+    public static void clearMembers() {partyMembers = new ArrayList<>();}
 
     public static void handleMember(String message) {
         if (ClientUtils.getClient().getNetworkHandler() == null) return;
