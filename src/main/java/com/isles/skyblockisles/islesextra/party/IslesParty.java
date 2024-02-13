@@ -22,6 +22,10 @@ public class IslesParty {
     partyMembers.remove(profile);
   }
 
+  public static void clearMembers() {
+    partyMembers.clear();
+  }
+
   public static void handleMember(String message) {
     var networkHandler = MinecraftClient.getInstance().getNetworkHandler();
     if (networkHandler == null) {
