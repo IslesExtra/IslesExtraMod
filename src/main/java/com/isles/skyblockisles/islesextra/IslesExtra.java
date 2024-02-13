@@ -15,9 +15,7 @@ import java.util.ArrayList;
 public class IslesExtra implements ModInitializer {
 
     public static ArrayList<Runnable> tasks = new ArrayList<>(2); // shouldn't expect more than 2 tasks at a time
-
     public final static String MOD_ID = "islesextra";
-
     public static DiscordHandler discord;
 
     @Override

@@ -2,6 +2,7 @@ package com.isles.skyblockisles.islesextra.utils;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mutable;
 
 import java.util.*;
@@ -10,10 +11,13 @@ public class PartyUtils {
 
 
     @Mutable
-    public static List<GameProfile> partyMembers = new ArrayList<>();
+    private static List<GameProfile> partyMembers = new ArrayList<>();
+    public static List<PlayerEntity> partyMemberEntities = new ArrayList<>();
+    public static List<GameProfile> getMembers() {return partyMembers;}
     public static void addMember(GameProfile profile) {partyMembers.add(profile);}
     public static void removeMember(GameProfile profile) {partyMembers.remove(profile);}
     public static void clearMembers() {partyMembers = new ArrayList<>();}
+
 
     public static void handleMember(String message) {
         if (ClientUtils.getClient().getNetworkHandler() == null) return;
