@@ -7,10 +7,10 @@ import com.isles.skyblockisles.islesextra.bossrush.turtle.CoconutBombWarning;
 import com.isles.skyblockisles.islesextra.client.CustomText;
 import com.isles.skyblockisles.islesextra.bossrush.general.LowAmmoWarning;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
+import com.isles.skyblockisles.islesextra.client.screen.party.PartyScreen;
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.general.party.IslesParty;
 import com.isles.skyblockisles.islesextra.general.party.LowHealthWarning;
-import com.isles.skyblockisles.islesextra.general.party.PartyManagmentScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -18,14 +18,12 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
 import org.lwjgl.glfw.GLFW;
@@ -61,7 +59,8 @@ public class InitUtils {
             }
             if (client.player == null) return;
             if (openPartyManagment != null && openPartyManagment.isPressed()) {
-                client.setScreen(new PartyManagmentScreen(Text.translatable("party_managment_screen.islesextra.name")));
+                //client.setScreen(new PartyManagementScreen(Text.translatable("party_managment_screen.islesextra.name")));
+                client.setScreen(new PartyScreen());
             }
         }));
 
