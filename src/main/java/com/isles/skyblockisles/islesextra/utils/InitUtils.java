@@ -21,10 +21,8 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.mob.MagmaCubeEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.TypedActionResult;
@@ -43,25 +41,34 @@ public class InitUtils {
     ));
     public static void events() {
 
+        //Start of every Tick
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
+            if (!IslesHudHandler.inBoss) return;
+            if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
+            if (ClientUtils.getBoss() == IslesConstants.Boss.TURTLE) CoconutBombWarning.init();
+            LowHealthWarning.init();
+        });
+
+        //End of every Tick
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (!IslesExtra.tasks.isEmpty()) {
                 IslesExtra.tasks.forEach(Runnable::run);
                 IslesExtra.tasks.clear();
             }
-
             if (client.player == null) return;
             if (openPartyManagment != null && openPartyManagment.isPressed()) {
-                client.setScreen(new PartyManagmentScreen(Text.translatable("party_managment.islesextra.name")));
+                client.setScreen(new PartyManagmentScreen(Text.translatable("party_managment_screen.islesextra.name")));
             }
-
         }));
 
+        //Change Location on Isles Server
         IslesLocationChangedCallback.EVENT.register(location -> {
             HighlightMembers.init();
             return ActionResult.PASS;
-
         });
 
+        // Something about finishing rendering a Tooltip
         ItemTooltipCallback.EVENT.register(((stack, context, lines) -> {
             NbtCompound nbt = stack.getNbt();
             if (nbt == null) return;
@@ -71,47 +78,31 @@ public class InitUtils {
             }
         }));
 
+        //Use an Item
         UseItemCallback.EVENT.register(((player, world, hand) -> {
             ItemStack itemStack = player.getStackInHand(hand);
             LowAmmoWarning.init();
             return TypedActionResult.pass(itemStack);
         }));
 
-        ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
-            if (!IslesHudHandler.inBoss) return;
-            if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
-            if (ClientUtils.getBoss() == IslesConstants.Boss.TURTLE) CoconutBombWarning.init();
-            LowHealthWarning.init();
-        });
-
+        //An Entity gets loaded into the World
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-
             if (entity instanceof MagmaCubeEntity && ClientUtils.getBoss() == IslesConstants.Boss.CRIMSON_DRAGON) {
                 MagmaBombWarning.init();
             }
-
-            if (entity instanceof ServerPlayerEntity player && PartyUtils.getMembers().contains(player.getGameProfile())) {
-                PartyUtils.partyMemberEntities.add((PlayerEntity) entity);
-            }
-
-
         });
 
-        ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
-            PartyUtils.handleMember(message.getString());
-        });
+        //Receive a Chat Message from the Game. Includes Player Messages on Isles
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> PartyUtils.handleMember(message.getString()));
 
+        //Send a Command
         ClientSendMessageEvents.COMMAND.register(command -> {
             List<String> commandArray = Arrays.asList(command.split(" "));
 
             if (commandArray.get(0).equals(IslesExtra.MOD_ID)) {
-                if (commandArray.get(1).equals("debug")) {
+                if (commandArray.get(1).equals("debug"))
                     ClientUtils.getClient().setScreen(new PartyManagmentScreen(Text.translatable("party_managment_screen.islesextra.name")));
-                }
-
             }
-
         });
 
     }

@@ -12,8 +12,10 @@ import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,9 +70,8 @@ public class MinecraftClientMixin {
 
     @Inject(method = "hasOutline", at = @At("HEAD"), cancellable = true)
     void glowPartyPlayers(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        if (entity instanceof PlayerEntity playerEntity) {
-            if (HighlightMembers.getGlowingPlayers().contains(playerEntity)) cir.setReturnValue(true);
-        }
+        if (!(entity instanceof PlayerEntity)) return;
+        if (HighlightMembers.getGlowingPlayers().contains((PlayerEntity) entity)) cir.setReturnValue(true);
     }
 
 }

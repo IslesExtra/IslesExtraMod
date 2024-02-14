@@ -1,22 +1,29 @@
 package com.isles.skyblockisles.islesextra.utils;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.client.RunArgs;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mutable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PartyUtils {
 
 
     @Mutable
     private static List<GameProfile> partyMembers = new ArrayList<>();
-    public static List<PlayerEntity> partyMemberEntities = new ArrayList<>();
     public static List<GameProfile> getMembers() {return partyMembers;}
     public static void addMember(GameProfile profile) {partyMembers.add(profile);}
     public static void removeMember(GameProfile profile) {partyMembers.remove(profile);}
     public static void clearMembers() {partyMembers = new ArrayList<>();}
+    public static List<PlayerEntity> getEntities() {
+        return partyMembers.stream()
+                .map(profile -> ClientUtils.getWorld().getPlayerByUuid(profile.getId()))
+                .collect(Collectors.toList());
+    }
 
 
     public static void handleMember(String message) {
