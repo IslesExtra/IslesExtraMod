@@ -8,7 +8,7 @@ import com.isles.skyblockisles.islesextra.client.CustomText;
 import com.isles.skyblockisles.islesextra.bossrush.general.LowAmmoWarning;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
-import com.isles.skyblockisles.islesextra.general.party.HighlightMembers;
+import com.isles.skyblockisles.islesextra.general.party.IslesParty;
 import com.isles.skyblockisles.islesextra.general.party.LowHealthWarning;
 import com.isles.skyblockisles.islesextra.general.party.PartyManagmentScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.mob.MagmaCubeEntity;
@@ -46,8 +47,6 @@ public class InitUtils {
         //TODO: FIND A MORE SUITABLE EVENT
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
-
-            HighlightMembers.init();
 
             if (!IslesHudHandler.inBoss) return;
             if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
@@ -97,7 +96,7 @@ public class InitUtils {
         });
 
         //Receive a Chat Message from the Game. Includes Player Messages on Isles
-        ClientReceiveMessageEvents.GAME.register((message, overlay) -> PartyUtils.handleMember(message.getString()));
+        ClientReceiveMessageEvents.GAME.register((message, overlay) -> IslesParty.handleMember(message.getString()));
 
         //Send a Command
         ClientSendMessageEvents.COMMAND.register(command -> {
@@ -105,9 +104,9 @@ public class InitUtils {
 
             if (commandArray.get(0).equals(IslesExtra.MOD_ID)) {
                 if (commandArray.get(1).equals("debug")) {
-                    System.out.println("Party Members: " + PartyUtils.getMembers() + " and Entities: " + PartyUtils.getEntities());
-                    HighlightMembers.glowingPlayers.addAll(PartyUtils.getEntities());
-                    for (PlayerEntity player : PartyUtils.getEntities()) {
+                    System.out.println("Party Members: " + IslesParty.getMembers() + " and Entities: " + IslesParty.getEntities());
+                    //HighlightMembers.glowingPlayers.addAll(PartyUtils.getEntities());
+                    for (PlayerEntity player : IslesParty.getEntities()) {
                         ClientUtils.getClient().hasOutline(player);
                     }
                 }

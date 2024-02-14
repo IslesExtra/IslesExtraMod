@@ -1,5 +1,7 @@
-package com.isles.skyblockisles.islesextra.utils;
+package com.isles.skyblockisles.islesextra.general.party;
 
+import com.isles.skyblockisles.islesextra.utils.ClientUtils;
+import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,7 +10,7 @@ import org.spongepowered.asm.mixin.Mutable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PartyUtils {
+public class IslesParty {
 
 
     @Mutable
@@ -23,6 +25,9 @@ public class PartyUtils {
                 .collect(Collectors.toList());
     }
 
+    public static boolean isInParty(PlayerEntity playerEntity) {
+        return getMembers().stream().anyMatch(profile -> profile.getId().equals(playerEntity.getGameProfile().getId()));
+    }
 
     public static void handleMember(String message) {
         if (ClientUtils.getClient().getNetworkHandler() == null) return;
@@ -45,8 +50,8 @@ public class PartyUtils {
         for (PlayerListEntry playerListEntry : ClientUtils.getClient().getNetworkHandler().getPlayerList()) {
             if(playerListEntry.getProfile() != null)
                 if(playerListEntry.getProfile().getName().equalsIgnoreCase(username)) {
-                player = playerListEntry.getProfile();
-            }
+                    player = playerListEntry.getProfile();
+                }
         }
 
         if (player == null) return;
