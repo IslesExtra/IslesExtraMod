@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.mob.MagmaCubeEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -42,14 +43,17 @@ public class InitUtils {
     public static void events() {
 
         //Start of every Tick
+        //TODO: FIND A MORE SUITABLE EVENT
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
+
+            HighlightMembers.init();
+
             if (!IslesHudHandler.inBoss) return;
             if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
             if (ClientUtils.getBoss() == IslesConstants.Boss.TURTLE) CoconutBombWarning.init();
             LowHealthWarning.init();
         });
-
         //End of every Tick
         ClientTickEvents.END_CLIENT_TICK.register((client -> {
             if (!IslesExtra.tasks.isEmpty()) {
@@ -64,11 +68,11 @@ public class InitUtils {
 
         //Change Location on Isles Server
         IslesLocationChangedCallback.EVENT.register(location -> {
-            HighlightMembers.init();
+
             return ActionResult.PASS;
         });
 
-        // Something about finishing rendering a Tooltip
+        // ??
         ItemTooltipCallback.EVENT.register(((stack, context, lines) -> {
             NbtCompound nbt = stack.getNbt();
             if (nbt == null) return;
@@ -100,8 +104,13 @@ public class InitUtils {
             List<String> commandArray = Arrays.asList(command.split(" "));
 
             if (commandArray.get(0).equals(IslesExtra.MOD_ID)) {
-                if (commandArray.get(1).equals("debug"))
-                    ClientUtils.getClient().setScreen(new PartyManagmentScreen(Text.translatable("party_managment_screen.islesextra.name")));
+                if (commandArray.get(1).equals("debug")) {
+                    System.out.println("Party Members: " + PartyUtils.getMembers() + " and Entities: " + PartyUtils.getEntities());
+                    HighlightMembers.glowingPlayers.addAll(PartyUtils.getEntities());
+                    for (PlayerEntity player : PartyUtils.getEntities()) {
+                        ClientUtils.getClient().hasOutline(player);
+                    }
+                }
             }
         });
 

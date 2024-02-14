@@ -6,18 +6,21 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HighlightMembers {
 
-    private static final List<PlayerEntity> glowingPlayers = new ArrayList<>(4);
+    public static final List<PlayerEntity> glowingPlayers = new ArrayList<>(4);
     public static List<PlayerEntity> getGlowingPlayers() {
         return glowingPlayers;
     }
 
     public static void init() {
-        if(PartyUtils.getMembers().isEmpty() || ClientUtils.getClient().getNetworkHandler() == null) return;
+        if(!ClientUtils.inBoss() || PartyUtils.getMembers().isEmpty() || ClientUtils.getClient().getNetworkHandler() == null) return;
 
         glowingPlayers.addAll(PartyUtils.getEntities());
+        glowingPlayers.removeIf(Objects::isNull);
+
         for(PlayerEntity partyMember : HighlightMembers.glowingPlayers) {
             MinecraftClient.getInstance().hasOutline(partyMember);}
     }

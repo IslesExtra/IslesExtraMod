@@ -1,10 +1,8 @@
 package com.isles.skyblockisles.islesextra.utils;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.RunArgs;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mutable;
 
 import java.util.*;
@@ -34,7 +32,9 @@ public class PartyUtils {
 
         String joinMessage = " has joined the party!";
         String leaveMessage = " has left the party.";
+        String disbandMessage = "The party you were in has been disbanded.";
 
+        if (message.equals(disbandMessage)) { clearMembers(); return; }
         if (!message.contains(joinMessage) && !message.contains(leaveMessage)) return;
 
         String username = message.replace(joinMessage, "").replace(leaveMessage, "");
