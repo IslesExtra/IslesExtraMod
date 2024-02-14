@@ -3,6 +3,7 @@ package com.isles.skyblockisles.islesextra.mixin;
 import com.isles.skyblockisles.islesextra.client.screen.advancement.CustomAdvancementsScreen;
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
+import com.isles.skyblockisles.islesextra.general.party.HighlightMembers;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.isles.skyblockisles.islesextra.utils.IslesConstants;
 import net.minecraft.client.MinecraftClient;
@@ -10,15 +11,22 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
@@ -56,6 +64,13 @@ public class MinecraftClientMixin {
         String instanceId = parts[1];
         ClientUtils.updateLocationData(location, instanceId);
         IslesLocationChangedCallback.EVENT.invoker().interact(location);
+    }
+
+    @Inject(method = "hasOutline", at = @At("HEAD"), cancellable = true)
+    void glowPartyPlayers(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+        if (entity instanceof PlayerEntity playerEntity) {
+            if (HighlightMembers.getGlowingPlayers().contains(playerEntity)) cir.setReturnValue(true);
+        }
     }
 
 }
