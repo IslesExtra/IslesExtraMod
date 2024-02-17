@@ -13,12 +13,11 @@ import java.util.stream.Collectors;
 public class IslesParty {
 
 
-    @Mutable
-    private static List<GameProfile> partyMembers = new ArrayList<>();
-    public static List<GameProfile> getMembers() {return partyMembers;}
-    public static void addMember(GameProfile profile) {partyMembers.add(profile);}
-    public static void removeMember(GameProfile profile) {partyMembers.remove(profile);}
-    public static void clearMembers() {partyMembers = new ArrayList<>();}
+    private static final List<GameProfile> partyMembers = new ArrayList<>();
+    public static List<GameProfile> getMembers() { return partyMembers; }
+    public static void addMember(GameProfile profile) { partyMembers.add(profile); }
+    public static void removeMember(GameProfile profile) { partyMembers.remove(profile); }
+    public static void clearMembers() { partyMembers.clear(); }
     public static List<PlayerEntity> getEntities() {
         return partyMembers.stream()
                 .map(profile -> ClientUtils.getWorld().getPlayerByUuid(profile.getId()))
@@ -27,6 +26,21 @@ public class IslesParty {
 
     public static boolean isInParty(PlayerEntity playerEntity) {
         return getMembers().stream().anyMatch(profile -> profile.getId().equals(playerEntity.getGameProfile().getId()));
+    }
+
+    public static boolean isInParty(GameProfile gameProfile) {
+        return getMembers().stream().anyMatch(profile -> profile.getId().equals(gameProfile.getId()));
+    }
+
+    private static void leaveParty() {
+        partyMembers.clear();
+    }
+
+    public static void handlePartyCommand(String[] args) {
+        switch (args[0].toUpperCase()) {
+            case "DISBAND": // fall through
+            case "LEAVE": { leaveParty(); break; }
+        }
     }
 
     public static void handleMember(String message) {
