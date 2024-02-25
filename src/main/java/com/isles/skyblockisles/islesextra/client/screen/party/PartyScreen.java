@@ -11,8 +11,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.network.ServerInfo;
-import net.minecraft.client.util.NarratorManager;
-import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
@@ -72,14 +70,6 @@ extends Screen {
     }
 
     @Override
-    public Text getNarratedTitle() {
-        if (this.serverLabel != null) {
-            return ScreenTexts.joinSentences(super.getNarratedTitle(), this.serverLabel);
-        }
-        return super.getNarratedTitle();
-    }
-
-    @Override
     protected void init() {
         if (this.initialized) {
             this.playerList.setDimensionsAndPosition(this.width, this.getPlayerListBottom() - 88, 0, 88);
@@ -120,7 +110,6 @@ extends Screen {
         this.currentTab = currentTab;
         this.allTabButton.setMessage(ALL_TAB_TITLE);
         this.hiddenTabButton.setMessage(PARTY_TAB_TITLE);
-        boolean bl = false;
         switch (currentTab) {
             case ALL: {
                 this.allTabButton.setMessage(SELECTED_ALL_TAB_TITLE);
@@ -132,16 +121,10 @@ extends Screen {
             case PARTY: {
                 this.hiddenTabButton.setMessage(SELECTED_PARTY_TAB_TITLE);
                 Set<UUID> set = IslesParty.getMembers().stream().map(GameProfile::getId).collect(Collectors.toSet());
-                bl = set.isEmpty();
+                if (!set.isEmpty()) set.add(client.player.getUuid());
                 this.playerList.update(set, this.playerList.getScrollAmount());
                 break;
             }
-        }
-        NarratorManager narratorManager = this.client.getNarratorManager();
-        if (!this.searchBox.getText().isEmpty() && this.playerList.isEmpty() && !this.searchBox.isFocused()) {
-            narratorManager.narrate(EMPTY_SEARCH_TEXT);
-        } else if (bl) {
-            narratorManager.narrate(EMPY_PARTY_TEXT);
         }
     }
 

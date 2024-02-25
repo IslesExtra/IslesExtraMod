@@ -21,7 +21,7 @@ public class IslesExtra implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        IslesEventHandler.init();
+        IslesEventHandler.register();
         IslesExtraClient.registerClientEvents();
 
         InitUtils.events();

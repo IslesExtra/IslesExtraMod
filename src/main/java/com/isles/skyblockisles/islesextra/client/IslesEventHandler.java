@@ -5,14 +5,16 @@ import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
 import com.isles.skyblockisles.islesextra.general.party.IslesParty;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.text.Text;
 
 public class IslesEventHandler {
 
-    public static void init() {
+    public static void register() {
 
         ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
             String ip = handler.getConnection().getAddress().toString();
