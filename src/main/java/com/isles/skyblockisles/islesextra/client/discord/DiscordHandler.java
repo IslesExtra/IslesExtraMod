@@ -1,9 +1,10 @@
 package com.isles.skyblockisles.islesextra.client.discord;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
-import com.jagrosh.discordipc.entities.RichPresenceButton;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
@@ -19,17 +20,14 @@ public class DiscordHandler {
     // Discord Rich Presence handler
 
     public IPCClient discordClient;
-    private boolean ready = false;
+    protected boolean ready = false;
     private final static Identifier richPresenceIdentifier = new Identifier("isles", "discord");
 
     public DiscordHandler() {
         JoinedIslesCallback.EVENT.register(() -> {
             if (discordClient == null) {
                 discordClient = new IPCClient(1128526559016394874L); // is this key public? I fricking hope so, should be fine tho
-                discordClient.setListener(new IPCListener(){
-                    @Override
-                    public void onReady(IPCClient client) { ready = true; }
-                });
+                discordClient.setListener(new IPCListenerImpl(this));
             }
             enable();
             setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
@@ -64,6 +62,15 @@ public class DiscordHandler {
         }
         if (MinecraftClient.getInstance().player == null) return;
         final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        /* Buttons */
+        JsonObject playerButton = new JsonObject();
+        playerButton.addProperty("label", player.getName().getString());
+        playerButton.addProperty("url", "https://www.youtube.com/watch?v=lpiB2wMc49g");
+        JsonArray buttons = new JsonArray(2);
+        buttons.add(BUTTON);
+        buttons.add(playerButton);
+
         richPresenceBuilder
                 .setDetails(lines.length > 0 ? lines[0] : "")
                 .setState(lines.length > 1 ? lines[1] : "")
@@ -75,9 +82,11 @@ public class DiscordHandler {
                         "https://crafatar.com/renders/head/" + player.getUuidAsString() + "?overlay&default=MHF_Steve.png",
                                     player.getName().getString()
                 )
-                .setButtons(new RichPresenceButton[]{BUTTON, new RichPresenceButton("https://www.youtube.com/watch?v=lpiB2wMc49g", player.getName().getString() + " - Stats")});
+                .setButtons(buttons);
+                //.setButtons(new RichPresenceButton[]{BUTTON, new RichPresenceButton("https://www.youtube.com/watch?v=lpiB2wMc49g", player.getName().getString() + " - Stats")});
         if (reset) richPresenceBuilder.setStartTimestamp(System.currentTimeMillis());
         discordClient.sendRichPresence(richPresenceBuilder.build());
+        System.out.println("RICH PRESENCE SET");
     }
 
     private static boolean active;
@@ -89,11 +98,15 @@ public class DiscordHandler {
         try {
             discordClient.connect();
             active = true;
-        } catch (NoDiscordClientException e) {
+        } catch (NoDiscordClientException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private static final RichPresenceButton BUTTON = new RichPresenceButton("https://skyblockisles.com", "Skyblock Isles");
+    private static final JsonObject BUTTON = new JsonObject();
+    static {
+        BUTTON.addProperty("label", "Skyblock Isles");
+        BUTTON.addProperty("url", "https://skyblockisles.com");
+    }
 
 }
