@@ -25,7 +25,7 @@ dependencies {
     modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.0")
 
     // discord IPC
-    include ( implementation 'com.github.ThatGravyBoat:DiscordIPC:d813b27fef' )
+    include ( implementation 'com.github.CDAGaming:DiscordIPC:72333c5396' )
 
     implementation(files('lib/fancymenu_fabric_3.0.6_MC_1.20.4.jar'))
 
