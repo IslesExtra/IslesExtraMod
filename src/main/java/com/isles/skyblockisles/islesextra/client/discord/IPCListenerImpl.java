@@ -6,11 +6,11 @@ import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.Packet;
 import com.jagrosh.discordipc.entities.User;
 
-public record IPCListenerImpl(DiscordHandler discord) implements IPCListener {
+public class IPCListenerImpl implements IPCListener {
 
   @Override
   public void onReady(IPCClient client) {
-    this.discord.ready = true;
+    DiscordHandler.setReady();
   }
 
   @Override

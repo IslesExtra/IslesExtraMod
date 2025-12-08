@@ -15,10 +15,13 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.util.ActionResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Environment(EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {
 
+    private static final Logger LOGGER = LogManager.getLogger();
     private static boolean ON_ISLES = false;
     public static boolean isOnIsles() { return ON_ISLES; }
     private static IslesConstants.Gui openedGui = IslesConstants.Gui.NONE;
@@ -30,7 +33,7 @@ public class IslesExtraClient implements ClientModInitializer {
         PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
         PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
 
-        new DiscordHandler();
+        DiscordHandler.start();
         IslesHudHandler.register();
 
     }
@@ -40,13 +43,13 @@ public class IslesExtraClient implements ClientModInitializer {
 
         JoinedIslesCallback.EVENT.register(() -> {
             ON_ISLES = true;
-            System.out.println("JOINED ISLES");
+            LOGGER.info("JOINED ISLES");
             return ActionResult.PASS;
         });
 
         LeftIslesCallback.EVENT.register(() -> {
             ON_ISLES = false;
-            System.out.println("LEFT ISLES");
+            LOGGER.info("LEFT ISLES");
             return ActionResult.PASS;
         });
 
