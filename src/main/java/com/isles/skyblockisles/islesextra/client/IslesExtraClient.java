@@ -36,9 +36,7 @@ public class IslesExtraClient implements ClientModInitializer {
     }
 
     public static void registerClientEvents() {
-        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
-            new TestCommand().register(dispatcher);
-        }));
+        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> new TestCommand().register(dispatcher)));
 
         JoinedIslesCallback.EVENT.register(() -> {
             ON_ISLES = true;

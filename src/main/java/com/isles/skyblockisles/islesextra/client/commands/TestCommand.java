@@ -58,13 +58,7 @@ public class TestCommand extends ClientCommand {
         }
     }
 
-    @Override
-    public int run(CommandContext context) {
-
-        return 0;
-    }
-
-    public static byte[] decode(String src) {
+  public static byte[] decode(String src) {
         return Base64.getDecoder().decode(src);
     }
 

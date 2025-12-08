@@ -2,23 +2,22 @@ package com.isles.skyblockisles.islesextra;
 
 import com.isles.skyblockisles.islesextra.client.IslesEventHandler;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
-import com.isles.skyblockisles.islesextra.client.discord.DiscordHandler;
 import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
 import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.utils.InitUtils;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 
 import java.util.ArrayList;
+import net.minecraft.util.Identifier;
 
 public class IslesExtra implements ModInitializer {
 
     public static ArrayList<Runnable> tasks = new ArrayList<>(2); // shouldn't expect more than 2 tasks at a time
 
     public final static String MOD_ID = "islesextra";
-
-    public static DiscordHandler discord;
+    public final static String ISLES_ID = "isles";
 
     @Override
     public void onInitialize() {
@@ -28,9 +27,9 @@ public class IslesExtra implements ModInitializer {
 
         InitUtils.events();
 
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new EmojiListener());
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new CustomBlockListener());
-
+        var registerer = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
+        registerer.registerReloader(Identifier.of(ISLES_ID, "emoji_listener"), new EmojiListener());
+        registerer.registerReloader(Identifier.of(ISLES_ID, "building_blocks"), new CustomBlockListener());
     }
 
 }

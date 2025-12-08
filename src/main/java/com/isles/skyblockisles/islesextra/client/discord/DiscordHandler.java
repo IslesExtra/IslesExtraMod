@@ -3,7 +3,6 @@ package com.isles.skyblockisles.islesextra.client.discord;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.jagrosh.discordipc.IPCClient;
-import com.jagrosh.discordipc.IPCListener;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
@@ -13,11 +12,14 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DiscordHandler {
 
     // Discord Rich Presence handler
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public IPCClient discordClient;
     protected boolean ready = false;
@@ -85,7 +87,7 @@ public class DiscordHandler {
                 //.setButtons(new RichPresenceButton[]{BUTTON, new RichPresenceButton("https://www.youtube.com/watch?v=lpiB2wMc49g", player.getName().getString() + " - Stats")});
         if (reset) richPresenceBuilder.setStartTimestamp(System.currentTimeMillis());
         discordClient.sendRichPresence(richPresenceBuilder.build());
-        System.out.println("RICH PRESENCE SET");
+        LOGGER.info("RICH PRESENCE SET");
     }
 
     private static boolean active;
@@ -98,7 +100,7 @@ public class DiscordHandler {
             discordClient.connect();
             active = true;
         } catch (NoDiscordClientException | InterruptedException e) {
-            e.printStackTrace();
+          LOGGER.error("Failed to connect to Discord!", e);
         }
     }
 

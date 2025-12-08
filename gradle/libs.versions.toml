@@ -9,8 +9,9 @@ fabric-loom = "1.13.6"
 # Additional Dependencies from your build.gradle
 devauth = "1.2.1"
 discord-ipc = "0.8.2"
-jackson = "2.14.2" # Version for jackson-databind
+jackson = "2.14.2"
 shadow = "8.1.1"
+log4j = "2.25.2"
 
 [libraries]
 # Minecraft
@@ -23,6 +24,7 @@ fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.r
 dev-auth = { group = "me.djtheredstoner", name = "DevAuth-fabric", version.ref = "devauth" }
 discord-ipc = { group = "io.github.CDAGaming", name = "DiscordIPC", version.ref = "discord-ipc" }
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
+log4j = { group = "org.apache.logging.log4j", name = "log4j-bom", version.ref = "log4j" }
 
 [plugins]
 fabric-loom = { id = "fabric-loom", version.ref = "fabric-loom" }

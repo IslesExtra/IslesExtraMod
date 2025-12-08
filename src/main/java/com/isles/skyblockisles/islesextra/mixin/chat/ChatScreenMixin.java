@@ -1,14 +1,11 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
-import com.isles.skyblockisles.islesextra.IslesExtra;
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
 import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.utils.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -16,8 +13,6 @@ import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;

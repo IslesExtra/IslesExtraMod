@@ -15,7 +15,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.mob.MagmaCubeEntity;
 import net.minecraft.util.ActionResult;
 
-import java.awt.*;
 import java.util.Optional;
 
 
@@ -56,13 +55,13 @@ public class InitUtils {
             });
         });
 
-        ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+        ClientEntityEvents.ENTITY_LOAD.register((entity, world) ->
             ClientUtils.getBoss().ifPresent(boss -> {
                 if (entity instanceof MagmaCubeEntity && boss == IslesConstants.Boss.CRIMSON_DRAGON) {
                     MagmaBombWarning.init();
                 }
-            });
-        });
+            })
+        );
 
     }
 

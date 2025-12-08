@@ -1,7 +1,6 @@
 package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
 import java.util.List;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

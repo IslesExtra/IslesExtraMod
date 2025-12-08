@@ -1,6 +1,5 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
-import com.isles.skyblockisles.islesextra.IslesExtra;
 import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;

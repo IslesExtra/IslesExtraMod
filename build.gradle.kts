@@ -25,6 +25,7 @@ dependencies {
 
     implementation(libs.discord.ipc)
     implementation(libs.jackson.databind)
+    implementation(platform(libs.log4j))
 }
 
 tasks {

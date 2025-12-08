@@ -4,9 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
@@ -18,17 +18,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class EmojiListener implements SimpleSynchronousResourceReloadListener {
+public class EmojiListener implements SynchronousResourceReloader {
 
     private static final Set<String> emojis = new HashSet<>();
     public static Set<String> getEmojis() { return emojis; }
-
-    private final Identifier fabricId = Identifier.of("isles", "emoji_listener");
-
-    @Override
-    public Identifier getFabricId() {
-        return fabricId;
-    }
 
     @Override
     public void reload(ResourceManager manager) {
