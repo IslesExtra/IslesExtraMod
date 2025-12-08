@@ -23,8 +23,8 @@ dependencies {
 
     modRuntimeOnly(libs.dev.auth)
 
-    shadow(libs.discord.ipc)
-    shadow(libs.jackson.databind)
+    implementation(libs.discord.ipc)
+    implementation(libs.jackson.databind)
 }
 
 tasks {

@@ -23,7 +23,7 @@ public class EmojiListener implements SimpleSynchronousResourceReloadListener {
     private static final Set<String> emojis = new HashSet<>();
     public static Set<String> getEmojis() { return emojis; }
 
-    private final Identifier fabricId = new Identifier("isles", "emoji_listener");
+    private final Identifier fabricId = Identifier.of("isles", "emoji_listener");
 
     @Override
     public Identifier getFabricId() {

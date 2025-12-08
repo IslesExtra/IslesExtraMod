@@ -21,7 +21,6 @@ public class DiscordHandler {
 
     public IPCClient discordClient;
     protected boolean ready = false;
-    private final static Identifier richPresenceIdentifier = new Identifier("isles", "discord");
 
     public DiscordHandler() {
         JoinedIslesCallback.EVENT.register(() -> {
@@ -43,8 +42,8 @@ public class DiscordHandler {
         /*
         Format: just a single string representing two lines, seperated by ";"
          */
-        ClientPlayNetworking.registerGlobalReceiver(richPresenceIdentifier, (client, handler, buf, responseSender) -> {
-            String s = buf.readString();
+        ClientPlayNetworking.registerGlobalReceiver(DiscordRPPayload.ID, (payload, context) -> {
+            String s = payload.text();
             String[] lines = s.split(";");
             if (lines.length == 2) {
                 setRichPresence(false, lines[0], lines[1]);

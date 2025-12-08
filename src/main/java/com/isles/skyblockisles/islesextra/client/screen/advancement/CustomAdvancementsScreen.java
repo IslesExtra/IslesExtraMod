@@ -2,12 +2,17 @@ package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.input.KeyInput;
@@ -135,7 +140,10 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
 
     private boolean movingTab = false, movingWindow = false, resizingWindow = false;
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean bl) {
+      var button = click.button();
+      double mouseX = click.comp_4798(); // x
+      var mouseY = click.comp_4799(); // y
         if (button == 0) {
             for (CustomAdvancementTab advancementTab : this.tabs.values()) {
                 if (!advancementTab.isClickOnTab(x, y, mouseX, mouseY)) continue;
@@ -154,13 +162,14 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
                 movingWindow = true;
             }
             else startDrag = false;
-            if (startDrag) InputUtil.setCursorParameters(client.getWindow().getHandle(), InputUtil.GLFW_CURSOR_DISABLED, client.mouse.getX(), client.mouse.getY());
+            if (startDrag) InputUtil.setCursorParameters(client.getWindow(), InputUtil.GLFW_CURSOR_DISABLED, client.mouse.getX(), client.mouse.getY());
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, bl);
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+    public boolean mouseDragged(Click click, double deltaX, double deltaY) {
+      var button = click.button();
         if (button != 0) {
             this.movingTab = false;
             this.movingWindow = false;
@@ -188,7 +197,7 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(Click click) {
         if (movingTab || movingWindow || resizingWindow) {
             long ptr = client.getWindow().getHandle();
             GLFW.glfwSetInputMode(ptr, GLFW.GLFW_CURSOR, InputUtil.GLFW_CURSOR_NORMAL);
@@ -204,7 +213,7 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
             resizingWindow = false;
         }
 
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(click);
     }
 
     @Override
@@ -229,7 +238,6 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
     }
 
     public void drawWindow(DrawContext context, int x, int y) {
-        RenderSystem.enableBlend();
         //context.drawTexture(WINDOW_TEXTURE, x, y, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         /*
@@ -244,28 +252,28 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
          */
 
         // Draw top left corner
-        context.drawTexture(WINDOW_TEXTURE, x, y, 0, 0, 9, 18);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x, y, 0, 0, 9, 18, 0, 0);
 
         // Draw top right corner
-        context.drawTexture(WINDOW_TEXTURE, x + WINDOW_WIDTH - 9, y, 9, 18, 256 - 4 - 9, 0, 9, 18, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x + WINDOW_WIDTH - 9, y, 9, 18, 256 - 4 - 9, 0, 9, 18, 256, 256);
 
         // Draw bottom left corner
-        context.drawTexture(WINDOW_TEXTURE, x, y + WINDOW_HEIGHT - 9, 9, 9, 0, 144 - 9 - 4, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x, y + WINDOW_HEIGHT - 9, 9, 9, 0, 144 - 9 - 4, 9, 9, 256, 256);
 
         // Draw bottom right corner
-        context.drawTexture(WINDOW_TEXTURE, x + WINDOW_WIDTH - 9, y + WINDOW_HEIGHT - 9, 9, 9, 256 - 4 - 9, 144 - 9 - 4, 9, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x + WINDOW_WIDTH - 9, y + WINDOW_HEIGHT - 9, 9, 9, 256 - 4 - 9, 144 - 9 - 4, 9, 9, 256, 256);
 
         // Draw top edge
-        context.drawTexture(WINDOW_TEXTURE, x + 9, y, WINDOW_WIDTH - 9 * 2, 18, 9, 0, 256 - 4 - 9 * 2, 18, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x + 9, y, WINDOW_WIDTH - 9 * 2, 18, 9, 0, 256 - 4 - 9 * 2, 18, 256, 256);
 
         // Draw bottom edge
-        context.drawTexture(WINDOW_TEXTURE, x + 9, y + WINDOW_HEIGHT - 9, WINDOW_WIDTH - 9 * 2, 9, 9, 144 - 9 - 4, 256 - 4 - 9 * 2, 9, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x + 9, y + WINDOW_HEIGHT - 9, WINDOW_WIDTH - 9 * 2, 9, 9, 144 - 9 - 4, 256 - 4 - 9 * 2, 9, 256, 256);
 
         // Draw left edge
-        context.drawTexture(WINDOW_TEXTURE, x, y + 18, 9, WINDOW_HEIGHT - 18 - 9, 0, 18, 9, 144 - 18 - 9 - 4, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x, y + 18, 9, WINDOW_HEIGHT - 18 - 9, 0, 18, 9, 144 - 18 - 9 - 4, 256, 256);
 
         // Draw right edge
-        context.drawTexture(WINDOW_TEXTURE, x + WINDOW_WIDTH - 9, y + 18, 9, WINDOW_HEIGHT - 18 - 9, 256 - 9 - 4, 18, 9, 144 - 18 - 9 - 4, 256, 256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, WINDOW_TEXTURE, x + WINDOW_WIDTH - 9, y + 18, 9, WINDOW_HEIGHT - 18 - 9, 256 - 9 - 4, 18, 9, 144 - 18 - 9 - 4, 256, 256);
 
         if (this.tabs.size() > 1) {
             for (CustomAdvancementTab advancementTab : this.tabs.values()) {
@@ -280,12 +288,10 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
 
     private void drawWidgetTooltip(DrawContext context, int mouseX, int mouseY, int x, int y) {
         if (this.selectedTab != null) {
-            context.getMatrices().push();
-            context.getMatrices().translate(x + PAGE_OFFSET_X, y + PAGE_OFFSET_Y, 400.0f);
-            RenderSystem.enableDepthTest();
+            context.getMatrices().pushMatrix();
+            context.getMatrices().translate(x + PAGE_OFFSET_X, y + PAGE_OFFSET_Y, context.getMatrices());
             this.selectedTab.drawWidgetTooltip(context, mouseX - x - PAGE_OFFSET_X, mouseY - y - PAGE_OFFSET_Y, x, y, WINDOW_WIDTH, WINDOW_HEIGHT);
-            RenderSystem.disableDepthTest();
-            context.getMatrices().pop();
+            context.getMatrices().popMatrix();
         }
         if (this.tabs.size() > 1) {
             for (CustomAdvancementTab advancementTab : this.tabs.values()) {

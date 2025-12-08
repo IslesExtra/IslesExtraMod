@@ -9,6 +9,7 @@ import net.minecraft.advancement.AdvancementDisplay;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.item.ItemStack;
@@ -94,28 +95,29 @@ public class CustomAdvancementTab {
             this.initialized = true;
         }
         context.enableScissor(x, y, x + width - 9*2, y + height - 9 - 18);
-        context.getMatrices().push();
-        context.getMatrices().translate(x, y, 0.0f);
-        Identifier identifier = this.display.getBackground().orElse(TextureManager.MISSING_IDENTIFIER);
+        context.getMatrices().pushMatrix();
+        context.getMatrices().translate(x, y, context.getMatrices());
+        var background = this.display.getBackground();
+        Identifier identifier = background.isPresent() ? background.get().comp_3626() : TextureManager.MISSING_IDENTIFIER; // Identifier
         int i = MathHelper.floor(this.originX);
         int j = MathHelper.floor(this.originY);
         int k = i % 16;
         int l = j % 16;
         for (int m = -1; m <= MathHelper.ceil(width/16f); ++m) {
             for (int n = -1; n <= MathHelper.ceil(height/16f); ++n) {
-                context.drawTexture(identifier, k + 16 * m, l + 16 * n, 0.0f, 0.0f, 16, 16, 16, 16);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, identifier, k + 16 * m, l + 16 * n, 0.0f, 0.0f, 16, 16, 16, 16);
             }
         }
         this.rootWidget.renderLines(context, i, j, true);
         this.rootWidget.renderLines(context, i, j, false);
         this.rootWidget.renderWidgets(context, i, j);
-        context.getMatrices().pop();
+        context.getMatrices().popMatrix();
         context.disableScissor();
     }
 
     public void drawWidgetTooltip(DrawContext context, int mouseX, int mouseY, int x, int y, int width, int height) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0.0f, 0.0f, -200.0f);
+        context.getMatrices().pushMatrix();
+        context.getMatrices().translate(0.0f, 0.0f, context.getMatrices());
         context.fill(0, 0, (width - 2*9), (height - 3*9), MathHelper.floor(this.alpha * 255.0f) << 24);
         boolean bl = false;
         int i = MathHelper.floor(this.originX);
@@ -128,7 +130,7 @@ public class CustomAdvancementTab {
                 break;
             }
         }
-        context.getMatrices().pop();
+        context.getMatrices().popMatrix();
         this.alpha = bl ? MathHelper.clamp(this.alpha + 0.02f, 0.0f, 0.3f) : MathHelper.clamp(this.alpha - 0.04f, 0.0f, 1.0f);
     }
 
@@ -138,7 +140,7 @@ public class CustomAdvancementTab {
 
     @Nullable
     public static CustomAdvancementTab create(MinecraftClient client, CustomAdvancementsScreen screen, int index, PlacedAdvancement root) {
-        Optional<AdvancementDisplay> optional = root.getAdvancement().display();
+        Optional<AdvancementDisplay> optional = root.getAdvancement().comp_1913(); // display
         if (optional.isEmpty()) {
             return null;
         }
@@ -158,7 +160,7 @@ public class CustomAdvancementTab {
     }
 
     public void addAdvancement(PlacedAdvancement advancement) {
-        Optional<AdvancementDisplay> optional = advancement.getAdvancement().display();
+        Optional<AdvancementDisplay> optional = advancement.getAdvancement().comp_1913(); // Display
         if (optional.isEmpty()) {
             return;
         }

@@ -10,6 +10,7 @@ import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextHandler;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.advancement.AdvancementObtainedStatus;
 import net.minecraft.text.OrderedText;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 @Environment(value=EnvType.CLIENT)
 public class CustomAdvancementWidget {
-    private static final Identifier TITLE_BOX_TEXTURE = new Identifier("advancements/title_box");
+    private static final Identifier TITLE_BOX_TEXTURE = Identifier.of("advancements/title_box");
     private static final int ICON_OFFSET_X = 8;
     private static final int ICON_OFFSET_Y = 5;
     private static final int ICON_SIZE = 26;
@@ -56,7 +57,7 @@ public class CustomAdvancementWidget {
         this.title = Language.getInstance().reorder(client.textRenderer.trimToWidth(display.getTitle(), TITLE_MAX_WIDTH));
         this.x = MathHelper.floor(display.getX() * 28.0f);
         this.y = MathHelper.floor(display.getY() * 27.0f);
-        int i = advancement.getAdvancement().requirements().getLength();
+        int i = advancement.getAdvancement().comp_1916().getLength(); // Requirements
         int j = String.valueOf(i).length();
         int k = i > 1 ? client.textRenderer.getWidth("  ") + client.textRenderer.getWidth("0") * j * 2 + client.textRenderer.getWidth("/") : 0;
         int l = 29 + client.textRenderer.getWidth(this.title) + k;
@@ -90,8 +91,8 @@ public class CustomAdvancementWidget {
 
     @Nullable
     private CustomAdvancementWidget getParent(PlacedAdvancement advancement) {
-        while ((advancement = advancement.getParent()) != null && advancement.getAdvancement().display().isEmpty()) {}
-        if (advancement == null || advancement.getAdvancement().display().isEmpty()) {
+        while ((advancement = advancement.getParent()) != null && advancement.getAdvancement().comp_1913().isEmpty()) {} // Display
+        if (advancement == null || advancement.getAdvancement().comp_1913().isEmpty()) { // Display
             return null;
         }
         return this.tab.getWidget(advancement.getAdvancementEntry());
@@ -130,7 +131,7 @@ public class CustomAdvancementWidget {
         if (!this.display.isHidden() || this.progress != null && this.progress.isDone()) {
             float f = this.progress == null ? 0.0f : this.progress.getProgressBarPercentage();
             AdvancementObtainedStatus advancementObtainedStatus = f >= 1.0f ? AdvancementObtainedStatus.OBTAINED : AdvancementObtainedStatus.UNOBTAINED;
-            context.drawGuiTexture(advancementObtainedStatus.getFrameTexture(this.display.getFrame()), x + this.x + 3, y + this.y, 26, 26);
+            context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, advancementObtainedStatus.getFrameTexture(this.display.getFrame()), x + this.x + 3, y + this.y, 26, 26);
             context.drawItemWithoutEntity(this.display.getIcon(), x + this.x + 8, y + this.y + 5);
         }
         for (CustomAdvancementWidget advancementWidget : this.children) {
@@ -181,20 +182,19 @@ public class CustomAdvancementWidget {
             advancementObtainedStatus3 = AdvancementObtainedStatus.UNOBTAINED;
         }
         int k = this.width - j;
-        RenderSystem.enableBlend();
         int l = originY + this.y;
         int m = bl ? originX + this.x - this.width + 26 + 6 : originX + this.x;
         int n = 32 + this.description.size() * this.client.textRenderer.fontHeight;
         if (!this.description.isEmpty()) {
             if (bl2) {
-                context.drawGuiTexture(TITLE_BOX_TEXTURE, m, l + 26 - n, this.width, n);
+                context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, TITLE_BOX_TEXTURE, m, l + 26 - n, this.width, n);
             } else {
-                context.drawGuiTexture(TITLE_BOX_TEXTURE, m, l, this.width, n);
+                context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, TITLE_BOX_TEXTURE, m, l, this.width, n);
             }
         }
-        context.drawGuiTexture(advancementObtainedStatus.getBoxTexture(), 200, 26, 0, 0, m, l, j, 26);
-        context.drawGuiTexture(advancementObtainedStatus2.getBoxTexture(), 200, 26, 200 - k, 0, m + j, l, k, 26);
-        context.drawGuiTexture(advancementObtainedStatus3.getFrameTexture(this.display.getFrame()), originX + this.x + 3, originY + this.y, 26, 26);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, advancementObtainedStatus.getBoxTexture(), 200, 26, 0, 0, m, l, j, 26);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, advancementObtainedStatus2.getBoxTexture(), 200, 26, 200 - k, 0, m + j, l, k, 26);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, advancementObtainedStatus3.getFrameTexture(this.display.getFrame()), originX + this.x + 3, originY + this.y, 26, 26);
         if (bl) {
             context.drawTextWithShadow(this.client.textRenderer, this.title, m + 5, originY + this.y + 9, -1);
             if (text != null) {
