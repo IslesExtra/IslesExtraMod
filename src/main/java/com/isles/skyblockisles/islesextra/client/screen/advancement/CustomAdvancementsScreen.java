@@ -10,6 +10,7 @@ import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.network.ClientAdvancementManager;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.util.InputUtil;
@@ -28,7 +29,7 @@ import java.util.Map;
 @Environment(value=EnvType.CLIENT)
 public class CustomAdvancementsScreen extends Screen implements ClientAdvancementManager.Listener {
     private final MinecraftClient client;
-    private static final Identifier WINDOW_TEXTURE = new Identifier("textures/gui/advancements/window.png");
+    private static final Identifier WINDOW_TEXTURE = Identifier.ofVanilla("textures/gui/advancements/window.png");
     public static int WINDOW_WIDTH = 340; // vanilla value: 252
     private double true_width = WINDOW_WIDTH; // represents the window's width as a double for smoother resizing
     public static int WINDOW_HEIGHT = 224; // vanilla value: 140
@@ -96,28 +97,28 @@ public class CustomAdvancementsScreen extends Screen implements ClientAdvancemen
     // 264 - DOWN KEY: pan down
     // 265 - UP KEY: pan up
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         if (this.client == null) return false;
-        if (this.client.options.advancementsKey.matchesKey(keyCode, scanCode)) {
+        if (this.client.options.advancementsKey.matchesKey(input)) {
             this.client.setScreen(null);
             this.client.mouse.lockCursor();
             return true;
         }
-        else if (keyCode == 258) {
+        else if (input.isTab()) {
             AdvancementEntry current = null;
             for (AdvancementEntry entry : this.tabs.keySet()) {
                 if (this.tabs.get(entry).equals(this.selectedTab)) current = entry;
             }
             if (current != null) {
                 List<AdvancementEntry> entries = this.tabs.keySet().stream().toList();
-                this.selectTab(entries.get((entries.indexOf(current) + (modifiers == GLFW.GLFW_MOD_CONTROL ? -1 : 1) + entries.size()) % entries.size())); // (current index +/- 1 + size)%size will always result in a valid index
+                this.selectTab(entries.get((entries.indexOf(current) + (input.hasCtrl() ? -1 : 1) + entries.size()) % entries.size())); // (current index +/- 1 + size)%size will always result in a valid index
             }
         }
-        else if ((keyCode == 262 || client.options.rightKey.matchesKey(keyCode, scanCode)) && selectedTab != null) selectedTab.move(-16f, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        else if ((keyCode == 263 || client.options.leftKey.matchesKey(keyCode, scanCode)) && selectedTab != null) selectedTab.move(16f, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        else if ((keyCode == 264 || client.options.backKey.matchesKey(keyCode, scanCode)) && selectedTab != null) selectedTab.move(0, -16f, WINDOW_WIDTH, WINDOW_HEIGHT);
-        else if ((keyCode == 265 || client.options.forwardKey.matchesKey(keyCode, scanCode)) && selectedTab != null) selectedTab.move(0, 16f, WINDOW_WIDTH, WINDOW_HEIGHT);
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        else if (input.isRight() && selectedTab != null) selectedTab.move(-16f, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        else if (input.isLeft() && selectedTab != null) selectedTab.move(16f, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        else if (input.isDown() && selectedTab != null) selectedTab.move(0, -16f, WINDOW_WIDTH, WINDOW_HEIGHT);
+        else if (input.isUp() && selectedTab != null) selectedTab.move(0, 16f, WINDOW_WIDTH, WINDOW_HEIGHT);
+        return super.keyPressed(input);
     }
 
     @Override

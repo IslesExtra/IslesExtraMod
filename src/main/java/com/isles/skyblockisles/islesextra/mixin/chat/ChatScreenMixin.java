@@ -4,6 +4,7 @@ import com.isles.skyblockisles.islesextra.IslesExtra;
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
 import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
+import com.isles.skyblockisles.islesextra.utils.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.utils.ClientUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -14,7 +15,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -51,11 +54,12 @@ public abstract class ChatScreenMixin {
         if (this.chatField.getText().startsWith("/")) return;
 
         ChatPreview.RenderData renderData = previewBackground.computeRenderData(Util.getMeasuringTimeMs(), previewText);
-        renderPreview(context, renderData.preview(), renderData.alpha(), true/*client.getProfileKeys().isExpired() != null*/); // I have no idea wtf this commented shit is but keeping it here just in case
+        renderPreview(context, renderData.preview(), renderData.alpha(), true
+                /*client.getProfileKeys().isExpired() != null*/); // I have no idea wtf this commented shit is but keeping it here just in case
     }
 
     @Unique
-    private final static Identifier previewIdentifier = new Identifier("isles", "preview");
+    private final static Identifier previewIdentifier = Identifier.of("isles", "preview");
 
     @Inject(method = "onChatFieldUpdate", at = @At("TAIL"))
     void onChatFieldUpdate(String chatText, CallbackInfo ci) {
@@ -90,7 +94,8 @@ public abstract class ChatScreenMixin {
         // TODO; add more exceptions to decrease packets
         boolean flag1 = !chatText.startsWith("/"); // not for commands
         if (flag1) {
-            ClientPlayNetworking.send(previewIdentifier, PacketByteBufs.create().writeString(chatText));
+            var payload = new ChatPreviewPayload(Text.of(chatText));
+            ClientPlayNetworking.send(payload);
             return;
         }
         ChatScreenMixin.previewText = null;
@@ -101,22 +106,25 @@ public abstract class ChatScreenMixin {
     void init(CallbackInfo ci) {
         this.client = MinecraftClient.getInstance();
         previewBackground.init(Util.getMeasuringTimeMs());
-        ClientPlayNetworking.registerGlobalReceiver(previewIdentifier, (client, handler, buf, responseSender) -> {
-            String s = buf.readString();
-            Text text = Text.Serialization.fromJson(s);
-            if (text == null || text.getString().isEmpty() || !(client.currentScreen instanceof ChatScreen)) {
-                previewText = null;
-                ChatPreview.setShouldShiftUp(false);
-                return;
-            }
-            previewText = text;
-            ChatPreview.setShouldShiftUp(true);
+        ClientPlayNetworking.registerGlobalReceiver(ChatPreviewPayload.ID, (payload, context) -> {
+            Text text = payload.text();
+
+            context.client().execute(() -> {
+                if (text == null || text.getString().isEmpty() || !(client.currentScreen instanceof ChatScreen)) {
+                    previewText = null;
+                    ChatPreview.setShouldShiftUp(false);
+                    return;
+                }
+                previewText = text;
+                ChatPreview.setShouldShiftUp(true);
+            });
         });
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"))
-    void keyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
+    void keyPressed(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
         // if chat gets closed
+        var keyCode = keyInput.getKeycode();
         if (keyCode == 256 || keyCode == 257 || keyCode == 335) {
             previewText = null;
             ChatSuggestions.setSuggestions(Set.of());
@@ -129,20 +137,19 @@ public abstract class ChatScreenMixin {
     @Unique
     public void renderPreview(DrawContext context, Text previewText, float alpha, boolean signable) {
         TextRenderer textRenderer = client.textRenderer;
-        MatrixStack matrices = context.getMatrices();
-        int i = (int)(255.0 * (client.options.getChatOpacity().getValue() * 0.8999999761581421 + 0.10000000149011612) * (double)alpha);
-        int j = (int)((double)(255) * client.options.getTextBackgroundOpacity().getValue() * (double)alpha);
+        var matrices = context.getMatrices();
+        int i = (int)(255.0 * (client.options.getChatOpacity().getValue() * 0.8999999761581421 + 0.10000000149011612) * (double) alpha);
+        int j = (int)((double)(255) * client.options.getTextBackgroundOpacity().getValue() * (double) alpha);
         int k = this.getPreviewWidth();
         List<OrderedText> list = textRenderer.wrapLines(previewText, this.getPreviewWidth());
         int l = (Math.max(list.size(), 1) * 9 + 4);
         int m = this.getPreviewBottom() - l;
-        RenderSystem.enableBlend();
-        matrices.push();
-        matrices.translate(2, m, 0.0);
+        matrices.pushMatrix();
+        matrices.translate(2, m, matrices);
         context.fill(0, 0, k, l, j << 24);
         int n;
         if (i > 0) {
-            matrices.translate(2.0, 2.0, 0.0);
+            matrices.translate(2, 2, matrices);
 
             for(n = 0; n < list.size(); ++n) {
                 OrderedText orderedText = list.get(n);
@@ -152,14 +159,13 @@ public abstract class ChatScreenMixin {
             }
         }
 
-        matrices.pop();
-        RenderSystem.disableBlend();
+        matrices.popMatrix();
         if (signable && previewText != null) {
             n = 7844841;
             int p = (int)(255.0F * alpha);
-            matrices.push();
+            matrices.pushMatrix();
             context.fill(0, m, 2, this.getPreviewBottom(), p << 24 | n);
-            matrices.pop();
+            matrices.popMatrix();
         }
 
     }

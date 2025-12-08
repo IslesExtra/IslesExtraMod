@@ -11,10 +11,12 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.mob.MagmaCubeEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.ActionResult;
+
+import java.awt.*;
+import java.util.Optional;
 
 
 public class InitUtils {
@@ -27,34 +29,39 @@ public class InitUtils {
             }
         }));
 
-        ItemTooltipCallback.EVENT.register(((stack, context, lines) -> {
-            NbtCompound nbt = stack.getNbt();
-            if (nbt == null) return;
+        ItemTooltipCallback.EVENT.register(((stack, context, type, lines) -> {
+            var nbtComponent = stack.get(DataComponentTypes.CUSTOM_DATA);
+            if (nbtComponent == null) return;
+            var nbt = nbtComponent.copyNbt();
             // TODO; figure out wtf this does again
             for (int i = 0; nbt.contains(IslesExtra.MOD_ID + ".lore." + i); i++) {
-                lines.add(new CustomText(nbt.getString(IslesExtra.MOD_ID + ".lore." + i)).getValue());
+                Optional<String> newline = nbt.getString(IslesExtra.MOD_ID + ".lore." + i);
+                newline.ifPresent(s -> lines.add(new CustomText(s).getValue()));
             }
         }));
 
         UseItemCallback.EVENT.register(((player, world, hand) -> {
-            ItemStack itemStack = player.getStackInHand(hand);
             LowAmmoWarning.init();
-            return TypedActionResult.pass(itemStack);
+            return ActionResult.PASS;
         }));
 
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             if (ClientUtils.getPlayer() == null || ClientUtils.getWorld() == null) return;
             if (!IslesHudHandler.inBoss) return;
-            if (ClientUtils.getBoss() == IslesConstants.Boss.FROG) StomachExplosionWarning.init();
-            if (ClientUtils.getBoss() == IslesConstants.Boss.TURTLE) CoconutBombWarning.init();
+            ClientUtils.getBoss().ifPresent(boss -> {
+                switch (boss) {
+                    case FROG -> StomachExplosionWarning.init();
+                    case TURTLE -> CoconutBombWarning.init();
+                }
+            });
         });
 
         ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-
-            if (entity instanceof MagmaCubeEntity && ClientUtils.getBoss() == IslesConstants.Boss.CRIMSON_DRAGON) {
-                MagmaBombWarning.init();
-            }
-
+            ClientUtils.getBoss().ifPresent(boss -> {
+                if (entity instanceof MagmaCubeEntity && boss == IslesConstants.Boss.CRIMSON_DRAGON) {
+                    MagmaBombWarning.init();
+                }
+            });
         });
 
     }

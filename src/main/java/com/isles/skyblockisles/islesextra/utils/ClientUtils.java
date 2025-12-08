@@ -19,11 +19,10 @@ public abstract class ClientUtils {
     public static World getWorld() {return getClient().world;}
     public static InGameHud getHUD() {return getClient().inGameHud;}
     public static Boolean inBoss() {return IslesHudHandler.inBoss;}
-    public static IslesConstants.Boss getBoss() {
+    public static Optional<IslesConstants.Boss> getBoss() {
         return Arrays.stream(IslesConstants.Boss.values())
                 .filter(boss -> getWorld().getRegistryKey().toString().toLowerCase().contains(boss.toString().toLowerCase()))
-                .findFirst()
-                .orElse(IslesConstants.Boss.NOBOSS072);
+                .findFirst();
     }
 
     private static String location = "";
@@ -54,7 +53,7 @@ public abstract class ClientUtils {
         if (networkHandler == null) return Set.of();
         Set<String> list = new HashSet<>();
         for (PlayerListEntry playerListEntry : networkHandler.getPlayerList()) {
-            if (!playerListEntry.getProfile().getName().startsWith("|")) list.add((at ? "@" : "") + playerListEntry.getProfile().getName());
+            if (!playerListEntry.getProfile().name().startsWith("|")) list.add((at ? "@" : "") + playerListEntry.getProfile().name());
         }
         return list;
     }

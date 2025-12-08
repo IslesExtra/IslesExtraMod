@@ -2,16 +2,17 @@ package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 @Environment(value=EnvType.CLIENT)
 public enum AdvancementTabType {
-    ABOVE(new AdvancementTabType.Textures(new Identifier("advancements/tab_above_left_selected"), new Identifier("advancements/tab_above_middle_selected"), new Identifier("advancements/tab_above_right_selected")), new AdvancementTabType.Textures(new Identifier("advancements/tab_above_left"), new Identifier("advancements/tab_above_middle"), new Identifier("advancements/tab_above_right")), 28, 32, 8),
-    BELOW(new AdvancementTabType.Textures(new Identifier("advancements/tab_below_left_selected"), new Identifier("advancements/tab_below_middle_selected"), new Identifier("advancements/tab_below_right_selected")), new AdvancementTabType.Textures(new Identifier("advancements/tab_below_left"), new Identifier("advancements/tab_below_middle"), new Identifier("advancements/tab_below_right")), 28, 32, 8),
-    LEFT(new AdvancementTabType.Textures(new Identifier("advancements/tab_left_top_selected"), new Identifier("advancements/tab_left_middle_selected"), new Identifier("advancements/tab_left_bottom_selected")), new AdvancementTabType.Textures(new Identifier("advancements/tab_left_top"), new Identifier("advancements/tab_left_middle"), new Identifier("advancements/tab_left_bottom")), 32, 28, 5),
-    RIGHT(new AdvancementTabType.Textures(new Identifier("advancements/tab_right_top_selected"), new Identifier("advancements/tab_right_middle_selected"), new Identifier("advancements/tab_right_bottom_selected")), new AdvancementTabType.Textures(new Identifier("advancements/tab_right_top"), new Identifier("advancements/tab_right_middle"), new Identifier("advancements/tab_right_bottom")), 32, 28, 5);
+    ABOVE(new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_above_left_selected"), Identifier.ofVanilla("advancements/tab_above_middle_selected"), Identifier.ofVanilla("advancements/tab_above_right_selected")), new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_above_left"), Identifier.ofVanilla("advancements/tab_above_middle"), Identifier.ofVanilla("advancements/tab_above_right")), 28, 32, 8),
+    BELOW(new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_below_left_selected"), Identifier.ofVanilla("advancements/tab_below_middle_selected"), Identifier.ofVanilla("advancements/tab_below_right_selected")), new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_below_left"), Identifier.ofVanilla("advancements/tab_below_middle"), Identifier.ofVanilla("advancements/tab_below_right")), 28, 32, 8),
+    LEFT(new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_left_top_selected"), Identifier.ofVanilla("advancements/tab_left_middle_selected"), Identifier.ofVanilla("advancements/tab_left_bottom_selected")), new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_left_top"), Identifier.ofVanilla("advancements/tab_left_middle"), Identifier.ofVanilla("advancements/tab_left_bottom")), 32, 28, 5),
+    RIGHT(new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_right_top_selected"), Identifier.ofVanilla("advancements/tab_right_middle_selected"), Identifier.ofVanilla("advancements/tab_right_bottom_selected")), new AdvancementTabType.Textures(Identifier.ofVanilla("advancements/tab_right_top"), Identifier.ofVanilla("advancements/tab_right_middle"), Identifier.ofVanilla("advancements/tab_right_bottom")), 32, 28, 5);
 
     private final AdvancementTabType.Textures selectedTextures;
     private final AdvancementTabType.Textures unselectedTextures;
@@ -35,7 +36,7 @@ public enum AdvancementTabType {
         AdvancementTabType.Textures textures;
         AdvancementTabType.Textures textures2 = textures = selected ? this.selectedTextures : this.unselectedTextures;
         Identifier identifier = index == 0 ? textures.first() : (index == this.tabCount - 1 ? textures.last() : textures.middle());
-        context.drawGuiTexture(identifier, x + this.getTabX(index), y + this.getTabY(index), this.width, this.height);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, identifier, x + this.getTabX(index), y + this.getTabY(index), this.width, this.height);
     }
 
     public void drawIcon(DrawContext context, int x, int y, int index, ItemStack stack) {

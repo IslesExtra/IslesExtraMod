@@ -42,10 +42,8 @@ public class IslesConstants {
         LEGENDARY("Legendary"),
         MYTHIC("Mythic");
 
-
-        private final String rarity;
+        @SuppressWarnings("unused")
         Rarity(String rarity) {
-            this.rarity = rarity;
         }
     }
     public enum Boss{
@@ -55,9 +53,7 @@ public class IslesConstants {
         NANOOK("Ice Bear Nanook"),
         FROG("Frog"),
         TURTLE("Torturious"),
-        CRIMSON_DRAGON("Crimson Dragon Fafnir"),
-        //Weird registry Name to not get caught in getBoss()
-        NOBOSS072("None");
+        CRIMSON_DRAGON("Crimson Dragon Fafnir");
 
         public final String fullName;
         Boss(String fullName) {

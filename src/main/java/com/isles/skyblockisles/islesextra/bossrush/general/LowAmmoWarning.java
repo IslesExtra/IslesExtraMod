@@ -14,7 +14,7 @@ public class LowAmmoWarning {
         int magicRunes = countItem(Items.PHANTOM_MEMBRANE);
         int threshold = 128;
 
-        ItemStack mainStack = ClientUtils.getPlayer().getInventory().getMainHandStack();
+        ItemStack mainStack = ClientUtils.getPlayer().getInventory().getSelectedStack();
 
         if (ClientUtils.inBoss()) {
             if (copperArrows < threshold)
@@ -25,6 +25,7 @@ public class LowAmmoWarning {
                 ClientUtils.sendTitle("§4Low Runes");
         }
     }
+
     private static int countItem(Item item) {
         int count = 0;
         // Iterate through every Slot and add it to count if it finds the Item
