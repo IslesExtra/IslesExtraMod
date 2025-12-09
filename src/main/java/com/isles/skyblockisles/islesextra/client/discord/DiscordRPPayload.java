@@ -1,6 +1,6 @@
 package com.isles.skyblockisles.islesextra.client.discord;
 
-import com.isles.skyblockisles.islesextra.IslesExtra;
+import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;

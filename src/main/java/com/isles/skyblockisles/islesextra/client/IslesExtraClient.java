@@ -1,62 +1,64 @@
 package com.isles.skyblockisles.islesextra.client;
 
-import com.isles.skyblockisles.islesextra.client.commands.TestCommand;
 import com.isles.skyblockisles.islesextra.client.discord.DiscordHandler;
 import com.isles.skyblockisles.islesextra.client.discord.DiscordRPPayload;
+import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
+import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
-import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
-import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
-import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
-import com.isles.skyblockisles.islesextra.utils.ChatPreviewPayload;
-import com.isles.skyblockisles.islesextra.utils.IslesConstants;
+import com.isles.skyblockisles.islesextra.constants.ChatPreviewPayload;
+import com.isles.skyblockisles.islesextra.event.handler.ClientEventHandler;
+import com.isles.skyblockisles.islesextra.event.handler.ConnectionStateEventHandler;
+import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
+import com.isles.skyblockisles.islesextra.event.handler.IslesEventHandler;
+import com.isles.skyblockisles.islesextra.event.handler.ItemEventHandler;
+import java.util.List;
+import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.util.ActionResult;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.minecraft.resource.ResourceType;
+import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-    private static boolean ON_ISLES = false;
-    public static boolean isOnIsles() { return ON_ISLES; }
-    private static IslesConstants.Gui openedGui = IslesConstants.Gui.NONE;
-    public static IslesConstants.Gui getOpenedGui() { return openedGui; }
+  public final static String MOD_ID = "islesextra";
+  public final static String ISLES_ID = "isles";
 
-    @Override
-    public void onInitializeClient() {
+  @Override
+  public void onInitializeClient() {
+    registerPayloads();
+    registerEventHandlers();
+    registerResourceReloaders();
+    DiscordHandler.start();
+  }
 
-        PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
-        PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+  private void registerEventHandlers() {
+    var handlers = List.of(
+        new ClientEventHandler(),
+        new ConnectionStateEventHandler(),
+        new IslesEventHandler(),
+        new ItemEventHandler(),
+        new IslesHudHandler());
 
-        DiscordHandler.start();
-        IslesHudHandler.register();
+    handlers.forEach(EventHandler::register);
+  }
 
-    }
+  private void registerResourceReloaders() {
+    var registerer = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
+    var reloaders = Map.of(
+        "emoji_listener", new EmojiListener(),
+        "custom_block_listener", new CustomBlockListener());
 
-    public static void registerClientEvents() {
-        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> new TestCommand().register(dispatcher)));
+    reloaders.forEach(
+        (id, reloader) -> registerer.registerReloader(Identifier.of(ISLES_ID, id), reloader));
+  }
 
-        JoinedIslesCallback.EVENT.register(() -> {
-            ON_ISLES = true;
-            LOGGER.info("JOINED ISLES");
-            return ActionResult.PASS;
-        });
-
-        LeftIslesCallback.EVENT.register(() -> {
-            ON_ISLES = false;
-            LOGGER.info("LEFT ISLES");
-            return ActionResult.PASS;
-        });
-
-        OpenedIslesGuiCallback.EVENT.register((gui) -> {
-            if (gui != IslesConstants.Gui.ESCAPE_MENU) openedGui = gui;
-            return ActionResult.PASS;
-        });
-    }
-
+  private void registerPayloads() {
+    PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
+    PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+    PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+  }
 }
