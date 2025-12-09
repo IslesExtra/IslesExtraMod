@@ -2,6 +2,7 @@ package com.isles.skyblockisles.islesextra.client.screen;
 
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
+import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;
@@ -10,14 +11,14 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 
-public class IslesHudHandler {
+public final class IslesHudHandler implements EventHandler {
 
     private static final Identifier background = Identifier.of("happyhud:textures/font/assets/isles/transparent_bg.png");
     public static boolean inBoss = false;
     private static long freezeTime = 0;
     private static long startMillis = 0;
 
-    public static void register() {
+    public void register() {
         IslesLocationChangedCallback.EVENT.register(location -> {
             if (!location.isEmpty()) { // TODO; do additional boss check
                 inBoss = true;

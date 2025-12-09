@@ -7,7 +7,6 @@ import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemGroup;
@@ -20,6 +19,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomBlockListener implements SimpleSynchronousResourceReloadListener {
+public class CustomBlockListener implements SynchronousResourceReloader {
 
     private static final List<CustomItem> customItems = new ArrayList<>();
     private static FabricItemGroupEntries entries;
@@ -61,12 +61,6 @@ public class CustomBlockListener implements SimpleSynchronousResourceReloadListe
         });
         Registry.register(Registries.ITEM_GROUP, key, group);
 
-    }
-
-    final Identifier fabricId = Identifier.of("isles", "custom_block_listener");
-    @Override
-    public Identifier getFabricId() {
-        return fabricId;
     }
 
     @Override
