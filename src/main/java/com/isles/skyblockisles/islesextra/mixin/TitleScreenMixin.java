@@ -17,17 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin extends Screen {
-
-    protected TitleScreenMixin (Text title) {
-        super(title);
-    }
-
-
-    @Unique
+  @Unique
     private static final ServerInfo islesInfo = new ServerInfo("Skyblock Isles", "play.skyblockisles.net", ServerInfo.ServerType.OTHER);
     static { islesInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED); }
 
-    @Inject(at = @At("RETURN"), method = "addNormalWidgets")
+  protected TitleScreenMixin(Text text) {
+    super(text);
+  }
+
+  @Inject(at = @At("RETURN"), method = "addNormalWidgets")
     private void addConnectButton(int y, int spacing, CallbackInfoReturnable<Integer> cir) {
         int buttonWidth = 150;
         int buttonHeight = 20;

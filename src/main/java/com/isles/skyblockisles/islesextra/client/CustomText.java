@@ -14,11 +14,6 @@ public class CustomText {
     public CustomText(String text, int r, int g, int b) {
         value = Text.literal(text).setStyle(Style.EMPTY.withColor(TextColor.fromRgb(new Color(r,g,b).getRGB())).withItalic(false));
     }
-    public CustomText(Text... texts) {
-        MutableText finalText = Text.literal("");
-        for (Text text : texts) { finalText.append(text); }
-        value = finalText;
-    }
     public CustomText(String string) {
         if (!string.contains("&")) {
             value = new CustomText(string, 255, 255, 255).getValue();
@@ -27,7 +22,7 @@ public class CustomText {
         String[] parts = string.split("&");
         ArrayList<Text> texts = new ArrayList<>();
         for (String part : parts) {
-            if (part.length()==0) continue;
+            if (part.isEmpty()) continue;
             char firstChar = part.charAt(0);
             if (firstChar=='#') {
                 String hex = part.substring(0,6);
