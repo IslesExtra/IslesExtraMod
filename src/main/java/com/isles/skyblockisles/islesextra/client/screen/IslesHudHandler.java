@@ -18,6 +18,7 @@ public final class IslesHudHandler implements EventHandler {
     private static long freezeTime = 0;
     private static long startMillis = 0;
 
+    @Override
     public void register() {
         IslesLocationChangedCallback.EVENT.register(location -> {
             if (!location.isEmpty()) { // TODO; do additional boss check
