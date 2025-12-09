@@ -1,28 +1,39 @@
 package com.isles.skyblockisles.islesextra.bossrush.frog;
 
-import com.isles.skyblockisles.islesextra.utils.ClientUtils;
+import com.isles.skyblockisles.islesextra.constants.MessageSender;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.client.MinecraftClient;
 
 public class StomachExplosionWarning {
 
-    //TODO: FIND AN EVENT LISTENER THAT SUITS THIS FUNCTION
-    private static final Map<Block, String> BLOCK_WARNING_MAP = new HashMap<>();
-    static {
-        BLOCK_WARNING_MAP.put(Blocks.YELLOW_CONCRETE, "§l§eWARN");
-        BLOCK_WARNING_MAP.put(Blocks.ORANGE_CONCRETE, "§l§6WARN");
-        BLOCK_WARNING_MAP.put(Blocks.RED_CONCRETE, "§l§4WARN");
-    }
-    public static void init() {
+  //TODO: FIND AN EVENT LISTENER THAT SUITS THIS FUNCTION
+  private static final Map<Block, String> BLOCK_WARNING_MAP = makeWarningMap();
 
-        Block blockUnderPlayer = ClientUtils.getWorld().getBlockState(ClientUtils.getPlayer().getBlockPos().down()).getBlock();
+  private static Map<Block, String> makeWarningMap() {
+    var map = new HashMap<Block, String>();
+    map.put(Blocks.YELLOW_CONCRETE, "§l§eWARN");
+    map.put(Blocks.ORANGE_CONCRETE, "§l§6WARN");
+    map.put(Blocks.RED_CONCRETE, "§l§4WARN");
+    return map;
+  }
 
-        String warningMessage = BLOCK_WARNING_MAP.get(blockUnderPlayer);
-        if (warningMessage != null) {
-            ClientUtils.sendTitle(warningMessage, 0, 2, 0);
-        }
+  public static void init() {
+    var client = MinecraftClient.getInstance();
+    var world = client.world;
+    var player = client.player;
+    if (world == null || player == null) {
+      return;
     }
+
+    Block blockUnderPlayer = world.getBlockState(player.getBlockPos().down()).getBlock();
+
+    String warningMessage = BLOCK_WARNING_MAP.get(blockUnderPlayer);
+    if (warningMessage != null) {
+      MessageSender.sendTitle(warningMessage, 0, 2, 0);
+    }
+  }
 }

@@ -42,7 +42,7 @@ public abstract class ItemStackMixin {
         }
         list.add(Text.literal("isles:" + nbt.getString("MYTHIC_TYPE")).formatted(Formatting.DARK_GRAY));
         if (!nbt.isEmpty()) {
-            list.add(Text.translatable("item.nbt_tags", nbt.getKeys().size()).formatted(Formatting.DARK_GRAY));
+            list.add(Text.translatable("structure_block.custom_data", nbt.getKeys().size()).formatted(Formatting.DARK_GRAY));
         }
         cir.setReturnValue(list);
     }

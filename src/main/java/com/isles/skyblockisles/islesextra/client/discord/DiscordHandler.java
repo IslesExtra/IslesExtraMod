@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.jagrosh.discordipc.IPCClient;
 import com.jagrosh.discordipc.entities.RichPresence;
 import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
-import com.isles.skyblockisles.islesextra.utils.ClientUtils;
+import com.isles.skyblockisles.islesextra.constants.MessageSender;
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -58,7 +58,7 @@ public class DiscordHandler {
   private static void setRichPresence(boolean reset, String... lines) {
     if (!ready) {
       if (reset) {
-        ClientUtils.sendMessage("§4Discord not found.");
+        MessageSender.sendMessage("§4Discord not found.");
       }
       return;
     }
