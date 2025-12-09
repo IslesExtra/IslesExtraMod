@@ -11,9 +11,6 @@
   "entrypoints": {
     "client": [
       "com.isles.skyblockisles.islesextra.client.IslesExtraClient"
-    ],
-    "main": [
-      "com.isles.skyblockisles.islesextra.IslesExtra"
     ]
   },
   "mixins": [

@@ -1,5 +1,6 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
+import com.isles.skyblockisles.islesextra.client.IslesClientState;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,11 +13,11 @@ public class ChatHudMixin {
 
     @Inject(method = "clear", at = @At("HEAD"), cancellable = true)
     /*
-    prevent chat history being cleared when swapping between isles servers
-    does it also prevent history being cleared when going from isles to different servers? idk probably, do I care? idk probably not rn
-     */
+     prevent chat history being cleared when swapping between isles servers
+     does it also prevent history being cleared when going from isles to different servers? idk probably, do I care? idk probably not rn
+    */
     void preventHistoryClear(boolean clearHistory, CallbackInfo ci) {
-        if (IslesExtraClient.isOnIsles()) ci.cancel();
+        if (IslesClientState.isOnIsles()) ci.cancel();
     }
 
 }

@@ -2,6 +2,9 @@ package com.isles.skyblockisles.islesextra.chat;
 
 import java.util.HashSet;
 import java.util.Set;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.PlayerListEntry;
 
 public class ChatSuggestions {
 
@@ -33,5 +36,20 @@ public class ChatSuggestions {
 
     public static Set<String> getSuggestions() {
         return suggestions;
+    }
+
+    public static Set<String> getPlayerNames() {
+      ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+      if (networkHandler == null) {
+        return Set.of();
+      }
+
+      Set<String> set = new HashSet<>();
+      for (PlayerListEntry playerListEntry : networkHandler.getPlayerList()) {
+        if (!playerListEntry.getProfile().name().startsWith("|")) {
+          set.add(playerListEntry.getProfile().name());
+        }
+      }
+      return set;
     }
 }

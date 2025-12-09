@@ -8,49 +8,43 @@ import com.jagrosh.discordipc.entities.User;
 
 public class IPCListenerImpl implements IPCListener {
 
-    private final DiscordHandler discord;
+  @Override
+  public void onReady(IPCClient client) {
+    DiscordHandler.setReady();
+  }
 
-    public IPCListenerImpl(DiscordHandler discord) {
-        this.discord = discord;
-    }
+  @Override
+  public void onPacketSent(IPCClient client, Packet packet) {
 
-    @Override
-    public void onReady(IPCClient client) {
-        this.discord.ready = true;
-    }
+  }
 
-    @Override
-    public void onPacketSent(IPCClient client, Packet packet) {
+  @Override
+  public void onPacketReceived(IPCClient client, Packet packet) {
 
-    }
+  }
 
-    @Override
-    public void onPacketReceived(IPCClient client, Packet packet) {
+  @Override
+  public void onActivityJoin(IPCClient client, String secret) {
 
-    }
+  }
 
-    @Override
-    public void onActivityJoin(IPCClient client, String secret) {
+  @Override
+  public void onActivitySpectate(IPCClient client, String secret) {
 
-    }
+  }
 
-    @Override
-    public void onActivitySpectate(IPCClient client, String secret) {
+  @Override
+  public void onActivityJoinRequest(IPCClient client, String secret, User user) {
 
-    }
+  }
 
-    @Override
-    public void onActivityJoinRequest(IPCClient client, String secret, User user) {
+  @Override
+  public void onClose(IPCClient client, JsonObject json) {
 
-    }
+  }
 
-    @Override
-    public void onClose(IPCClient client, JsonObject json) {
+  @Override
+  public void onDisconnect(IPCClient client, Throwable t) {
 
-    }
-
-    @Override
-    public void onDisconnect(IPCClient client, Throwable t) {
-
-    }
+  }
 }

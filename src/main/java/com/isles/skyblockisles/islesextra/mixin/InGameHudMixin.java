@@ -1,5 +1,6 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
+import com.isles.skyblockisles.islesextra.client.IslesClientState;
 import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import net.minecraft.client.font.TextRenderer;
@@ -19,7 +20,7 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderHotbar", at = @At("HEAD"))
     void renderHud(DrawContext context, RenderTickCounter renderTickCounter, CallbackInfo ci) {
-        if (!IslesExtraClient.isOnIsles()) return;
+        if (!IslesClientState.isOnIsles()) return;
         IslesHudHandler.renderHud(context, this.getTextRenderer());
     }
 

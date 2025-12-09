@@ -1,14 +1,11 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
 import net.minecraft.component.ComponentMap;
-import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.TooltipContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +42,7 @@ public abstract class ItemStackMixin {
         }
         list.add(Text.literal("isles:" + nbt.getString("MYTHIC_TYPE")).formatted(Formatting.DARK_GRAY));
         if (!nbt.isEmpty()) {
-            list.add(Text.translatable("item.nbt_tags", nbt.getKeys().size()).formatted(Formatting.DARK_GRAY));
+            list.add(Text.translatable("structure_block.custom_data", nbt.getKeys().size()).formatted(Formatting.DARK_GRAY));
         }
         cir.setReturnValue(list);
     }

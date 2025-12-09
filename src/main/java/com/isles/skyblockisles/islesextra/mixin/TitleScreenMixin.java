@@ -1,14 +1,11 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
-import java.net.CookieHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
-import net.minecraft.client.network.CookieStorage;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
@@ -16,22 +13,19 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin extends Screen {
-
-    protected TitleScreenMixin (Text title) {
-        super(title);
-    }
-
-
-    @Unique
+  @Unique
     private static final ServerInfo islesInfo = new ServerInfo("Skyblock Isles", "play.skyblockisles.net", ServerInfo.ServerType.OTHER);
     static { islesInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED); }
 
-    @Inject(at = @At("RETURN"), method = "addNormalWidgets")
+  protected TitleScreenMixin(Text text) {
+    super(text);
+  }
+
+  @Inject(at = @At("RETURN"), method = "addNormalWidgets")
     private void addConnectButton(int y, int spacing, CallbackInfoReturnable<Integer> cir) {
         int buttonWidth = 150;
         int buttonHeight = 20;
