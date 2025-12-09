@@ -1,7 +1,7 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
 import com.isles.skyblockisles.islesextra.client.IslesClientState;
-import com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreen;
+import com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementScreen;
 import com.isles.skyblockisles.islesextra.constants.IslesGui;
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
@@ -37,7 +37,7 @@ public class MinecraftClientMixin {
       return screen;
     }
     if (screen instanceof AdvancementsScreen) {
-      return new AdvancementScreen(this.player.networkHandler.getAdvancementHandler());
+      return new IslesAdvancementScreen(this.player.networkHandler.getAdvancementHandler());
     }
     if (screen.getTitle() != null && (screen.getTitle().getString().startsWith("Reconfig")
         || screen.getTitle().getString().isEmpty())) {

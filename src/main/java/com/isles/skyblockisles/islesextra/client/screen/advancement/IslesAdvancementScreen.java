@@ -1,24 +1,24 @@
 package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.ADVANCEMENTS_TEXT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.BORDER_WIDTH;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.BOTTOM_BORDER_V;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.BOTTOM_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.EMPTY_TEXT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.NO_OFFSET;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.PANE_SIZE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.RESIZE_ICON_SIZE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.RESIZE_TEXTURE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.SAD_LABEL_TEXT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.TAB_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.TEXTURE_SIZE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.TITLE_OFFSET_X;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.TITLE_OFFSET_Y;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.TOP_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.VISUAL_TEXTURE_WIDTH;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.WINDOW_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.WINDOW_TEXTURE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.WINDOW_WIDTH;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.ADVANCEMENTS_TEXT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BORDER_WIDTH;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BOTTOM_BORDER_V;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BOTTOM_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.EMPTY_TEXT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.NO_OFFSET;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.PANE_SIZE;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.RESIZE_ICON_SIZE;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.RESIZE_TEXTURE;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.SAD_LABEL_TEXT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TAB_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TEXTURE_SIZE;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TITLE_OFFSET_X;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TITLE_OFFSET_Y;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TOP_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.VISUAL_TEXTURE_WIDTH;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_TEXTURE;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_WIDTH;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 @Environment(value = EnvType.CLIENT)
-public class AdvancementScreen extends Screen implements ClientAdvancementManager.Listener {
+public class IslesAdvancementScreen extends Screen implements ClientAdvancementManager.Listener {
 
   private final MinecraftClient client;
 
@@ -54,17 +54,17 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
   private double trueHeight = WINDOW_HEIGHT;
 
   private final ClientAdvancementManager advancementHandler;
-  private final Map<AdvancementEntry, AdvancementTab> tabs = Maps.newLinkedHashMap();
+  private final Map<AdvancementEntry, IslesAdvancementTab> tabs = Maps.newLinkedHashMap();
 
   @Nullable
-  private AdvancementTab selectedTab;
+  private IslesAdvancementTab selectedTab;
 
   // State for dragging
   private boolean movingTab = false;
   private boolean movingWindow = false;
   private boolean resizingWindow = false;
 
-  public AdvancementScreen(ClientAdvancementManager advancementHandler) {
+  public IslesAdvancementScreen(ClientAdvancementManager advancementHandler) {
     super(NarratorManager.EMPTY);
     this.advancementHandler = advancementHandler;
     this.client = MinecraftClient.getInstance();
@@ -81,7 +81,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
     this.advancementHandler.setListener(this);
 
     if (this.selectedTab == null && !this.tabs.isEmpty()) {
-      AdvancementTab advancementTab = this.tabs.values().iterator().next();
+      IslesAdvancementTab advancementTab = this.tabs.values().iterator().next();
       this.advancementHandler.selectTab(advancementTab.getRoot().getAdvancementEntry(), true);
     } else {
       this.advancementHandler.selectTab(
@@ -157,7 +157,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
     }
 
     // Check tabs
-    for (AdvancementTab advancementTab : this.tabs.values()) {
+    for (IslesAdvancementTab advancementTab : this.tabs.values()) {
       if (advancementTab.isClickOnTab(x, y, click)) {
         this.advancementHandler.selectTab(advancementTab.getRoot().getAdvancementEntry(), true);
         break;
@@ -228,7 +228,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
   }
 
   private void drawAdvancementTree(DrawContext context, int x, int y) {
-    AdvancementTab advancementTab = this.selectedTab;
+    IslesAdvancementTab advancementTab = this.selectedTab;
 
     final int innerX = x + BORDER_WIDTH;
     final int innerY = y + TOP_HEIGHT;
@@ -289,10 +289,10 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
     draw(context, xPos, yPos, rightEdge, BOTTOM_BORDER_V, BORDER_WIDTH, BOTTOM_HEIGHT);
 
     if (this.tabs.size() > 1) {
-      for (AdvancementTab advancementTab : this.tabs.values()) {
+      for (IslesAdvancementTab advancementTab : this.tabs.values()) {
         advancementTab.drawBackground(context, x, y, advancementTab == this.selectedTab);
       }
-      for (AdvancementTab advancementTab : this.tabs.values()) {
+      for (IslesAdvancementTab advancementTab : this.tabs.values()) {
         advancementTab.drawIcon(context, x, y);
       }
     }
@@ -309,7 +309,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
     }
 
     if (this.tabs.size() > 1) {
-      for (AdvancementTab advancementTab : this.tabs.values()) {
+      for (IslesAdvancementTab advancementTab : this.tabs.values()) {
         if (advancementTab.isClickOnTab(x, y, click)) {
           context.drawTooltip(this.textRenderer, advancementTab.getTitle(), (int) click.comp_4798(),
               (int) click.comp_4799());
@@ -395,7 +395,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
   // Boilerplate for Interface
   @Override
   public void onRootAdded(PlacedAdvancement root) {
-    AdvancementTab advancementTab = AdvancementTab.create(this.client, this,
+    IslesAdvancementTab advancementTab = IslesAdvancementTab.create(this.client, this,
         this.tabs.size(), root);
     if (advancementTab == null) {
       return;
@@ -409,7 +409,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
 
   @Override
   public void onDependentAdded(PlacedAdvancement dependent) {
-    AdvancementTab advancementTab = this.getTab(dependent);
+    IslesAdvancementTab advancementTab = this.getTab(dependent);
     if (advancementTab != null) {
       advancementTab.addAdvancement(dependent);
     }
@@ -421,7 +421,7 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
 
   @Override
   public void setProgress(PlacedAdvancement advancement, AdvancementProgress progress) {
-    AdvancementWidget widget = this.getAdvancementWidget(advancement);
+    IslesAdvancementWidget widget = this.getAdvancementWidget(advancement);
     if (widget != null) {
       widget.setProgress(progress);
     }
@@ -439,13 +439,13 @@ public class AdvancementScreen extends Screen implements ClientAdvancementManage
   }
 
   @Nullable
-  public AdvancementWidget getAdvancementWidget(PlacedAdvancement advancement) {
-    AdvancementTab tab = this.getTab(advancement);
+  public IslesAdvancementWidget getAdvancementWidget(PlacedAdvancement advancement) {
+    IslesAdvancementTab tab = this.getTab(advancement);
     return tab == null ? null : tab.getWidget(advancement.getAdvancementEntry());
   }
 
   @Nullable
-  private AdvancementTab getTab(PlacedAdvancement advancement) {
+  private IslesAdvancementTab getTab(PlacedAdvancement advancement) {
     return this.tabs.get(advancement.getRoot().getAdvancementEntry());
   }
 

@@ -24,12 +24,12 @@ import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(value=EnvType.CLIENT)
-public class AdvancementWidget {
+public class IslesAdvancementWidget {
   private static final Identifier TITLE_BOX_TEXTURE = Identifier.ofVanilla("advancements/title_box");
   private static final int TITLE_MAX_WIDTH = 163;
   private static final int[] SPLIT_OFFSET_CANDIDATES = new int[]{0, 10, -10, 25, -25};
 
-  private final AdvancementTab tab;
+  private final IslesAdvancementTab tab;
   private final PlacedAdvancement advancement;
   private final AdvancementDisplay display;
   private final OrderedText title;
@@ -37,14 +37,14 @@ public class AdvancementWidget {
   private final List<OrderedText> description;
   private final MinecraftClient client;
   @Nullable
-  private AdvancementWidget parent;
-  private final List<AdvancementWidget> children = Lists.newArrayList();
+  private IslesAdvancementWidget parent;
+  private final List<IslesAdvancementWidget> children = Lists.newArrayList();
   @Nullable
   private AdvancementProgress progress;
   private final int x;
   private final int y;
 
-  public AdvancementWidget(AdvancementTab tab, MinecraftClient client, PlacedAdvancement advancement, AdvancementDisplay display) {
+  public IslesAdvancementWidget(IslesAdvancementTab tab, MinecraftClient client, PlacedAdvancement advancement, AdvancementDisplay display) {
     this.tab = tab;
     this.advancement = advancement;
     this.display = display;
@@ -75,7 +75,7 @@ public class AdvancementWidget {
     float f = Float.MAX_VALUE;
     for (int i : SPLIT_OFFSET_CANDIDATES) {
       List<StringVisitable> list2 = textHandler.wrapLines(text, width - i, Style.EMPTY);
-      float g = Math.abs(AdvancementWidget.getMaxWidth(textHandler, list2) - (float)width);
+      float g = Math.abs(IslesAdvancementWidget.getMaxWidth(textHandler, list2) - (float)width);
       if (g <= 10.0f) return list2;
       if (!(g < f)) continue;
       f = g;
@@ -85,7 +85,7 @@ public class AdvancementWidget {
   }
 
   @Nullable
-  private AdvancementWidget getParent(PlacedAdvancement startNode) {
+  private IslesAdvancementWidget getParent(PlacedAdvancement startNode) {
     PlacedAdvancement current = startNode.getParent();
     while (current != null) {
       if (current.getAdvancement().comp_1913().isPresent()) { // Display
@@ -119,7 +119,7 @@ public class AdvancementWidget {
         context.drawVerticalLine(j, m, k, color);
       }
     }
-    for (AdvancementWidget child : this.children) {
+    for (IslesAdvancementWidget child : this.children) {
       child.renderLines(context, x, y, border);
     }
   }
@@ -131,13 +131,13 @@ public class AdvancementWidget {
       context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, status.getFrameTexture(this.display.getFrame()), x + this.x + 3, y + this.y, 26, 26);
       context.drawItemWithoutEntity(this.display.getIcon(), x + this.x + 8, y + this.y + 5);
     }
-    for (AdvancementWidget child : this.children) {
+    for (IslesAdvancementWidget child : this.children) {
       child.renderWidgets(context, x, y);
     }
   }
 
   public void setProgress(@Nullable AdvancementProgress progress) { this.progress = progress; }
-  public void addChild(AdvancementWidget widget) { this.children.add(widget); }
+  public void addChild(IslesAdvancementWidget widget) { this.children.add(widget); }
   public int getY() { return this.y; }
   public int getX() { return this.x; }
 

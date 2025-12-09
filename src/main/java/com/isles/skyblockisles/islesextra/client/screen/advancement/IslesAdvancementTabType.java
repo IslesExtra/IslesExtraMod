@@ -1,7 +1,7 @@
 package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.WINDOW_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.WINDOW_WIDTH;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_WIDTH;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 @Environment(value = EnvType.CLIENT)
-public enum AdvancementTabType {
+public enum IslesAdvancementTabType {
   ABOVE(
       new Textures(
           Identifier.of("minecraft", "advancements/tab_above_left_selected"),
@@ -67,7 +67,7 @@ public enum AdvancementTabType {
   private final Textures selectedTextures;
   private final Textures unselectedTextures;
 
-  AdvancementTabType(Textures selected, Textures unselected, int width, int height, int tabCount) {
+  IslesAdvancementTabType(Textures selected, Textures unselected, int width, int height, int tabCount) {
     this.selectedTextures = selected;
     this.unselectedTextures = unselected;
     this.width = width;

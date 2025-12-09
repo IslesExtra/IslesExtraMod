@@ -1,10 +1,10 @@
 package com.isles.skyblockisles.islesextra.client.screen.advancement;
 
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.BORDER_WIDTH;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.BOTTOM_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.NO_OFFSET;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.PANE_SIZE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.AdvancementScreenConstants.TOP_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BORDER_WIDTH;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BOTTOM_HEIGHT;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.NO_OFFSET;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.PANE_SIZE;
+import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TOP_HEIGHT;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;
@@ -28,18 +28,18 @@ import java.util.Map;
 import java.util.Optional;
 
 @Environment(value = EnvType.CLIENT)
-public class AdvancementTab {
+public class IslesAdvancementTab {
 
   private final MinecraftClient client;
-  private final AdvancementScreen screen;
-  private final AdvancementTabType type;
+  private final IslesAdvancementScreen screen;
+  private final IslesAdvancementTabType type;
   private final int index;
   private final PlacedAdvancement root;
   private final AdvancementDisplay display;
   private final ItemStack icon;
   private final Text title;
-  private final AdvancementWidget rootWidget;
-  private final Map<AdvancementEntry, AdvancementWidget> widgets = Maps.newLinkedHashMap();
+  private final IslesAdvancementWidget rootWidget;
+  private final Map<AdvancementEntry, IslesAdvancementWidget> widgets = Maps.newLinkedHashMap();
   private double originX;
   private double originY;
   private int minPanX = Integer.MAX_VALUE;
@@ -49,8 +49,8 @@ public class AdvancementTab {
   private float alpha;
   private boolean initialized;
 
-  public AdvancementTab(MinecraftClient client, AdvancementScreen screen,
-      AdvancementTabType type, int index, PlacedAdvancement root, AdvancementDisplay display) {
+  public IslesAdvancementTab(MinecraftClient client, IslesAdvancementScreen screen,
+      IslesAdvancementTabType type, int index, PlacedAdvancement root, AdvancementDisplay display) {
     this.client = client;
     this.screen = screen;
     this.type = type;
@@ -59,7 +59,7 @@ public class AdvancementTab {
     this.display = display;
     this.icon = display.getIcon();
     this.title = display.getTitle();
-    this.rootWidget = new AdvancementWidget(this, client, root, display);
+    this.rootWidget = new IslesAdvancementWidget(this, client, root, display);
     this.addWidget(this.rootWidget, root.getAdvancementEntry());
   }
 
@@ -136,7 +136,7 @@ public class AdvancementTab {
     int j = MathHelper.floor(this.originY);
 
     if (mouseX > 0 && mouseX < (width - 18) && mouseY > 0 && mouseY < (height - 27)) {
-      for (AdvancementWidget widget : this.widgets.values()) {
+      for (IslesAdvancementWidget widget : this.widgets.values()) {
         if (!widget.shouldRender(i, j, mouseX, mouseY)) {
           continue;
         }
@@ -155,7 +155,7 @@ public class AdvancementTab {
   }
 
   @Nullable
-  public static AdvancementTab create(MinecraftClient client, AdvancementScreen screen,
+  public static IslesAdvancementTab create(MinecraftClient client, IslesAdvancementScreen screen,
       int index, PlacedAdvancement root) {
     // MAPPING FIX: comp_1913 -> display()
     Optional<AdvancementDisplay> optional = root.getAdvancement().comp_1913(); // Display
@@ -163,12 +163,12 @@ public class AdvancementTab {
       return null;
     }
 
-    for (AdvancementTabType type : AdvancementTabType.values()) {
+    for (IslesAdvancementTabType type : IslesAdvancementTabType.values()) {
       if (index >= type.getTabCount()) {
         index -= type.getTabCount();
         continue;
       }
-      return new AdvancementTab(client, screen, type, index, root, optional.get());
+      return new IslesAdvancementTab(client, screen, type, index, root, optional.get());
     }
     return null;
   }
@@ -187,12 +187,12 @@ public class AdvancementTab {
       return;
     }
 
-    AdvancementWidget widget = new AdvancementWidget(this, this.client, advancement,
+    IslesAdvancementWidget widget = new IslesAdvancementWidget(this, this.client, advancement,
         optional.get());
     this.addWidget(widget, advancement.getAdvancementEntry());
   }
 
-  private void addWidget(AdvancementWidget widget, AdvancementEntry advancement) {
+  private void addWidget(IslesAdvancementWidget widget, AdvancementEntry advancement) {
     this.widgets.put(advancement, widget);
     int i = widget.getX();
     int j = i + 28;
@@ -202,17 +202,17 @@ public class AdvancementTab {
     this.maxPanX = Math.max(this.maxPanX, j);
     this.minPanY = Math.min(this.minPanY, k);
     this.maxPanY = Math.max(this.maxPanY, l);
-    for (AdvancementWidget w : this.widgets.values()) {
+    for (IslesAdvancementWidget w : this.widgets.values()) {
       w.addToTree();
     }
   }
 
   @Nullable
-  public AdvancementWidget getWidget(AdvancementEntry advancement) {
+  public IslesAdvancementWidget getWidget(AdvancementEntry advancement) {
     return this.widgets.get(advancement);
   }
 
-  public AdvancementScreen getScreen() {
+  public IslesAdvancementScreen getScreen() {
     return this.screen;
   }
 }

@@ -5,8 +5,8 @@ import static com.isles.skyblockisles.islesextra.client.IslesExtraClient.MOD_ID;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class AdvancementScreenConstants {
-  private AdvancementScreenConstants() {}
+public class IslesAdvancementConstants {
+  private IslesAdvancementConstants() {}
 
   protected static final Identifier WINDOW_TEXTURE = Identifier.ofVanilla("textures/gui/advancements/window.png");
   protected static final Identifier RESIZE_TEXTURE = Identifier.of(MOD_ID, "textures/gui/advancements/resize.png");
