@@ -7,7 +7,8 @@ import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,6 +19,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.SynchronousResourceReloader;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CustomBlockListener implements SimpleSynchronousResourceReloadListener {
+public class CustomBlockListener implements SynchronousResourceReloader {
 
     private static final List<CustomItem> customItems = new ArrayList<>();
     private static FabricItemGroupEntries entries;
@@ -37,7 +39,7 @@ public class CustomBlockListener implements SimpleSynchronousResourceReloadListe
     public record CustomItem(String id, String display, int model) { }
 
 
-    final RegistryKey<ItemGroup> key = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("isles", "building_blocks"));
+    final RegistryKey<ItemGroup> key = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of("isles", "building_blocks"));
     public CustomBlockListener() {
         ItemGroup group = FabricItemGroup.builder()
                 .icon(() -> new ItemStack(Items.DIAMOND)).displayName(Text.of("Skyblock Isles")).build();
@@ -48,11 +50,12 @@ public class CustomBlockListener implements SimpleSynchronousResourceReloadListe
             for (CustomItem customItem : customItems) {
                 ItemStack item = new ItemStack(Items.STONE);
                 Text text = Text.of(customItem.display()).copyContentOnly().setStyle(Style.EMPTY.withItalic(false));
-                item.setCustomName(text);
-                NbtCompound nbt = item.getOrCreateNbt();
+                item.set(DataComponentTypes.CUSTOM_NAME, text);
+                var nbtComponent = item.get(DataComponentTypes.CUSTOM_DATA);
+                var nbt = (nbtComponent != null) ? nbtComponent.copyNbt() : new NbtCompound();
                 nbt.putString("MYTHIC_TYPE", customItem.id());
                 nbt.putInt("CustomModelData", customItem.model());
-                item.setNbt(nbt);
+                item.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
                 content.add(item);
             }
         });
@@ -60,15 +63,9 @@ public class CustomBlockListener implements SimpleSynchronousResourceReloadListe
 
     }
 
-    final Identifier fabricId = new Identifier("isles", "custom_block_listener");
-    @Override
-    public Identifier getFabricId() {
-        return fabricId;
-    }
-
     @Override
     public void reload(ResourceManager manager) {
-        Optional<Resource> resource = manager.getResource(new Identifier("minecraft:models/item/stone.json"));
+        Optional<Resource> resource = manager.getResource(Identifier.of("minecraft:models/item/stone.json"));
         if (resource.isPresent()) {
             try {
                 JsonObject object = JsonParser.parseReader(new InputStreamReader(resource.get().getInputStream(), StandardCharsets.UTF_8)).getAsJsonObject();

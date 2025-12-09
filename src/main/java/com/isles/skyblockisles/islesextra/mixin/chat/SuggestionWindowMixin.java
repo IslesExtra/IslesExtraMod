@@ -1,6 +1,7 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
+import com.mojang.brigadier.suggestion.Suggestion;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.util.math.Rect2i;
@@ -20,7 +21,7 @@ public class SuggestionWindowMixin {
     @Shadow @Final private Rect2i area;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    void shiftUpV2(ChatInputSuggestor chatInputSuggestor, int x, int y, int width, List suggestions, boolean narrateFirstSuggestion, CallbackInfo ci) {
+    void shiftUpV2(ChatInputSuggestor chatInputSuggestor, int x, int y, int width, List<Suggestion> suggestions, boolean narrateFirstSuggestion, CallbackInfo ci) {
         this.area.setY(area.getY()-14);
         SuggestionWindowMixin.shiftedUp = true;
     }

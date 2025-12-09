@@ -6,15 +6,17 @@ import net.minecraft.util.ActionResult;
 
 public interface PartyJoinedCallback {
 
-    Event<PartyJoinedCallback> EVENT = EventFactory.createArrayBacked(PartyJoinedCallback.class,
-            (listeners) -> (playerName) -> {
-                for (PartyJoinedCallback listener : listeners) {
-                    ActionResult result = listener.interact(playerName);
-                    if (result != ActionResult.PASS && result != ActionResult.SUCCESS) return result;
-                }
-                return ActionResult.PASS;
-            });
+  Event<PartyJoinedCallback> EVENT = EventFactory.createArrayBacked(PartyJoinedCallback.class,
+      (listeners) -> (playerName) -> {
+        for (PartyJoinedCallback listener : listeners) {
+          ActionResult result = listener.interact(playerName);
+          if (result != ActionResult.PASS && result != ActionResult.SUCCESS) {
+            return result;
+          }
+        }
+        return ActionResult.PASS;
+      });
 
-    ActionResult interact(String playerName);
+  ActionResult interact(String playerName);
 
 }
