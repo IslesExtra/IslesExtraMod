@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -43,29 +44,23 @@ public class IslesParty {
     return members;
   }
 
-  public Set<ServerPlayerEntity> getMemberEntities() {
-    MinecraftServer server = MinecraftClient.getInstance().getServer();
-    if (server == null) {
+  public Set<PlayerEntity> getMemberEntities() {
+    var world = MinecraftClient.getInstance().world;
+    if (world == null) {
       return Set.of();
     }
 
-    var memberUuids = getMembers().stream().map(GameProfile::id).collect(Collectors.toSet());
+    var memberUuids = getMembers().stream()
+        .map(GameProfile::id)
+        .collect(Collectors.toSet());
 
-    return server.getPlayerManager().getPlayerList().stream()
-        .filter(entity -> memberUuids.contains(entity.getUuid())).collect(Collectors.toSet());
+    return world.getPlayers().stream()
+        .filter(entity -> memberUuids.contains(entity.getUuid()))
+        .collect(Collectors.toSet());
   }
 
   public void clearMembers() {
     members.clear();
-  }
-
-  public void highlightMembers() {
-    if (getMembers().isEmpty() || MinecraftClient.getInstance().getNetworkHandler() == null) {
-      return;
-    }
-    getMemberEntities().forEach(player -> {
-      //TODO: Apply Glow Effect
-    });
   }
 
   public void lowHealthWarning() {

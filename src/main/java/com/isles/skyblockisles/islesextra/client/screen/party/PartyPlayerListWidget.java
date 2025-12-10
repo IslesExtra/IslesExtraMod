@@ -23,7 +23,6 @@ extends ElementListWidget<PartyPlayerListEntry> {
     public PartyPlayerListWidget(MinecraftClient client, int width, int height, int y, int itemHeight, PartyScreen parent) {
         super(client, width, height, y, itemHeight);
         this.parent = parent;
-        this.setRenderBackground(false);
     }
 
     @Override
@@ -43,8 +42,8 @@ extends ElementListWidget<PartyPlayerListEntry> {
         for (UUID uUID : playerUuids) {
             PlayerListEntry playerListEntry = clientPlayNetworkHandler.getPlayerListEntry(uUID);
             if (playerListEntry == null) continue;
-            if (playerListEntry.getProfile().getName().isEmpty()) continue;
-            if ((int) playerListEntry.getProfile().getName().charAt(0) == 167) continue; // ignore npc
+            if (playerListEntry.getProfile().name().isEmpty()) continue;
+            if ((int) playerListEntry.getProfile().name().charAt(0) == 167) continue; // ignore npc
             entriesByUuids.put(uUID, new PartyPlayerListEntry(this.client, playerListEntry, playerListEntry::getSkinTextures, this.parent));
         }
     }
@@ -52,17 +51,15 @@ extends ElementListWidget<PartyPlayerListEntry> {
     private void refresh(Collection<PartyPlayerListEntry> players, double scrollAmount) {
         this.players.clear();
         this.players.addAll(players);
-        // TODO; reimpl
         //this.sortPlayers();
         this.filterPlayers();
         this.replaceEntries(this.players);
-        this.setScrollAmount(scrollAmount);
+        this.setScrollY(scrollAmount);
     }
 
     private void filterPlayers() {
         if (this.currentSearch != null) {
             this.players.removeIf(player -> !player.getName().toLowerCase(Locale.ROOT).contains(this.currentSearch));
-            // remove isles npcs
             this.players.removeIf(player -> player.getName().contains("slot_") || player.getName().isEmpty());
             this.replaceEntries(this.players);
         }

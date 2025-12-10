@@ -11,14 +11,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public class EntityMixin {
 
-  @Inject(method = "getTeamColorValue", at = @At("HEAD"), cancellable = true)
-  void recolorGlow(CallbackInfoReturnable<Integer> cir) {
+  @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
+  void recolorGlow(CallbackInfoReturnable<Boolean> cir) {
     Entity entity = (Entity) (Object) this;
     if (!(entity instanceof PlayerEntity playerEntity)) {
       return;
     }
+
     if (IslesParty.INSTANCE.isMember(playerEntity.getGameProfile())) {
-      cir.setReturnValue(0x3ca4e6);
+      cir.setReturnValue(true);
     }
   }
 }

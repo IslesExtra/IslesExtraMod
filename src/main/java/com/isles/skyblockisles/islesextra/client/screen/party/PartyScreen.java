@@ -1,14 +1,16 @@
 package com.isles.skyblockisles.islesextra.client.screen.party;
 
-import com.isles.skyblockisles.islesextra.general.party.IslesParty;
+import com.isles.skyblockisles.islesextra.party.IslesParty;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.MutableText;
@@ -22,8 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Environment(value=EnvType.CLIENT)
-public class PartyScreen
-extends Screen {
+public class PartyScreen extends Screen {
 
     /*
     Possible textures usable for party related stuff:
@@ -32,8 +33,8 @@ extends Screen {
     - minecraft\textures\gui\sprites\icon\draft_report (envelope!)
      */
 
-    private static final Identifier BACKGROUND_TEXTURE = new Identifier("social_interactions/background");
-    private static final Identifier SEARCH_ICON_TEXTURE = new Identifier("icon/search");
+    private static final Identifier BACKGROUND_TEXTURE = Identifier.ofVanilla("social_interactions/background");
+    private static final Identifier SEARCH_ICON_TEXTURE = Identifier.ofVanilla("icon/search");
     private static final Text ALL_TAB_TITLE = Text.translatable("gui.socialInteractions.tab_all");
     private static final Text PARTY_TAB_TITLE = Text.literal("Party");
     private static final Text SELECTED_ALL_TAB_TITLE = ALL_TAB_TITLE.copyContentOnly().formatted(Formatting.UNDERLINE);
@@ -115,14 +116,14 @@ extends Screen {
                 this.allTabButton.setMessage(SELECTED_ALL_TAB_TITLE);
                 Collection<UUID> collection = this.client.player.networkHandler.getPlayerUuids();
                 collection.removeIf(uuid -> uuid.getMostSignificantBits() == 0);
-                this.playerList.update(collection, this.playerList.getScrollAmount());
+                this.playerList.update(collection, this.playerList.getScrollY());
                 break;
             }
             case PARTY: {
                 this.hiddenTabButton.setMessage(SELECTED_PARTY_TAB_TITLE);
-                Set<UUID> set = IslesParty.getMembers().stream().map(GameProfile::getId).collect(Collectors.toSet());
+                Set<UUID> set = IslesParty.INSTANCE.getMembers().stream().map(GameProfile::id).collect(Collectors.toSet());
                 if (!set.isEmpty()) set.add(client.player.getUuid());
-                this.playerList.update(set, this.playerList.getScrollAmount());
+                this.playerList.update(set, this.playerList.getScrollY());
                 break;
             }
         }
@@ -132,8 +133,8 @@ extends Screen {
     public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
         int i = this.getSearchBoxX() + 3;
         super.renderBackground(context, mouseX, mouseY, delta);
-        context.drawGuiTexture(BACKGROUND_TEXTURE, i, 64, 236, this.getScreenHeight() + 16);
-        context.drawGuiTexture(SEARCH_ICON_TEXTURE, i + 10, 76, 12, 12);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE, i, 64, 236, this.getScreenHeight() + 16);
+        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, SEARCH_ICON_TEXTURE, i + 10, 76, 12, 12);
     }
 
     @Override
@@ -155,13 +156,13 @@ extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         if (this.client == null) return false;
-        if (!this.searchBox.isFocused() && this.client.options.socialInteractionsKey.matchesKey(keyCode, scanCode)) {
+        if (!this.searchBox.isFocused() && this.client.options.socialInteractionsKey.matchesKey(input)) {
             this.client.setScreen(null);
             return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(input);
     }
 
     @Override
@@ -180,8 +181,8 @@ extends Screen {
     public int getFilteredPlayerCount() {
         if (this.client == null) return 0;
         Collection<PlayerListEntry> list = Objects.requireNonNull(client.getNetworkHandler()).getPlayerList();
-        list.removeIf(player -> player.getProfile().getName().contains("slot_") || player.getProfile().getName().isEmpty());
-        list.removeIf(player -> (int) player.getProfile().getName().charAt(0) == 167);
+        list.removeIf(player -> player.getProfile().name().contains("slot_") || player.getProfile().name().isEmpty());
+        list.removeIf(player -> (int) player.getProfile().name().charAt(0) == 167);
         return list.size();
     }
 

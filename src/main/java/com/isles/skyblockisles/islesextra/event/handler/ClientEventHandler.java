@@ -6,7 +6,7 @@ import com.isles.skyblockisles.islesextra.bossrush.turtle.CoconutBombWarning;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.constants.IslesBoss;
 import com.isles.skyblockisles.islesextra.constants.IslesKeybindings;
-import com.isles.skyblockisles.islesextra.party.PartyManagmentScreen;
+import com.isles.skyblockisles.islesextra.client.screen.party.PartyManagmentScreen;
 import com.isles.skyblockisles.islesextra.party.IslesParty;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
