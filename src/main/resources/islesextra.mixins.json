@@ -4,6 +4,7 @@
   "package": "com.isles.skyblockisles.islesextra.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "EntityMixin",
     "ItemStackMixin",
     "chat.CommandSourceMixin"
   ],
@@ -13,6 +14,7 @@
     "MinecraftClientMixin",
     "PlayerListHudMixin",
     "TitleScreenMixin",
+    "BowMixin",
     "chat.ChatHudMixin",
     "chat.ChatScreenMixin",
     "chat.ClientCommandSourceMixin",

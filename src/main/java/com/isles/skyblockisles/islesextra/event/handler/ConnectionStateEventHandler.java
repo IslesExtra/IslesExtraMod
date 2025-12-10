@@ -4,6 +4,7 @@ import com.isles.skyblockisles.islesextra.client.IslesClientState;
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
+import com.isles.skyblockisles.islesextra.party.IslesParty;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.network.ServerInfo;
 
@@ -26,6 +27,7 @@ public final class ConnectionStateEventHandler implements EventHandler {
     ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {
       if (IslesClientState.isOnIsles()) {
         LeftIslesCallback.EVENT.invoker().interact();
+        IslesParty.INSTANCE.clearMembers();
       }
     }));
   }
