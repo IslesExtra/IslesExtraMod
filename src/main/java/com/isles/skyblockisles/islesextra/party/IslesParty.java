@@ -4,14 +4,10 @@ import com.isles.skyblockisles.islesextra.constants.IslesRank;
 import com.isles.skyblockisles.islesextra.constants.MessageSender;
 import com.mojang.authlib.GameProfile;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.RunArgs.Game;
 import net.minecraft.client.network.PlayerListEntry;
-import java.util.List;
-import java.util.Objects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -39,6 +35,10 @@ public class IslesParty {
     members.remove(profile);
   }
 
+  public boolean isMember(GameProfile profile) {
+    return members.contains(profile);
+  }
+
   public Set<GameProfile> getMembers() {
     return members;
   }
@@ -59,7 +59,7 @@ public class IslesParty {
     members.clear();
   }
 
-  public void hightlightMembers() {
+  public void highlightMembers() {
     if (getMembers().isEmpty() || MinecraftClient.getInstance().getNetworkHandler() == null) {
       return;
     }

@@ -44,7 +44,7 @@ public final class IslesEventHandler implements EventHandler {
     });
 
     IslesLocationChangedCallback.EVENT.register( location -> {
-      IslesParty.INSTANCE.hightlightMembers();
+      IslesParty.INSTANCE.highlightMembers();
       return ActionResult.PASS;
     });
 

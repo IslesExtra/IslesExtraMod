@@ -28,7 +28,6 @@ public class MinecraftClientMixin {
   public ClientPlayerEntity player;
 
   @ModifyVariable(method = "setScreen", at = @At("HEAD"), argsOnly = true)
-    // intercept mojang goofy advancement screen and replace with cool as fuck advancement screen
   Screen setScreen(Screen screen) {
     if (screen == null) {
       return null;
@@ -45,8 +44,6 @@ public class MinecraftClientMixin {
     }
 
     String screenName = screen.getTitle().getString();
-
-    // call event
     OpenedIslesGuiCallback.EVENT.invoker().interact(IslesGui.guiFromScreenName(screenName));
 
     return screen;
