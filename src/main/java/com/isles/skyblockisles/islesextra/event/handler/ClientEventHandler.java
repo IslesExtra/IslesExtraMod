@@ -37,6 +37,7 @@ public final class ClientEventHandler implements EventHandler {
         switch (boss) {
           case FROG -> StomachExplosionWarning.init();
           case TURTLE -> CoconutBombWarning.init();
+          default -> {}
         }
       });
 
