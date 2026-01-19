@@ -12,6 +12,7 @@ plugins {
 repositories {
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://maven.wispforest.io") }
     maven { url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") }
 }
 
@@ -20,12 +21,16 @@ dependencies {
     mappings(libs.fabric.mappings)
     modImplementation(libs.fabric.loader)
     modImplementation(libs.fabric.api)
+    // modImplementation(libs.owo.lib)
 
     modRuntimeOnly(libs.dev.auth)
 
     implementation(libs.discord.ipc)
     implementation(libs.jackson.databind)
     implementation(platform(libs.log4j))
+
+    // annotationProcessor(libs.owo.lib)
+    // include(libs.owo.lib)
 }
 
 tasks {
