@@ -12,13 +12,11 @@ import com.isles.skyblockisles.islesextra.event.handler.ConnectionStateEventHand
 import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
 import com.isles.skyblockisles.islesextra.event.handler.IslesEventHandler;
 import com.isles.skyblockisles.islesextra.event.handler.ItemEventHandler;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.resource.ResourceType;
@@ -33,7 +31,7 @@ public class IslesExtraClient implements ClientModInitializer {
   @Override
   public void onInitializeClient() {
     registerPayloads();
-    registerKeybinds();
+    IslesKeybindings.register();
     registerEventHandlers();
     registerResourceReloaders();
     DiscordHandler.start();
@@ -64,9 +62,5 @@ public class IslesExtraClient implements ClientModInitializer {
     PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
     PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
     PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
-  }
-
-  private void registerKeybinds() {
-    Arrays.stream(IslesKeybindings.values()).forEach(keybind -> KeyBindingHelper.registerKeyBinding(keybind.getBinding()));
   }
 }

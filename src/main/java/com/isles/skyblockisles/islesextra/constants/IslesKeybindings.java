@@ -2,6 +2,7 @@ package com.isles.skyblockisles.islesextra.constants;
 
 import static com.isles.skyblockisles.islesextra.client.IslesExtraClient.MOD_ID;
 
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
@@ -35,5 +36,11 @@ public enum IslesKeybindings {
 
   public KeyBinding getBinding() {
     return binding;
+  }
+
+  public static void register() {
+    for (IslesKeybindings keybind : IslesKeybindings.values()) {
+      KeyBindingHelper.registerKeyBinding(keybind.getBinding());
+    }
   }
 }
