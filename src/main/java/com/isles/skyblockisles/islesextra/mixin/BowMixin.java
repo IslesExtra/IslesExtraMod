@@ -1,7 +1,8 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
-import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.constants.MessageSender;
+import com.isles.skyblockisles.islesextra.event.handler.IslesHudHandler;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

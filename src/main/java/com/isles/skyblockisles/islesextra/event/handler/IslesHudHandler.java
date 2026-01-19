@@ -1,8 +1,8 @@
-package com.isles.skyblockisles.islesextra.client.screen;
+package com.isles.skyblockisles.islesextra.event.handler;
 
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
-import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
+
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gl.RenderPipelines;

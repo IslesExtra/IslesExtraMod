@@ -4,15 +4,9 @@ import com.isles.skyblockisles.islesextra.client.discord.DiscordHandler;
 import com.isles.skyblockisles.islesextra.client.discord.DiscordRPPayload;
 import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
 import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
-import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.constants.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.constants.IslesKeybindings;
-import com.isles.skyblockisles.islesextra.event.handler.ClientEventHandler;
-import com.isles.skyblockisles.islesextra.event.handler.ConnectionStateEventHandler;
 import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
-import com.isles.skyblockisles.islesextra.event.handler.IslesEventHandler;
-import com.isles.skyblockisles.islesextra.event.handler.ItemEventHandler;
-import java.util.List;
 import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -32,20 +26,9 @@ public class IslesExtraClient implements ClientModInitializer {
   public void onInitializeClient() {
     registerPayloads();
     IslesKeybindings.register();
-    registerEventHandlers();
+    EventHandler.registerAll();
     registerResourceReloaders();
     DiscordHandler.start();
-  }
-
-  private void registerEventHandlers() {
-    var handlers = List.of(
-        new ClientEventHandler(),
-        new ConnectionStateEventHandler(),
-        new IslesEventHandler(),
-        new ItemEventHandler(),
-        new IslesHudHandler());
-
-    handlers.forEach(EventHandler::register);
   }
 
   private void registerResourceReloaders() {

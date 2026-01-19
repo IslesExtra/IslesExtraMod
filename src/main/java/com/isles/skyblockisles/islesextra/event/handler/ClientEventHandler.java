@@ -3,7 +3,6 @@ package com.isles.skyblockisles.islesextra.event.handler;
 import com.isles.skyblockisles.islesextra.bossrush.dragon.MagmaBombWarning;
 import com.isles.skyblockisles.islesextra.bossrush.frog.StomachExplosionWarning;
 import com.isles.skyblockisles.islesextra.bossrush.turtle.CoconutBombWarning;
-import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.constants.IslesBoss;
 import com.isles.skyblockisles.islesextra.constants.IslesKeybindings;
 import com.isles.skyblockisles.islesextra.client.screen.party.PartyManagmentScreen;
