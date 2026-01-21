@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.constants;
+package com.isles.skyblockisles.islesextra.bossrush;
 
 import java.util.Arrays;
 import java.util.Optional;

@@ -1,9 +1,11 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
+import com.isles.skyblockisles.islesextra.chat.ChatPreview.RenderData;
+import com.isles.skyblockisles.islesextra.chat.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
 import com.isles.skyblockisles.islesextra.resources.EmojiListener;
-import com.isles.skyblockisles.islesextra.constants.ChatPreviewPayload;
+
 import java.util.stream.Collectors;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
@@ -55,10 +57,8 @@ public abstract class ChatScreenMixin {
       return;
     }
 
-    ChatPreview.RenderData renderData = previewBackground.computeRenderData(
-        Util.getMeasuringTimeMs(), previewText);
-    renderPreview(context, renderData.preview(), renderData.alpha(), true
-        /*client.getProfileKeys().isExpired() != null*/); // I have no idea wtf this commented shit is but keeping it here just in case
+    RenderData renderData = previewBackground.computeRenderData(Util.getMeasuringTimeMs(), previewText);
+    renderPreview(context, renderData.preview(), renderData.alpha(), true);
   }
 
   @Inject(method = "onChatFieldUpdate", at = @At("TAIL"))

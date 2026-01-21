@@ -28,27 +28,27 @@ public class ChatPreview {
         this.lastRenderTime = currentTime;
     }
 
-    public ChatPreview.RenderData computeRenderData(long currentTime, @Nullable Text previewText) {
+    public RenderData computeRenderData(long currentTime, @Nullable Text previewText) {
         long l = currentTime - this.lastRenderTime;
         this.lastRenderTime = currentTime;
         return previewText != null ? this.computeRenderDataWithText(l, previewText) : this.computeRenderDataWithoutText(l);
     }
 
-    private ChatPreview.RenderData computeRenderDataWithText(long timeDelta, Text previewText) {
+    private RenderData computeRenderDataWithText(long timeDelta, Text previewText) {
         this.previewText = previewText;
         if (this.currentFadeTime < 200L) {
             this.currentFadeTime = Math.min(this.currentFadeTime + timeDelta, 200L);
         }
 
-        return new ChatPreview.RenderData(previewText, toAlpha(this.currentFadeTime));
+        return new RenderData(previewText, toAlpha(this.currentFadeTime));
     }
 
-    private ChatPreview.RenderData computeRenderDataWithoutText(long timeDelta) {
+    private RenderData computeRenderDataWithoutText(long timeDelta) {
         if (this.currentFadeTime > 0L) {
             this.currentFadeTime = Math.max(this.currentFadeTime - timeDelta, 0L);
         }
 
-        return this.currentFadeTime > 0L ? new ChatPreview.RenderData(this.previewText, toAlpha(this.currentFadeTime)) : ChatPreview.RenderData.EMPTY;
+        return this.currentFadeTime > 0L ? new RenderData(this.previewText, toAlpha(this.currentFadeTime)) : RenderData.EMPTY;
     }
 
     private static float toAlpha(long timeDelta) {
@@ -56,7 +56,7 @@ public class ChatPreview {
     }
 
     public record RenderData(@Nullable Text preview, float alpha) {
-        public static final ChatPreview.RenderData EMPTY = new ChatPreview.RenderData(null, 0.0F);
+        public static final RenderData EMPTY = new RenderData(null, 0.0F);
 
         @Nullable
         public Text preview() {

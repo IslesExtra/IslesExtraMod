@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.constants;
+package com.isles.skyblockisles.islesextra.chat;
 
 import com.isles.skyblockisles.islesextra.IslesExtraClient;
 

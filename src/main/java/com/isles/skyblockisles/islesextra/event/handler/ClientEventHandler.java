@@ -1,10 +1,11 @@
 package com.isles.skyblockisles.islesextra.event.handler;
 
+import com.isles.skyblockisles.islesextra.bossrush.IslesBoss;
 import com.isles.skyblockisles.islesextra.bossrush.dragon.MagmaBombWarning;
 import com.isles.skyblockisles.islesextra.bossrush.frog.StomachExplosionWarning;
 import com.isles.skyblockisles.islesextra.bossrush.turtle.CoconutBombWarning;
-import com.isles.skyblockisles.islesextra.constants.IslesBoss;
-import com.isles.skyblockisles.islesextra.constants.IslesKeybindings;
+import com.isles.skyblockisles.islesextra.constants.IslesKeybinding;
+import com.isles.skyblockisles.islesextra.constants.IslesKeybindingsManager;
 import com.isles.skyblockisles.islesextra.screen.party.PartyManagmentScreen;
 import com.isles.skyblockisles.islesextra.party.IslesParty;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
@@ -24,7 +25,7 @@ public final class ClientEventHandler implements EventHandler {
         return;
       }
 
-      if (IslesKeybindings.OPEN_PARTY_SCREEN.getBinding().isPressed()) {
+      if (IslesKeybindingsManager.getBinding(IslesKeybinding.OPEN_PARTY_SCREEN).isPressed()) {
         client.setScreen(new PartyManagmentScreen(Text.translatable("party_managment.islesextra.name")));
       }
 

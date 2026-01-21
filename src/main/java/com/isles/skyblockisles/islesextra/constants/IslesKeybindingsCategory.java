@@ -1,20 +1,15 @@
 package com.isles.skyblockisles.islesextra.constants;
 
-import static com.isles.skyblockisles.islesextra.IslesExtraClient.MOD_ID;
+public enum IslesKeybindingsCategory {
+  GENERAL("general");
 
-import net.minecraft.client.option.KeyBinding.Category;
-import net.minecraft.util.Identifier;
+  private final String name;
 
-enum IslesKeybindingsCategory {
-  GENERAL(Category.create(Identifier.of(MOD_ID, "general")));
-
-  private final Category category;
-
-  IslesKeybindingsCategory(Category category) {
-    this.category = category;
+  IslesKeybindingsCategory(String name) {
+    this.name = name;
   }
 
-  public Category getCategory() {
-    return this.category;
+  public String getName() {
+    return name;
   }
 }

@@ -4,10 +4,9 @@ import com.isles.skyblockisles.islesextra.discord.DiscordHandler;
 import com.isles.skyblockisles.islesextra.discord.DiscordRPPayload;
 import com.isles.skyblockisles.islesextra.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.resources.CustomBlockListener;
-import com.isles.skyblockisles.islesextra.constants.ChatPreviewPayload;
-import com.isles.skyblockisles.islesextra.constants.IslesKeybindings;
+import com.isles.skyblockisles.islesextra.chat.ChatPreviewPayload;
+import com.isles.skyblockisles.islesextra.constants.IslesKeybindingsManager;
 import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
-import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,7 +24,7 @@ public class IslesExtraClient implements ClientModInitializer {
   @Override
   public void onInitializeClient() {
     registerPayloads();
-    IslesKeybindings.register();
+    IslesKeybindingsManager.register();
     EventHandler.registerAll();
     registerResourceReloaders();
     DiscordHandler.start();
@@ -40,7 +39,7 @@ public class IslesExtraClient implements ClientModInitializer {
 
   private void registerPayloads() {
     PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
-    // PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
-    // PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+    PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+    PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
   }
 }

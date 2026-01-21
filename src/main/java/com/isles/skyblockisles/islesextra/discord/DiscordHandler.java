@@ -21,8 +21,7 @@ public class DiscordHandler {
 
   private static final IPCClient discordClient = new IPCClient(1128526559016394874L);
   private static final JsonObject BUTTON = createButton();
-  private static final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(
-      System.currentTimeMillis());
+  private static final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(System.currentTimeMillis());
 
   private static boolean ready = false;
   private static boolean active;
@@ -44,8 +43,6 @@ public class DiscordHandler {
       return ActionResult.PASS;
     });
 
-    // TODO: test this
-    // Format: A single string representing two lines, seperated by ";"
     ClientPlayNetworking.registerGlobalReceiver(DiscordRPPayload.ID, (payload, context) -> {
       String s = payload.text();
       String[] lines = s.split(";");
