@@ -21,12 +21,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.KeyBinding.Category;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class IslesExtraClient implements ClientModInitializer {

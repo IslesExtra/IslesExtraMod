@@ -1,7 +1,6 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
 import com.isles.skyblockisles.islesextra.client.IslesClientState;
-import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

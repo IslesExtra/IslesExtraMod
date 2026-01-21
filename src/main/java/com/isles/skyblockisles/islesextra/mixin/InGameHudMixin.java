@@ -1,7 +1,6 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
 import com.isles.skyblockisles.islesextra.client.IslesClientState;
-import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;

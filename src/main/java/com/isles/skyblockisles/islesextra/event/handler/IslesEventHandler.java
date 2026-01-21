@@ -7,7 +7,6 @@ import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;
-import com.isles.skyblockisles.islesextra.party.IslesParty;
 import net.minecraft.util.ActionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

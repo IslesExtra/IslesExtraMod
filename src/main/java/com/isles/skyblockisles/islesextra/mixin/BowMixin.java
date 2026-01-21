@@ -2,7 +2,6 @@ package com.isles.skyblockisles.islesextra.mixin;
 
 import com.isles.skyblockisles.islesextra.client.screen.IslesHudHandler;
 import com.isles.skyblockisles.islesextra.constants.MessageSender;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +13,6 @@ import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
