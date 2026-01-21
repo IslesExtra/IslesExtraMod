@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen.party;
+package com.isles.skyblockisles.islesextra.screen.party;
 
 import com.google.common.collect.Lists;
 import net.fabricmc.api.EnvType;

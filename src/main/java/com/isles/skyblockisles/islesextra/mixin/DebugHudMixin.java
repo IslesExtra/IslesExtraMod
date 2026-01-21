@@ -1,6 +1,6 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
-import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
+import com.isles.skyblockisles.islesextra.resources.CustomBlockListener;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

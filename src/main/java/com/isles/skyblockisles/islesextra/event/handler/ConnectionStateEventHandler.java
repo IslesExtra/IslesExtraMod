@@ -1,6 +1,6 @@
 package com.isles.skyblockisles.islesextra.event.handler;
 
-import com.isles.skyblockisles.islesextra.client.IslesClientState;
+import com.isles.skyblockisles.islesextra.IslesClientState;
 import com.isles.skyblockisles.islesextra.event.JoinedIslesCallback;
 import com.isles.skyblockisles.islesextra.event.LeftIslesCallback;
 import com.isles.skyblockisles.islesextra.event.SwitchedIslesServerCallback;

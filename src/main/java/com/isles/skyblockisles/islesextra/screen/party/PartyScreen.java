@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen.party;
+package com.isles.skyblockisles.islesextra.screen.party;
 
 import com.isles.skyblockisles.islesextra.party.IslesParty;
 import com.mojang.authlib.GameProfile;

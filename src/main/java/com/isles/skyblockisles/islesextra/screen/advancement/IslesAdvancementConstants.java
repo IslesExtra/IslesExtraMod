@@ -1,6 +1,6 @@
-package com.isles.skyblockisles.islesextra.client.screen.advancement;
+package com.isles.skyblockisles.islesextra.screen.advancement;
 
-import static com.isles.skyblockisles.islesextra.client.IslesExtraClient.MOD_ID;
+import static com.isles.skyblockisles.islesextra.IslesExtraClient.MOD_ID;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;

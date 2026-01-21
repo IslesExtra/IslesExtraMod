@@ -1,11 +1,12 @@
 package com.isles.skyblockisles.islesextra.mixin.chat;
 
-import com.isles.skyblockisles.islesextra.client.IslesClientState;
 import net.minecraft.client.gui.hud.ChatHud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.isles.skyblockisles.islesextra.IslesClientState;
 
 @Mixin(ChatHud.class)
 public class ChatHudMixin {

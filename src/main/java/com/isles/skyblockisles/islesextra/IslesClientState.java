@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client;
+package com.isles.skyblockisles.islesextra;
 
 public class IslesClientState {
 

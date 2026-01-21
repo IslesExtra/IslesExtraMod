@@ -1,7 +1,7 @@
-package com.isles.skyblockisles.islesextra.client.screen.advancement;
+package com.isles.skyblockisles.islesextra.screen.advancement;
 
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.WINDOW_WIDTH;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.WINDOW_WIDTH;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.WINDOW_HEIGHT;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

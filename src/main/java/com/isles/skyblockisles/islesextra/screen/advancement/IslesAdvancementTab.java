@@ -1,10 +1,10 @@
-package com.isles.skyblockisles.islesextra.client.screen.advancement;
+package com.isles.skyblockisles.islesextra.screen.advancement;
 
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BORDER_WIDTH;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.BOTTOM_HEIGHT;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.NO_OFFSET;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.PANE_SIZE;
-import static com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementConstants.TOP_HEIGHT;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.BORDER_WIDTH;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.BOTTOM_HEIGHT;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.NO_OFFSET;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.PANE_SIZE;
+import static com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementConstants.TOP_HEIGHT;
 
 import com.google.common.collect.Maps;
 import net.fabricmc.api.EnvType;

@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen.party;
+package com.isles.skyblockisles.islesextra.screen.party;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;

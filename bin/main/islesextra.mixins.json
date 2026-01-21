@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.isles.skyblockisles.islesextra.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "EntityMixin",
+    "ItemStackMixin",
+    "chat.CommandSourceMixin"
+  ],
+  "client": [
+    "DebugHudMixin",
+    "InGameHudMixin",
+    "MinecraftClientMixin",
+    "PlayerListHudMixin",
+    "TitleScreenMixin",
+    "BowMixin",
+    "chat.ChatHudMixin",
+    "chat.ChatScreenMixin",
+    "chat.ClientCommandSourceMixin",
+    "chat.CompletingSuggestionsAccessor",
+    "chat.SuggestionMixin",
+    "chat.SuggestionWindowMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

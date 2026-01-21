@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.screen.advancement;
+package com.isles.skyblockisles.islesextra.screen.advancement;
 
 import com.google.common.collect.Lists;
 import java.util.List;

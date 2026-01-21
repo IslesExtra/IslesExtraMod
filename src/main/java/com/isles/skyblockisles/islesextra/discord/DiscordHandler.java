@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.discord;
+package com.isles.skyblockisles.islesextra.discord;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

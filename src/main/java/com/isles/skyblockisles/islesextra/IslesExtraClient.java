@@ -1,9 +1,9 @@
-package com.isles.skyblockisles.islesextra.client;
+package com.isles.skyblockisles.islesextra;
 
-import com.isles.skyblockisles.islesextra.client.discord.DiscordHandler;
-import com.isles.skyblockisles.islesextra.client.discord.DiscordRPPayload;
-import com.isles.skyblockisles.islesextra.client.resources.CustomBlockListener;
-import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
+import com.isles.skyblockisles.islesextra.discord.DiscordHandler;
+import com.isles.skyblockisles.islesextra.discord.DiscordRPPayload;
+import com.isles.skyblockisles.islesextra.resources.EmojiListener;
+import com.isles.skyblockisles.islesextra.resources.CustomBlockListener;
 import com.isles.skyblockisles.islesextra.constants.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.constants.IslesKeybindings;
 import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
@@ -32,18 +32,15 @@ public class IslesExtraClient implements ClientModInitializer {
   }
 
   private void registerResourceReloaders() {
-    var registerer = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
-    var reloaders = Map.of(
-        "emoji_listener", new EmojiListener(),
-        "custom_block_listener", new CustomBlockListener());
+    ResourceLoader loader = ResourceLoader.get(ResourceType.CLIENT_RESOURCES);
 
-    reloaders.forEach(
-        (id, reloader) -> registerer.registerReloader(Identifier.of(ISLES_ID, id), reloader));
+    loader.registerReloader(Identifier.of(ISLES_ID, "emoji_listener"), new EmojiListener());
+    loader.registerReloader(Identifier.of(ISLES_ID, "custom_block_listener"), new CustomBlockListener());
   }
 
   private void registerPayloads() {
     PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
-    PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
-    PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+    // PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
+    // PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
   }
 }

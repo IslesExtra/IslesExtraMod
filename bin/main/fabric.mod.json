@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "islesextra",
+  "version": "${version}",
+  "name": "IslesExtra",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.isles.skyblockisles.islesextra.client.IslesExtraClient"
+    ]
+  },
+  "mixins": [
+    "islesextra.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "fabric": "*",
+    "minecraft": "1.21.x",
+    "java": ">=21"
+  }
+}

@@ -2,7 +2,7 @@ package com.isles.skyblockisles.islesextra.mixin.chat;
 
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
-import com.isles.skyblockisles.islesextra.client.resources.EmojiListener;
+import com.isles.skyblockisles.islesextra.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.constants.ChatPreviewPayload;
 import java.util.stream.Collectors;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

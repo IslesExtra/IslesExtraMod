@@ -1,4 +1,4 @@
-package com.isles.skyblockisles.islesextra.client.resources;
+package com.isles.skyblockisles.islesextra.resources;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

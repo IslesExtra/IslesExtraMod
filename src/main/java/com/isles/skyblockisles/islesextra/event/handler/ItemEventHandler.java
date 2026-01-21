@@ -1,8 +1,10 @@
 package com.isles.skyblockisles.islesextra.event.handler;
 
-import com.isles.skyblockisles.islesextra.client.CustomText;
-import com.isles.skyblockisles.islesextra.client.IslesExtraClient;
 import java.util.Optional;
+
+import com.isles.skyblockisles.islesextra.CustomText;
+import com.isles.skyblockisles.islesextra.IslesExtraClient;
+
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.component.DataComponentTypes;
 

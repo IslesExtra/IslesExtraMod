@@ -1,11 +1,12 @@
 package com.isles.skyblockisles.islesextra.constants;
 
-import static com.isles.skyblockisles.islesextra.client.IslesExtraClient.MOD_ID;
-
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
+
+import static com.isles.skyblockisles.islesextra.IslesExtraClient.MOD_ID;
+
 import org.lwjgl.glfw.GLFW;
 
 public enum IslesKeybindings {

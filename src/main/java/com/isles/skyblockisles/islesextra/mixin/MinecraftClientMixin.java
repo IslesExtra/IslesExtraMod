@@ -1,7 +1,7 @@
 package com.isles.skyblockisles.islesextra.mixin;
 
-import com.isles.skyblockisles.islesextra.client.IslesClientState;
-import com.isles.skyblockisles.islesextra.client.screen.advancement.IslesAdvancementScreen;
+import com.isles.skyblockisles.islesextra.IslesClientState;
+import com.isles.skyblockisles.islesextra.screen.advancement.IslesAdvancementScreen;
 import com.isles.skyblockisles.islesextra.constants.IslesGui;
 import com.isles.skyblockisles.islesextra.event.IslesLocationChangedCallback;
 import com.isles.skyblockisles.islesextra.event.OpenedIslesGuiCallback;
