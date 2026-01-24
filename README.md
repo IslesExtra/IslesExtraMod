@@ -9,7 +9,6 @@ This mod enhancew the Skyblock Isles experience in ways that the server itself c
 ## Features
 
 - Discord Rich Presence for when you play on the Isles Server
-- Advancement screen rework - Resizable - Draggable - Control Options
 - Chat Autocomplete: adds autocomplete support for Isles emotes
 - Chat Preview: reimplements the chat feature from an older minecraft version
 - Frog Stomach Platform Warning
