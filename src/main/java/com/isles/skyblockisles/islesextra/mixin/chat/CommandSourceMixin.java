@@ -11,17 +11,19 @@ public interface CommandSourceMixin {
 
     @Inject(method = "shouldSuggest", at = @At("HEAD"), cancellable = true)
     private static void shouldSuggest(String remaining, String candidate, CallbackInfoReturnable<Boolean> cir) {
-        if (candidate.endsWith(":")) {
-            candidate = candidate.split(" ")[1];
-            if (candidate.startsWith(remaining)) cir.setReturnValue(true);
-            else if (candidate.substring(1, candidate.length()-1).contains(remaining.substring(1))) cir.setReturnValue(true);
-            else cir.setReturnValue(false);
+        if (remaining.isEmpty()) {
+            cir.setReturnValue(true);
+            return;
+        }
+        if (candidate.endsWith(":") && candidate.startsWith(":")) {
+            String cleanRemaining = remaining.startsWith(":") ? remaining.substring(1) : remaining;
+            String cleanCandidate = candidate.substring(1, candidate.length() - 1);
+            cir.setReturnValue(cleanCandidate.toLowerCase().contains(cleanRemaining.toLowerCase()));
         }
         else if (remaining.startsWith("@")) {
-            candidate = candidate.substring(1);
-            if (candidate.startsWith(remaining)) cir.setReturnValue(true);
-            else if (candidate.contains(remaining.substring(1))) cir.setReturnValue(true);
-            else cir.setReturnValue(false);
+            String query = remaining.length() > 1 ? remaining.substring(1).toLowerCase() : "";
+            String target = candidate.toLowerCase();
+            cir.setReturnValue(query.isEmpty() || target.contains(query) || target.startsWith(remaining.toLowerCase()));
         }
 
     }

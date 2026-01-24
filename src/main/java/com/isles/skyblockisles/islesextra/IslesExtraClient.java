@@ -4,7 +4,6 @@ import com.isles.skyblockisles.islesextra.discord.DiscordHandler;
 import com.isles.skyblockisles.islesextra.discord.DiscordRPPayload;
 import com.isles.skyblockisles.islesextra.resources.EmojiListener;
 import com.isles.skyblockisles.islesextra.resources.CustomBlockListener;
-import com.isles.skyblockisles.islesextra.chat.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.constants.IslesKeybindingsManager;
 import com.isles.skyblockisles.islesextra.event.handler.EventHandler;
 import net.fabricmc.api.ClientModInitializer;
@@ -39,7 +38,5 @@ public class IslesExtraClient implements ClientModInitializer {
 
   private void registerPayloads() {
     PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
-    PayloadTypeRegistry.playC2S().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
-    PayloadTypeRegistry.playS2C().register(ChatPreviewPayload.ID, ChatPreviewPayload.CODEC);
   }
 }

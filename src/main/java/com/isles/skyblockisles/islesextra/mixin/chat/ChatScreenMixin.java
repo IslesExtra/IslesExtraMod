@@ -2,17 +2,15 @@ package com.isles.skyblockisles.islesextra.mixin.chat;
 
 import com.isles.skyblockisles.islesextra.chat.ChatPreview;
 import com.isles.skyblockisles.islesextra.chat.ChatPreview.RenderData;
-import com.isles.skyblockisles.islesextra.chat.ChatPreviewPayload;
 import com.isles.skyblockisles.islesextra.chat.ChatSuggestions;
 import com.isles.skyblockisles.islesextra.resources.EmojiListener;
 
 import java.util.stream.Collectors;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.OrderedText;
@@ -31,29 +29,37 @@ import java.util.Objects;
 import java.util.Set;
 
 @Mixin(ChatScreen.class)
-public abstract class ChatScreenMixin {
+public abstract class ChatScreenMixin extends Screen {
 
   @Shadow
   protected TextFieldWidget chatField;
   @Shadow
   ChatInputSuggestor chatInputSuggestor;
   @Unique
-  private final ChatPreview previewBackground = new ChatPreview();
+  private static final ChatPreview previewBackground = new ChatPreview();
   @Unique
   private static Text previewText;
-  @Unique
-  private MinecraftClient client;
+
+  protected ChatScreenMixin(Text title) { super(title); }
+
+  @Inject(method = "<init>", at = @At("TAIL"))
+  void init(CallbackInfo ci) {
+    previewBackground.init(Util.getMeasuringTimeMs());
+    if (previewText == null) {
+        ChatPreview.setShouldShiftUp(false);
+    }
+  }
 
   @Inject(method = "render", at = @At("HEAD"))
   void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
 
-    if (this.client == null) {
+    if (client == null) {
       return;
     }
     if (previewText == null) {
       return;
     }
-    if (this.chatField.getText().startsWith("/")) {
+    if (chatField.getText().startsWith("/")) {
       return;
     }
 
@@ -63,7 +69,7 @@ public abstract class ChatScreenMixin {
 
   @Inject(method = "onChatFieldUpdate", at = @At("TAIL"))
   void onChatFieldUpdate(String chatText, CallbackInfo ci) {
-    CompletingSuggestionsAccessor completingSuggestions = ((CompletingSuggestionsAccessor) this.chatInputSuggestor);
+    var completingSuggestions = ((CompletingSuggestionsAccessor) this.chatInputSuggestor);
     String currentWord = getCurrentWord(chatText);
     // emoji completing
     if (currentWord.startsWith(":")) {
@@ -75,7 +81,7 @@ public abstract class ChatScreenMixin {
     }
     // ping completing
     else if (currentWord.startsWith("@")) {
-      var players = ChatSuggestions.getPlayerNames();
+      Set<String> players = ChatSuggestions.getPlayerNames();
       ChatSuggestions.setSuggestions(
           players.stream().map(it -> "@" + it).collect(Collectors.toSet()));
       ChatSuggestions.setSuggestingPings(true);
@@ -95,43 +101,15 @@ public abstract class ChatScreenMixin {
     if (client.player == null) {
       return;
     }
-    // TODO; add more exceptions to decrease packets
-    boolean flag1 = !chatText.startsWith("/"); // not for commands
-    if (flag1) {
-      var payload = new ChatPreviewPayload(Text.of(chatText));
-      ClientPlayNetworking.send(payload);
-      return;
+    if (chatText.startsWith("/")) {
+      ChatScreenMixin.previewText = null;
+      ChatPreview.setShouldShiftUp(false);
     }
-    ChatScreenMixin.previewText = null;
-    ChatPreview.setShouldShiftUp(false);
-  }
-
-  @SuppressWarnings("resource")
-  @Inject(method = "init", at = @At("HEAD"))
-  void init(CallbackInfo ci) {
-    this.client = MinecraftClient.getInstance();
-    previewBackground.init(Util.getMeasuringTimeMs());
-    ClientPlayNetworking.registerGlobalReceiver(ChatPreviewPayload.ID, (payload, context) -> {
-      Text text = payload.text();
-
-      context.client().execute(() -> {
-        if (text == null || text.getString().isEmpty()
-            || !(client.currentScreen instanceof ChatScreen)) {
-          previewText = null;
-          ChatPreview.setShouldShiftUp(false);
-          return;
-        }
-        previewText = text;
-        ChatPreview.setShouldShiftUp(true);
-      });
-    });
   }
 
   @Inject(method = "keyPressed", at = @At("HEAD"))
   void keyPressed(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
-    // if chat gets closed
-    var keyCode = keyInput.getKeycode();
-    if (keyCode == 256 || keyCode == 257 || keyCode == 335) {
+    if (keyInput.isEnter() || keyInput.isEscape()) {
       previewText = null;
       ChatSuggestions.setSuggestions(Set.of());
       ChatSuggestions.setSuggestingPings(false);
