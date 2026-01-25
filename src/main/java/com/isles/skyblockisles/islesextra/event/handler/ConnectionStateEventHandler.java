@@ -27,7 +27,7 @@ public final class ConnectionStateEventHandler implements EventHandler {
     ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {
       if (IslesClientState.isOnIsles()) {
         LeftIslesCallback.EVENT.invoker().interact();
-        IslesParty.INSTANCE.clearMembers();
+        IslesParty.clearMembers();
       }
     }));
   }

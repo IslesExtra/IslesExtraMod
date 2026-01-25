@@ -9,12 +9,12 @@
     "chat.CommandSourceMixin"
   ],
   "client": [
-    "DebugHudMixin",
+    "BossBarHudMixin",
+    "BossBarS2CPacketAccessor",
     "InGameHudMixin",
     "MinecraftClientMixin",
     "PlayerListHudMixin",
     "TitleScreenMixin",
-    "BowMixin",
     "chat.ChatHudMixin",
     "chat.ChatScreenMixin",
     "chat.ClientCommandSourceMixin",

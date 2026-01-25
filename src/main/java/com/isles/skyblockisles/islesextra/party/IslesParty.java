@@ -1,53 +1,56 @@
 package com.isles.skyblockisles.islesextra.party;
 
-import com.isles.skyblockisles.islesextra.constants.IslesRank;
 import com.isles.skyblockisles.islesextra.constants.MessageSender;
 import com.mojang.authlib.GameProfile;
-import java.util.Arrays;
 import java.util.Set;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.StringHelper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class IslesParty {
 
-  public static IslesParty INSTANCE = new IslesParty();
   private static final Logger LOGGER = LogManager.getLogger();
 
-  private static final String JOIN_MESSAGE = " has joined the party!";
-  private static final String LEAVE_MESSAGE = " has left the party.";
+  private static final Pattern JOIN_PATTERN = Pattern.compile("^\\s*(\\w{3,16})" + Pattern.quote(" has joined the party!"));
+  private static final Pattern LEAVE_PATTERN = Pattern.compile("^\\s*(\\w{3,16})" + Pattern.quote(" has left the party."));
 
-  private Set<GameProfile> members = Set.of();
+  private static Set<GameProfile> members = Set.of();
 
-  private IslesParty() {
+  private IslesParty() { }
+
+  public static void addMember(GameProfile profile) {
+    members.add(profile);
   }
 
-  public void addMember(GameProfile profile) {
-    this.members.add(profile);
-  }
-
-  public void removeMember(GameProfile profile) {
+  public static void removeMember(GameProfile profile) {
     members.remove(profile);
   }
 
-  public boolean isMember(GameProfile profile) {
+  public static boolean isMember(GameProfile profile) {
     return members.contains(profile);
   }
 
-  public Set<GameProfile> getMembers() {
+  public static Set<GameProfile> getMembers() {
     return members;
   }
 
-  public Set<PlayerEntity> getMemberEntities() {
-    var world = MinecraftClient.getInstance().world;
+  public static Set<PlayerEntity> getMemberEntities() {
+    ClientWorld world = MinecraftClient.getInstance().world;
     if (world == null) {
       return Set.of();
     }
 
-    var memberUuids = getMembers().stream()
+    Set<UUID> memberUuids = getMembers().stream()
         .map(GameProfile::id)
         .collect(Collectors.toSet());
 
@@ -56,11 +59,11 @@ public class IslesParty {
         .collect(Collectors.toSet());
   }
 
-  public void clearMembers() {
+  public static void clearMembers() {
     members.clear();
   }
 
-  public void lowHealthWarning() {
+  public static void lowHealthWarning() {
     if (getMembers().isEmpty() || MinecraftClient.getInstance().getNetworkHandler() == null) {
       return;
     }
@@ -72,37 +75,40 @@ public class IslesParty {
     }
   }
 
-  public void handleMember(String message) {
-    var networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+  public static void handleMember(String message) {
+    ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
     if (networkHandler == null) {
       return;
     }
 
-    if (Arrays.stream(IslesRank.values()).anyMatch(it -> message.contains(it.icon))) {
+    String cleanMessage = StringHelper.stripTextFormat(message);
+    String username = null;
+    
+    boolean isJoin = false;
+    Matcher joinMatcher = JOIN_PATTERN.matcher(cleanMessage);
+    Matcher leaveMatcher = LEAVE_PATTERN.matcher(cleanMessage);
+    try {
+      if (joinMatcher.find()) {
+          username = joinMatcher.group(1);
+          isJoin = true;
+      } else if (leaveMatcher.find()) {
+          username = leaveMatcher.group(1);
+          isJoin = false;
+      }
+    } catch (Exception e) {
+      //TODO: Find out how to actually resolve these errors, cannot test since no alt
       return;
     }
 
-    final String username;
-    final boolean isJoin;
-    if (message.startsWith(JOIN_MESSAGE)) {
-      isJoin = true;
-      username = message.substring(JOIN_MESSAGE.length());
-    } else if (message.startsWith(LEAVE_MESSAGE)) {
-      isJoin = false;
-      username = message.substring(LEAVE_MESSAGE.length());
-    } else {
-      return;
-    }
+    if (username == null) return;
 
-    networkHandler.getPlayerList().stream().map(PlayerListEntry::getProfile)
-        .filter(profile -> profile != null && profile.name().equalsIgnoreCase(username)).findFirst()
-        .ifPresent(profile -> {
-          LOGGER.info("Found Player: {}", profile.name());
-          if (isJoin) {
-            addMember(profile);
-          } else {
-            removeMember(profile);
-          }
-        });
+    PlayerListEntry entry = networkHandler.getPlayerListEntry(username);
+
+    if (entry != null) {
+        GameProfile profile = entry.getProfile();
+        LOGGER.info("Found Player: {}", profile.name());
+        if (isJoin) addMember(profile); 
+        else removeMember(profile);
+    }
   }
 }

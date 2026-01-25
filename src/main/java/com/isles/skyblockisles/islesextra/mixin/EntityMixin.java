@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public class EntityMixin {
-
   @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
   void recolorGlow(CallbackInfoReturnable<Boolean> cir) {
     Entity entity = (Entity) (Object) this;
@@ -18,7 +17,7 @@ public class EntityMixin {
       return;
     }
 
-    if (IslesParty.INSTANCE.isMember(playerEntity.getGameProfile())) {
+    if (IslesParty.isMember(playerEntity.getGameProfile())) {
       cir.setReturnValue(true);
     }
   }

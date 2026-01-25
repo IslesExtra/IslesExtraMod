@@ -19,7 +19,6 @@ public final class ClientEventHandler implements EventHandler {
 
   @Override
   public void register() {
-    // TODO: Move to less expensive alternative
     ClientTickEvents.START_CLIENT_TICK.register(client -> {
       if (client.player == null || client.world == null) {
         return;
@@ -41,7 +40,7 @@ public final class ClientEventHandler implements EventHandler {
         }
       });
 
-      IslesParty.INSTANCE.lowHealthWarning();
+      IslesParty.lowHealthWarning();
     });
 
     ClientEntityEvents.ENTITY_LOAD.register(
@@ -54,8 +53,8 @@ public final class ClientEventHandler implements EventHandler {
               }
             }
             case ServerPlayerEntity player -> {
-              if (IslesParty.INSTANCE.getMembers().contains(player.getGameProfile())) {
-                IslesParty.INSTANCE.addMember(player.getGameProfile());
+              if (IslesParty.getMembers().contains(player.getGameProfile())) {
+                IslesParty.addMember(player.getGameProfile());
               }
             }
             default -> {}
@@ -63,7 +62,7 @@ public final class ClientEventHandler implements EventHandler {
         }));
 
     ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
-      IslesParty.INSTANCE.handleMember(message.getString());
+      IslesParty.handleMember(message.getString());
     });
   }
 }
