@@ -1,35 +1,35 @@
 {
-  "version": "0.2.0",
   "configurations": [
     {
-      "type": "java",
-      "name": "Minecraft Client",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/run",
-      "console": "integratedTerminal",
-      "stopOnEntry": false,
-      "mainClass": "net.fabricmc.devlaunchinjector.Main",
-      "vmArgs": "-Dfabric.dli.config\u003d/home/trivaris/Projects/IslesExtra-Fabric/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dclient -Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotClient",
       "args": "",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/run",
       "env": {
-        "LD_LIBRARY_PATH": "/nix/store/x4sc437gdbhrfbm4b0hja9lfv38njvi1-libglvnd-1.7.0/lib:/nix/store/ii3ybky5dqjikcrw7vdnh1j76ssy0ycm-libx11-1.8.12/lib:/nix/store/bb5xxw11ndww7iivcmdpxga9n1da24vg-libxcursor-1.2.3/lib:/nix/store/dyn0y5clf5b556yqwmj4841h43hz75p6-libxrandr-1.5.4/lib:/nix/store/x1f9a0qsj6a1y5nf178naagm2vbxnazc-libxi-1.8.2/lib:/nix/store/91mg839gbvgz1svzlh1jvz0pqvx7ylwh-libxkbcommon-1.11.0/lib:/run/opengl-driver/lib:/nix/store/kp938g7my2r2gca9y0xj3sjdh98r2601-libdbusmenu-glib-16.04.0/lib"
+        "LD_LIBRARY_PATH": "/nix/store/x4sc437gdbhrfbm4b0hja9lfv38njvi1-libglvnd-1.7.0/lib:/nix/store/ii3ybky5dqjikcrw7vdnh1j76ssy0ycm-libx11-1.8.12/lib:/nix/store/bb5xxw11ndww7iivcmdpxga9n1da24vg-libxcursor-1.2.3/lib:/nix/store/dyn0y5clf5b556yqwmj4841h43hz75p6-libxrandr-1.5.4/lib:/nix/store/x1f9a0qsj6a1y5nf178naagm2vbxnazc-libxi-1.8.2/lib:/nix/store/91mg839gbvgz1svzlh1jvz0pqvx7ylwh-libxkbcommon-1.11.0/lib"
       },
-      "projectName": "IslesExtra-Fabric"
+      "mainClass": "net.fabricmc.devlaunchinjector.Main",
+      "name": "Minecraft Client",
+      "projectName": "IslesExtra-Fabric",
+      "request": "launch",
+      "stopOnEntry": false,
+      "type": "java",
+      "vmArgs": "-Dfabric.dli.config=/home/trivaris/Projects/IslesExtra-Fabric/.gradle/loom-cache/launch.cfg -Dfabric.dli.env=client -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotClient"
     },
     {
-      "type": "java",
-      "name": "Minecraft Server",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/run",
-      "console": "integratedTerminal",
-      "stopOnEntry": false,
-      "mainClass": "net.fabricmc.devlaunchinjector.Main",
-      "vmArgs": "-Dfabric.dli.config\u003d/home/trivaris/Projects/IslesExtra-Fabric/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dserver -Dfabric.dli.main\u003dnet.fabricmc.loader.impl.launch.knot.KnotServer",
       "args": "nogui",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/run",
       "env": {
-        "LD_LIBRARY_PATH": "/nix/store/x4sc437gdbhrfbm4b0hja9lfv38njvi1-libglvnd-1.7.0/lib:/nix/store/ii3ybky5dqjikcrw7vdnh1j76ssy0ycm-libx11-1.8.12/lib:/nix/store/bb5xxw11ndww7iivcmdpxga9n1da24vg-libxcursor-1.2.3/lib:/nix/store/dyn0y5clf5b556yqwmj4841h43hz75p6-libxrandr-1.5.4/lib:/nix/store/x1f9a0qsj6a1y5nf178naagm2vbxnazc-libxi-1.8.2/lib:/nix/store/91mg839gbvgz1svzlh1jvz0pqvx7ylwh-libxkbcommon-1.11.0/lib:/run/opengl-driver/lib:/nix/store/kp938g7my2r2gca9y0xj3sjdh98r2601-libdbusmenu-glib-16.04.0/lib"
+        "LD_LIBRARY_PATH": "/nix/store/x4sc437gdbhrfbm4b0hja9lfv38njvi1-libglvnd-1.7.0/lib:/nix/store/ii3ybky5dqjikcrw7vdnh1j76ssy0ycm-libx11-1.8.12/lib:/nix/store/bb5xxw11ndww7iivcmdpxga9n1da24vg-libxcursor-1.2.3/lib:/nix/store/dyn0y5clf5b556yqwmj4841h43hz75p6-libxrandr-1.5.4/lib:/nix/store/x1f9a0qsj6a1y5nf178naagm2vbxnazc-libxi-1.8.2/lib:/nix/store/91mg839gbvgz1svzlh1jvz0pqvx7ylwh-libxkbcommon-1.11.0/lib"
       },
-      "projectName": "IslesExtra-Fabric"
+      "mainClass": "net.fabricmc.devlaunchinjector.Main",
+      "name": "Minecraft Server",
+      "projectName": "IslesExtra-Fabric",
+      "request": "launch",
+      "stopOnEntry": false,
+      "type": "java",
+      "vmArgs": "-Dfabric.dli.config=/home/trivaris/Projects/IslesExtra-Fabric/.gradle/loom-cache/launch.cfg -Dfabric.dli.env=server -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotServer"
     }
-  ]
+  ],
+  "version": "0.2.0"
 }

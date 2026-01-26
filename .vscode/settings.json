@@ -1,9 +1,10 @@
 {
-    "nixEnvSelector.suggestion": false,
-    "nixEnvSelector.useFlakes": true,
-    "java.compile.nullAnalysis.mode": "disabled",
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.import.gradle.enabled": true,
-    "java.import.gradle.wrapper.enabled": true,
-    "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix"
+  "java.compile.nullAnalysis.mode": "disabled",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "java.jdt.ls.java.home": "/nix/store/lyk8xbaiw8ym13b3p4nz6nf35jvllynw-zulu-ca-jdk-21.0.8",
+  "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix",
+  "nixEnvSelector.suggestion": false,
+  "nixEnvSelector.useFlakes": true
 }
