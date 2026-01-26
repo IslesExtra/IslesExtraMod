@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.isles.skyblockisles.islesextra.mixin",
+  "package": "net.skyblockisles.islesextra.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "EntityMixin",
@@ -11,7 +11,6 @@
   "client": [
     "BossBarHudMixin",
     "BossBarS2CPacketAccessor",
-    "InGameHudMixin",
     "MinecraftClientMixin",
     "PlayerListHudMixin",
     "TitleScreenMixin",

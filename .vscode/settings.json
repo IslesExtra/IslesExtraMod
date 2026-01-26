@@ -1,0 +1,9 @@
+{
+    "nixEnvSelector.suggestion": false,
+    "nixEnvSelector.useFlakes": true,
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.gradle.enabled": true,
+    "java.import.gradle.wrapper.enabled": true,
+    "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix"
+}

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.fabric.loom)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.shadow)
+    // id("net.skyblockisles.islesextra.annotation-processor")
 }
 
 repositories {
@@ -14,6 +15,7 @@ repositories {
     maven { url = uri("https://jitpack.io") }
     maven { url = uri("https://maven.wispforest.io") }
     maven { url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") }
+    maven { url = uri("https://libraries.minecraft.net") }
 }
 
 dependencies {
@@ -28,6 +30,9 @@ dependencies {
     implementation(libs.discord.ipc)
     implementation(libs.jackson.databind)
     implementation(platform(libs.log4j))
+    implementation(libs.reflections)
+
+    implementation(libs.commands)
 
     // annotationProcessor(libs.owo.lib)
     // include(libs.owo.lib)

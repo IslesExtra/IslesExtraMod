@@ -10,7 +10,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.isles.skyblockisles.islesextra.IslesExtraClient"
+      "net.skyblockisles.islesextra.IslesExtra"
     ]
   },
   "mixins": [
