@@ -3,7 +3,8 @@
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.import.gradle.enabled": true,
   "java.import.gradle.wrapper.enabled": true,
-  "java.jdt.ls.java.home": "/nix/store/lyk8xbaiw8ym13b3p4nz6nf35jvllynw-zulu-ca-jdk-21.0.8",
+  "java.jdt.ls.java.home": "/nix/store/imqrk5lxp6fv2xndnz7wndxn4f1mzni2-openjdk-21.0.9+10/lib/openjdk/",
+  "jdk.jdkhome": "/nix/store/imqrk5lxp6fv2xndnz7wndxn4f1mzni2-openjdk-21.0.9+10/lib/openjdk/",
   "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix",
   "nixEnvSelector.suggestion": false,
   "nixEnvSelector.useFlakes": true

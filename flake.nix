@@ -22,7 +22,8 @@
           let
             current = builtins.fromJSON (builtins.readFile ./.vscode/settings.json);
             updated = current // {
-              "java.jdt.ls.java.home" = "${pkgs.zulu21}";
+              "java.jdt.ls.java.home" = "${pkgs.openjdk21}/lib/openjdk/";
+              "jdk.jdkhome" = "${pkgs.openjdk21}/lib/openjdk/";
             };
             new = builtins.toJSON updated;
           in
@@ -61,23 +62,6 @@
               echo '${new}' | ${pkgs.jq}/bin/jq . > ./.vscode/launch.json
             ''}/bin/update-launch-configs";
           };
-      };
-
-      devShells.${system} = {
-        default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            libGL
-            xorg.libX11
-            xorg.libXcursor
-            xorg.libXrandr
-            xorg.libXi
-            libxkbcommon
-          ];
-
-          shellHook = ''
-            export LD_LIBRARY_PATH=")}:/run/opengl-driver/lib:$LD_LIBRARY_PATH"
-          '';
-        };
       };
     };
 }

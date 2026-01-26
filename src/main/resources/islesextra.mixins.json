@@ -5,21 +5,11 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "EntityMixin",
-    "ItemStackMixin",
-    "chat.CommandSourceMixin"
+    "ItemStackMixin"
   ],
   "client": [
-    "BossBarHudMixin",
-    "BossBarS2CPacketAccessor",
     "MinecraftClientMixin",
-    "PlayerListHudMixin",
-    "TitleScreenMixin",
-    "chat.ChatHudMixin",
-    "chat.ChatScreenMixin",
-    "chat.ClientCommandSourceMixin",
-    "chat.CompletingSuggestionsAccessor",
-    "chat.SuggestionMixin",
-    "chat.SuggestionWindowMixin"
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
