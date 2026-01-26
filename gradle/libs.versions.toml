@@ -5,7 +5,6 @@ fabric-mappings = "1.21.11+build.4"
 fabric-loader = "0.18.4"
 fabric-api = "0.141.1+1.21.11"
 fabric-loom = "1.14.10"
-# owo-lib = "0.12.15.4+1.21"
 
 # Additional Dependencies from your build.gradle
 devauth = "1.2.2"
@@ -17,6 +16,8 @@ reflections = "0.10.2"
 javassist = "3.29.0-GA"
 commands = "1.0.18"
 junixsocket = "2.10.1"
+mockito = "5.+"
+junit = "6.0.2"
 
 [libraries]
 # Minecraft
@@ -26,7 +27,6 @@ fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = 
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
 commands = { group = "com.mojang", name = "brigadier", version.ref = "commands"}
 javassist = { group = "org.javassist", name = "javassist", version.ref = "javassist" }
-# owo-lib = { group = "io.wispforest", name = "owo-lib", version.ref = "owo-lib" }
 
 # Additional Dependencies
 dev-auth = { group = "me.djtheredstoner", name = "DevAuth-fabric", version.ref = "devauth" }
@@ -38,6 +38,11 @@ reflections = { group = "org.reflections", name = "reflections", version.ref = "
 junixsocket-core = { group = "com.kohlschutter.junixsocket", name = "junixsocket-core", version.ref = "junixsocket" }
 junixsocket-common = { group = "com.kohlschutter.junixsocket", name = "junixsocket-common", version.ref = "junixsocket" }
 junixsocket-native-common = { group = "com.kohlschutter.junixsocket", name = "junixsocket-native-common", version.ref = "junixsocket" }
+
+mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter" }
+junit-platform = { group = "org.junit.platform", name = "junit-platform-launcher" }
 
 [plugins]
 fabric-loom = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom" }

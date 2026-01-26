@@ -23,7 +23,6 @@ dependencies {
     mappings(libs.fabric.mappings)
     modImplementation(libs.fabric.loader)
     modImplementation(libs.fabric.api)
-    // modImplementation(libs.owo.lib)
 
     modRuntimeOnly(libs.dev.auth)
 
@@ -36,7 +35,6 @@ dependencies {
     implementation(libs.junixsocket.core)
     implementation(libs.junixsocket.common)
     implementation(libs.junixsocket.native.common)
-    
 
     include(libs.reflections)
     include(libs.javassist)
@@ -44,8 +42,11 @@ dependencies {
     include(libs.junixsocket.core)
     include(libs.junixsocket.common)
     include(libs.junixsocket.native.common)
-    // annotationProcessor(libs.owo.lib)
-    // include(libs.owo.lib)
+
+    testImplementation(libs.mockito)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform)
 }
 
 tasks {
@@ -68,6 +69,13 @@ tasks {
     jar {
         from("LICENSE") {
             rename { "${it}_${name}" }
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
         }
     }
 }
