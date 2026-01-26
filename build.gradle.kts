@@ -33,11 +33,17 @@ dependencies {
     implementation(libs.reflections)
     implementation(libs.javassist)
     implementation(libs.commands)
+    implementation(libs.junixsocket.core)
+    implementation(libs.junixsocket.common)
+    implementation(libs.junixsocket.native.common)
+    
 
     include(libs.reflections)
     include(libs.javassist)
     include(libs.discord.ipc)
-
+    include(libs.junixsocket.core)
+    include(libs.junixsocket.common)
+    include(libs.junixsocket.native.common)
     // annotationProcessor(libs.owo.lib)
     // include(libs.owo.lib)
 }

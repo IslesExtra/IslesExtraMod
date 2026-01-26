@@ -16,6 +16,7 @@ log4j = "2.25.2"
 reflections = "0.10.2"
 javassist = "3.29.0-GA"
 commands = "1.0.18"
+junixsocket = "2.10.1"
 
 [libraries]
 # Minecraft
@@ -33,6 +34,10 @@ discord-ipc = { group = "io.github.CDAGaming", name = "DiscordIPC", version.ref 
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 log4j = { group = "org.apache.logging.log4j", name = "log4j-bom", version.ref = "log4j" }
 reflections = { group = "org.reflections", name = "reflections", version.ref = "reflections" }
+
+junixsocket-core = { group = "com.kohlschutter.junixsocket", name = "junixsocket-core", version.ref = "junixsocket" }
+junixsocket-common = { group = "com.kohlschutter.junixsocket", name = "junixsocket-common", version.ref = "junixsocket" }
+junixsocket-native-common = { group = "com.kohlschutter.junixsocket", name = "junixsocket-native-common", version.ref = "junixsocket" }
 
 [plugins]
 fabric-loom = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom" }
