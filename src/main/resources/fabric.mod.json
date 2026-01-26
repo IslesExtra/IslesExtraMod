@@ -21,5 +21,10 @@
     "fabric": "*",
     "minecraft": "1.21.x",
     "java": ">=21"
+  },
+  "custom": {
+    "mc-publish": {
+      "modrinth": "rRWXJ5cp"
+    }
   }
 }

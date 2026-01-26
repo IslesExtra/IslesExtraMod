@@ -9,7 +9,8 @@
   ],
   "client": [
     "MinecraftClientMixin",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "BossBarS2CPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1
