@@ -30,13 +30,16 @@ public class IslesExtra implements ClientModInitializer {
   }
 
   private static void init() {
-    Reflections reflections = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forJavaClassPath()).setScanners(Scanners.MethodsAnnotated));
+    Reflections reflections = new Reflections(new ConfigurationBuilder()
+        .setUrls(ClasspathHelper.forPackage("net.skyblockisles.islesextra"))
+        .setScanners(Scanners.MethodsAnnotated));
+
     Set<Method> methods = reflections.getMethodsAnnotatedWith(Init.class);
 
     for (Method m : methods) {
       try { m.invoke(null); }
       catch(IllegalAccessException | InvocationTargetException e) {
-        LOGGER.warn("Method could not be invoked: " + e);
+        LOGGER.warn("Method could not be invoked: {}", e.toString());
       }
     }
   }

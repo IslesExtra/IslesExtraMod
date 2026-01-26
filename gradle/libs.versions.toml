@@ -14,6 +14,7 @@ jackson = "2.14.2"
 shadow = "8.1.1"
 log4j = "2.25.2"
 reflections = "0.10.2"
+javassist = "3.29.0-GA"
 commands = "1.0.18"
 
 [libraries]
@@ -22,7 +23,8 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 fabric-mappings = { group = "net.fabricmc", name = "yarn", version.ref = "fabric-mappings" }
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader" }
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
-commands = { group = "com.mojang", name = "brigadier", version.ref = "commands" }
+commands = { group = "com.mojang", name = "brigadier", version.ref = "commands"}
+javassist = { group = "org.javassist", name = "javassist", version.ref = "javassist" }
 # owo-lib = { group = "io.wispforest", name = "owo-lib", version.ref = "owo-lib" }
 
 # Additional Dependencies

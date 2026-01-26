@@ -27,12 +27,16 @@ dependencies {
 
     modRuntimeOnly(libs.dev.auth)
 
+    implementation(platform(libs.log4j))
     implementation(libs.discord.ipc)
     implementation(libs.jackson.databind)
-    implementation(platform(libs.log4j))
     implementation(libs.reflections)
-
+    implementation(libs.javassist)
     implementation(libs.commands)
+
+    include(libs.reflections)
+    include(libs.javassist)
+    include(libs.discord.ipc)
 
     // annotationProcessor(libs.owo.lib)
     // include(libs.owo.lib)
