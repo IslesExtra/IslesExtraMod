@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.event.Event;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.util.ActionResult;
 import net.skyblockisles.islesextra.callback.JoinedIslesCallback;
@@ -12,14 +11,10 @@ import net.skyblockisles.islesextra.callback.LeftIslesCallback;
 import net.skyblockisles.islesextra.callback.SwitchedIslesServerCallback;
 import net.skyblockisles.islesextra.party.IslesParty;
 import net.skyblockisles.islesextra.annotations.Init;
-import net.skyblockisles.islesextra.callback.IslesLocationChangedCallback;
-import net.skyblockisles.islesextra.callback.IslesCallback;
 
 public class IslesClientState {
 
   private static boolean onIsles = false;
-  private static String location = "";
-  private static String instanceId = "";
   private static final String SERVER_IDENTIFIER = "isles";
   private static final Logger LOGGER = LogManager.getLogger();
 
@@ -43,19 +38,18 @@ public class IslesClientState {
       return ActionResult.PASS;
     });
 
-    IslesLocationChangedCallback.EVENT.register((loc, inId) -> {
-      location = loc;
-      instanceId = inId;
-      return ActionResult.PASS;
-    });
-
     ClientPlayConnectionEvents.JOIN.register(((handler, sender, client) -> {
       ServerInfo entry = client.getCurrentServerEntry();
       boolean wasOnIsles = IslesClientState.isOnIsles();
       boolean joinedDifferentServer = entry == null || !isIslesAddress(entry.address);
+      if ((joinedDifferentServer && wasOnIsles))
+        LeftIslesCallback.EVENT.invoker().interact();
+      else if (wasOnIsles) {
+        SwitchedIslesServerCallback.EVENT.invoker().interact();
+      } else {
+        JoinedIslesCallback.EVENT.invoker().interact();
+      }
 
-      Event<? extends IslesCallback> event = (joinedDifferentServer && wasOnIsles) ? LeftIslesCallback.EVENT : wasOnIsles ? SwitchedIslesServerCallback.EVENT : JoinedIslesCallback.EVENT;
-      event.invoker().interact();
     }));
 
     ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {
@@ -73,11 +67,4 @@ public class IslesClientState {
     return onIsles;
   }
 
-  public static String getLocation() {
-    return location;
-  }
-
-  public static String getInstanceId() {
-    return instanceId;
-  }
 }

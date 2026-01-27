@@ -7,12 +7,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.StringHelper;
+import net.skyblockisles.islesextra.annotations.Init;
 import net.skyblockisles.islesextra.constants.MessageScheduler;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +30,15 @@ public class IslesParty {
   private static Set<GameProfile> members = Set.of();
 
   private IslesParty() { }
+
+  @Init
+  public static void init() {
+    ClientTickEvents.START_CLIENT_TICK.register(client -> {
+      if (client.player == null || client.world == null) return;
+
+      IslesParty.lowHealthWarning();
+    });
+  }
 
   public static void addMember(GameProfile profile) {
     members.add(profile);

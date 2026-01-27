@@ -8,9 +8,9 @@
     "ItemStackMixin"
   ],
   "client": [
-    "MinecraftClientMixin",
     "TitleScreenMixin",
-    "BossBarS2CPacketMixin"
+    "BossBarS2CPacketMixin",
+    "InventoryScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -16,8 +16,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.DisplayEntity;
 import net.minecraft.entity.decoration.DisplayEntity.TextDisplayEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.skyblockisles.islesextra.annotations.Init;
+import net.skyblockisles.islesextra.callback.SwitchedIslesServerCallback;
 import net.skyblockisles.islesextra.constants.MessageScheduler;
 import net.skyblockisles.islesextra.constants.Renderer;
 
@@ -36,6 +38,7 @@ public class QuickTimeEventHelper {
     public static void init() {
         ClientEntityEvents.ENTITY_LOAD.register(QuickTimeEventHelper::registerEntity);
         ClientTickEvents.END_WORLD_TICK.register(world -> processEntities(pendingTexts));
+        SwitchedIslesServerCallback.EVENT.register(() -> { Renderer.setTarget(null); return ActionResult.PASS; });
     }
 
     private static void registerEntity(Entity entity, ClientWorld world) {
