@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.util.ActionResult;
 import net.skyblockisles.islesextra.callback.JoinedIslesCallback;
@@ -49,7 +51,6 @@ public class IslesClientState {
       } else {
         JoinedIslesCallback.EVENT.invoker().interact();
       }
-
     }));
 
     ClientPlayConnectionEvents.DISCONNECT.register(((handler, client) -> {

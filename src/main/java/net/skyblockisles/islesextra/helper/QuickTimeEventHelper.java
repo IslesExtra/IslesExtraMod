@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.DisplayEntity;
 import net.minecraft.entity.decoration.DisplayEntity.TextDisplayEntity;
@@ -36,12 +35,12 @@ public class QuickTimeEventHelper {
     
     @Init
     public static void init() {
-        ClientEntityEvents.ENTITY_LOAD.register(QuickTimeEventHelper::registerEntity);
+        ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> registerEntity(entity));
         ClientTickEvents.END_WORLD_TICK.register(world -> processEntities(pendingTexts));
         SwitchedIslesServerCallback.EVENT.register(() -> { Renderer.setTarget(null); return ActionResult.PASS; });
     }
 
-    private static void registerEntity(Entity entity, ClientWorld world) {
+    private static void registerEntity(Entity entity) {
         if (entity instanceof DisplayEntity.TextDisplayEntity textEntity ) {
             pendingTexts.add(textEntity);
         }

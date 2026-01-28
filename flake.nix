@@ -18,21 +18,32 @@
             ${pkgs.gradle_9}/bin/gradle runClient -Ddevauth.enabled=true -Ddevauth.configDir="$HOME/.config/devauth"
           ''}/bin/run-client";
         };
-        updateJavaHome =
-          let
-            current = builtins.fromJSON (builtins.readFile ./.vscode/settings.json);
-            updated = current // {
-              "java.jdt.ls.java.home" = "${pkgs.openjdk21}/lib/openjdk/";
-              "jdk.jdkhome" = "${pkgs.openjdk21}/lib/openjdk/";
-            };
-            new = builtins.toJSON updated;
+
+        updateLaunchConfigsIdea = {
+          type = "app";
+          program = let
+            libPath = pkgs.lib.makeLibraryPath [
+              pkgs.libGL
+              pkgs.xorg.libX11
+              pkgs.xorg.libXcursor
+              pkgs.xorg.libXrandr
+              pkgs.xorg.libXi
+              pkgs.libxkbcommon
+            ];
+            jqFilter = ".component.configuration.envs.env |= (if type == \"array\" then map(select(.[\"+name\"] == \"LD_LIBRARY_PATH\") .[\"+value\"] = \"${libPath}\") else .[\"+value\"] = \"${libPath}\" end)";
           in
-          {
-            type = "app";
-            program = "${pkgs.writeShellScriptBin "update-java-home" ''
-              echo '${new}' | ${pkgs.jq}/bin/jq . > ./.vscode/settings.json
-            ''}/bin/update-java-home";
-          };
+          "${pkgs.writeShellScriptBin "update-idea-config" ''
+            XML_FILE="./.idea/runConfigurations/Minecraft_Client.xml"
+            if [ ! -f "$XML_FILE" ]; then
+              echo "Fehler: $XML_FILE nicht gefunden!"
+              exit 1
+            fi
+
+            ${pkgs.yq-go}/bin/yq -p=xml -o=json . "$XML_FILE" | \
+            ${pkgs.jq}/bin/jq '${jqFilter}' | \
+            ${pkgs.yq-go}/bin/yq -p=json -o=xml > "$XML_FILE"
+          ''}/bin/update-idea-config";
+        };
 
         updateLaunchConfigs =
           let

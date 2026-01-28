@@ -11,15 +11,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public class EntityMixin {
+
   @Inject(method = "isGlowing", at = @At("HEAD"), cancellable = true)
-  void recolorGlow(CallbackInfoReturnable<Boolean> cir) {
+  void addGlow(CallbackInfoReturnable<Boolean> cir) {
     Entity entity = (Entity) (Object) this;
     if (!(entity instanceof PlayerEntity playerEntity)) {
       return;
     }
 
-    if (IslesParty.isMember(playerEntity.getGameProfile())) {
-      cir.setReturnValue(true);
+    if (IslesParty.isMember(playerEntity))
+    cir.setReturnValue(true);
+  }
+
+  @Inject(method = "getTeamColorValue", at = @At("HEAD"), cancellable = true)
+  void recolorGlow(CallbackInfoReturnable<Integer> cir) {
+    Entity entity = (Entity) (Object) this;
+    if (!(entity instanceof PlayerEntity playerEntity)) {
+      return;
     }
+
+    if (IslesParty)
+
+    long time = System.currentTimeMillis();
+    double speed = 0.002;
+
+    int r = (int) (Math.sin(speed * time + 0) * 127 + 128);
+    int g = (int) (Math.sin(speed * time + 2) * 127 + 128);
+    int b = (int) (Math.sin(speed * time + 4) * 127 + 128);
+
+    int rgb = (r << 16) | (g << 8) | b;
+
+    cir.setReturnValue(rgb);
   }
 }
