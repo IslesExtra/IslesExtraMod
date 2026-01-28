@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.skyblockisles.islesextra.config.IslesConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,6 +48,7 @@ public class QuickTimeEventHelper {
     }
 
     public static void processEntities(List<TextDisplayEntity> texts) {
+        if (!IslesConfig.HANDLER.instance().enableQTEHelper) return;
         if (texts.isEmpty()) return;
         texts.removeIf(textEntity -> {
             if (textEntity.isRemoved()) return true;
@@ -59,9 +61,10 @@ public class QuickTimeEventHelper {
             if (bonusMatcher.find()) {
                 String amount = bonusMatcher.group(1);
                 String type = bonusMatcher.group(2);
-                LOGGER.info("Found Bonus {} {} from ", amount, type, content);
+                LOGGER.info("Found Bonus {} {} from {}", amount, type, content);
                 int color = 0xFF000000 | colorMap.getOrDefault(type, Formatting.GREEN).getColorValue();
-                MessageScheduler.scheduleTitle(Text.literal("BONUS: " + amount + " " + type).styled(style -> style.withColor(color)));
+                if (IslesConfig.HANDLER.instance().enableQTEHelperTitle)
+                    MessageScheduler.scheduleTitle(Text.literal("BONUS: " + amount + " " + type).styled(style -> style.withColor(color)));
                 Renderer.setColor(color);
                 Renderer.setTarget(textEntity);
             }

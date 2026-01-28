@@ -18,6 +18,8 @@ commands = "1.0.18"
 junixsocket = "2.10.1"
 mockito = "5.+"
 junit = "6.0.2"
+yacl = "3.8.2+1.21.11-fabric"
+modmenu = "17.0.0-beta.2"
 
 [libraries]
 # Minecraft
@@ -34,6 +36,9 @@ discord-ipc = { group = "io.github.CDAGaming", name = "DiscordIPC", version.ref 
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 log4j = { group = "org.apache.logging.log4j", name = "log4j-bom", version.ref = "log4j" }
 reflections = { group = "org.reflections", name = "reflections", version.ref = "reflections" }
+
+yacl = { group = "dev.isxander", name = "yet-another-config-lib", version.ref = "yacl" }
+modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu" }
 
 junixsocket-core = { group = "com.kohlschutter.junixsocket", name = "junixsocket-core", version.ref = "junixsocket" }
 junixsocket-common = { group = "com.kohlschutter.junixsocket", name = "junixsocket-common", version.ref = "junixsocket" }

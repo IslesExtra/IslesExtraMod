@@ -13,7 +13,8 @@ plugins {
 repositories {
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
-    maven { url = uri("https://maven.wispforest.io") }
+    maven { url = uri("https://maven.isxander.dev/releases") }
+    maven { url = uri("https://maven.terraformersmc.com/") }
     maven { url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") }
     maven { url = uri("https://libraries.minecraft.net") }
 }
@@ -23,6 +24,8 @@ dependencies {
     mappings(libs.fabric.mappings)
     modImplementation(libs.fabric.loader)
     modImplementation(libs.fabric.api)
+    modImplementation(libs.modmenu)
+    modImplementation(libs.yacl)
 
     modRuntimeOnly(libs.dev.auth)
 
