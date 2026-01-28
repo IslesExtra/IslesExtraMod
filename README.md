@@ -1,33 +1,34 @@
-<h> **IslesExtra-Fabric**</h>
----
-This mod enhancew the Skyblock Isles experience in ways that the server itself cannot. These are either features that can only be implemented on the client side or features that he server itself shouldn't be doing for performance reasons, for example.
+# Isles Helper
 
-**Version:** 1.20.4
+**Version:** 1.21.11
 
-<br><br>
+## Description
+
+This mod is a very early Release. Contact me on Discord if you have any issues or any Feature Requests.
+
+QOL mod for Skyblock Isles that aims to make Skyblock Isles Easier
 
 ## Features
 
-- Discord Rich Presence for when you play on the Isles Server
-- Chat Autocomplete: adds autocomplete support for Isles emotes
-- Chat Preview: reimplements the chat feature from an older minecraft version
-- Frog Stomach Platform Warning
-- Timer for Boss Rush Bosses
-- Button in Main Menu for joining Isles via FancyMenu
-- Low Ammo Warning - In Boss
-- Magma Bomb Warning in Fafnir
-- [WIP] Party Management Screen
-
-- Uses custom Packets and Events related to actions happening / performed on the Isles Server 
+- Join Isles from Main Menu Button
+- Tracker for Quick Time Events when Resource Gathering
+- Party Features, like Low Health Warning or making Teammates  glow
 
 ## Installation
 
 1. Download the latest version of Fabric Loader from [FabricMC](https://fabricmc.net/use/).
-2. Download the mod JAR file from the [release page](https://github.com/Skyblock-Isles/IslesExtra-Fabric/releases).
+2. Download the mod JAR file from the [release page](https://github.com/Tripp1e/IslesHelper/tags).
 3. Place the mods file into the "mods" folder in your Minecraft installation directory.
 4. Launch the Minecraft Launcher with the Fabric profile.
 
+## Usage
+
+Config through YACL, use [ModMenu](https://modrinth.com/mod/modmenu) for best Experience
+
+## Notes
+
+This mod is in very early alpha. Feedback and bug reports are welcome.
+
 ## Disclaimer
 
-This mod is a very early Release. Contact us on Discord if you have any issues or any Feature Requests.<br>
 This mod is purely client-side and is intended for use on the Skyblock Isles server. Make sure to follow the server rules and guidelines.
