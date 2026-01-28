@@ -1,7 +1,5 @@
 package net.skyblockisles.islesextra.keybindings;
 
-import static net.skyblockisles.islesextra.IslesExtra.MOD_ID;
-
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -12,13 +10,13 @@ import net.minecraft.client.option.KeyBinding.Category;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.skyblockisles.islesextra.annotations.Init;
+import static net.skyblockisles.islesextra.IslesExtra.MOD_ID;
 import net.skyblockisles.islesextra.party.screen.PartyManagmentScreen;
 
 public class IslesKeybindingsManager {
     private static final Map<IslesKeybinding, KeyBinding> BINDINGS = new EnumMap<>(IslesKeybinding.class);
 
-    @Init
+    // @Init
     public static void init() {
         for (IslesKeybinding keybind : IslesKeybinding.values()) {
             Identifier keyId = Identifier.of(MOD_ID, keybind.getName());
