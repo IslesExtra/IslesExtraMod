@@ -7,37 +7,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.minecraft.client.network.PlayerListEntry;
+import net.skyblockisles.islesextra.annotations.Init;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.mojang.authlib.GameProfile;
-
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.StringHelper;
-import net.skyblockisles.islesextra.constants.MessageScheduler;
 
 public class IslesParty {
 
   private static final Logger LOGGER = LogManager.getLogger();
 
-  private static final Pattern JOIN_PATTERN = Pattern.compile("^\\s*(\\w{3,16})" + Pattern.quote(" has joined the party!"));
-  private static final Pattern LEAVE_PATTERN = Pattern.compile("^\\s*(\\w{3,16})" + Pattern.quote(" has left the party."));
+  private static final Pattern JOIN_PATTERN = Pattern.compile("(\\w{3,16})\\s+has joined the party!");
+  private static final Pattern LEAVE_PATTERN = Pattern.compile("(\\w{3,16})\\s+has left the party!");
 
   private final static Set<UUID> members = new HashSet<>();
 
   private IslesParty() { }
 
-  // @Init
+  @Init
   public static void init() {
-    ClientTickEvents.START_CLIENT_TICK.register(client -> {
-      if (client.player == null || client.world == null) return;
-
-      IslesParty.lowHealthWarning();
+    ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
+      onChat(message.getString());
     });
   }
 
@@ -72,51 +66,27 @@ public class IslesParty {
     members.clear();
   }
 
-  public static void lowHealthWarning() {
-    if (getMembers().isEmpty() || MinecraftClient.getInstance().getNetworkHandler() == null) {
-      return;
-    }
-
-    for (PlayerEntity playerEntity : getMemberEntities()) {
-      if (playerEntity.getHealth() < 20) {
-        MessageScheduler.scheduleTitle("§4§l" + playerEntity.getName() + " is low!");
-      }
-    }
-  }
-
   public static void onChat(String message) {
     ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
     if (networkHandler == null) {
       return;
     }
 
-    String cleanMessage = StringHelper.stripTextFormat(message);
-    String username = null;
-    
-    boolean isJoin = false;
-    Matcher joinMatcher = JOIN_PATTERN.matcher(cleanMessage);
-    Matcher leaveMatcher = LEAVE_PATTERN.matcher(cleanMessage);
-    try {
-      if (joinMatcher.find()) {
-          username = joinMatcher.group(1);
-          isJoin = true;
-      } else if (leaveMatcher.find()) {
-          username = leaveMatcher.group(1);
-      }
-    } catch (Exception e) {
-      //TODO: Find out how to actually resolve these errors, cannot test since no alt
-      return;
+    Matcher joinMatcher = JOIN_PATTERN.matcher(message);
+    Matcher leaveMatcher = LEAVE_PATTERN.matcher(message);
+
+    if (joinMatcher.find()) {
+      String username = joinMatcher.group(1);
+      PlayerListEntry entry = networkHandler.getPlayerListEntry(username);
+      if (entry != null)
+        addMember(entry.getProfile().id());
     }
 
-    if (username == null) return;
-
-    PlayerListEntry entry = networkHandler.getPlayerListEntry(username);
-
-    if (entry != null) {
-        GameProfile profile = entry.getProfile();
-        LOGGER.info("Found Player: {}", profile.name());
-        if (isJoin) addMember(profile.id());
-        else removeMember(profile.id());
+    if (leaveMatcher.find()) {
+      String username = leaveMatcher.group(1);
+      PlayerListEntry entry = networkHandler.getPlayerListEntry(username);
+      if (entry != null)
+        removeMember(entry.getProfile().id());
     }
   }
 }

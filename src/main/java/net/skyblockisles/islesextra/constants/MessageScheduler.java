@@ -11,8 +11,8 @@ import net.skyblockisles.islesextra.annotations.Init;
 
 public class MessageScheduler {
   private MessageScheduler() { }
-  private static Queue<Text> titleQueue = new LinkedList<>();
-  private static Queue<Text> messageQueue = new LinkedList<>();
+  private static final Queue<Text> titleQueue = new LinkedList<>();
+  private static final Queue<Text> messageQueue = new LinkedList<>();
 
   @Init
   public static void init() {

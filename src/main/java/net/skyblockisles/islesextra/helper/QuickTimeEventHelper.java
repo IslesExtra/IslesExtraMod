@@ -48,7 +48,7 @@ public class QuickTimeEventHelper {
     }
 
     public static void processEntities(List<TextDisplayEntity> texts) {
-        if (!IslesConfig.HANDLER.instance().enableQTEHelper) return;
+        if (!IslesConfig.HANDLER.instance().qteEnable) return;
         if (texts.isEmpty()) return;
         texts.removeIf(textEntity -> {
             if (textEntity.isRemoved()) return true;
@@ -63,7 +63,7 @@ public class QuickTimeEventHelper {
                 String type = bonusMatcher.group(2);
                 LOGGER.info("Found Bonus {} {} from {}", amount, type, content);
                 int color = 0xFF000000 | colorMap.getOrDefault(type, Formatting.GREEN).getColorValue();
-                if (IslesConfig.HANDLER.instance().enableQTEHelperTitle)
+                if (IslesConfig.HANDLER.instance().qteEnableTitle)
                     MessageScheduler.scheduleTitle(Text.literal("BONUS: " + amount + " " + type).styled(style -> style.withColor(color)));
                 Renderer.setColor(color);
                 Renderer.setTarget(textEntity);

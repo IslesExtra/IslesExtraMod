@@ -8,6 +8,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.skyblockisles.islesextra.IslesExtra;
 
+import java.awt.*;
+
 public class IslesConfig {
     public static ConfigClassHandler<IslesConfig> HANDLER = ConfigClassHandler.createBuilder(IslesConfig.class)
         .id(Identifier.of(IslesExtra.MOD_ID, "isles_config"))
@@ -19,8 +21,20 @@ public class IslesConfig {
         .build();
 
     @SerialEntry
-    public boolean enableQTEHelper = true;
+    public boolean qteEnable = true;
 
     @SerialEntry
-    public boolean enableQTEHelperTitle = true;
+    public boolean qteEnableTitle = true;
+
+    @SerialEntry
+    public boolean partyGlowEnable = true;
+
+    @SerialEntry
+    public Color partyGlowColor = Color.BLUE;
+
+    @SerialEntry
+    public boolean partyLowHealthEnable = true;
+
+    @SerialEntry
+    public Double partyLowHealthThreshold = 0.2;
 }
