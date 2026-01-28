@@ -62,8 +62,7 @@ public class PartyPlayerListEntry extends ElementListWidget.Entry<PartyPlayerLis
     }
     setButtonEnabled(this.inviteButton,
         // only show invite button if player is not the client and is not already in party
-        !IslesParty.isMember(entry.getProfile()) && !entry.getProfile()
-            .equals(client.player.getGameProfile()));
+        !IslesParty.isMember(entry.getProfile().id()) && !entry.getProfile().id().equals(client.player.getUuid()));
     this.inviteButton.setTooltip(Tooltip.of(Text.literal("Invite")));
     this.inviteButton.setTooltipDelay(Duration.ofSeconds(10));
 

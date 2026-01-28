@@ -10,7 +10,7 @@ env:
   MINECRAFT_VERSION: 1.21.11
   JAVA_VERSION: 21
   RELEASE_NAME: IslesExtra
-  VERSION: 0.1.1
+  VERSION: 0.1.2
 
 jobs:
   test:

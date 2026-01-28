@@ -72,6 +72,10 @@ public class Renderer {
         target = entity;
     }
 
+    public static Entity getTarget() {
+        return target;
+    }
+
     public static void setColor(int colorCode) {
         color = colorCode;
     }

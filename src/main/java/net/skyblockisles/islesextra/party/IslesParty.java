@@ -1,6 +1,9 @@
 package net.skyblockisles.islesextra.party;
 
 import com.mojang.authlib.GameProfile;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -27,7 +30,7 @@ public class IslesParty {
   private static final Pattern JOIN_PATTERN = Pattern.compile("^\\s*(\\w{3,16})" + Pattern.quote(" has joined the party!"));
   private static final Pattern LEAVE_PATTERN = Pattern.compile("^\\s*(\\w{3,16})" + Pattern.quote(" has left the party."));
 
-  private static Set<GameProfile> members = Set.of();
+  private final static Set<UUID> members = new HashSet<>();
 
   private IslesParty() { }
 
@@ -40,19 +43,19 @@ public class IslesParty {
     });
   }
 
-  public static void addMember(GameProfile profile) {
-    members.add(profile);
+  public static void addMember(UUID id) {
+    members.add(id);
   }
 
-  public static void removeMember(GameProfile profile) {
+  public static void removeMember(UUID profile) {
     members.remove(profile);
   }
 
-  public static boolean isMember(GameProfile profile) {
+  public static boolean isMember(UUID profile) {
     return members.contains(profile);
   }
 
-  public static Set<GameProfile> getMembers() {
+  public static Set<UUID> getMembers() {
     return members;
   }
 
@@ -62,12 +65,8 @@ public class IslesParty {
       return Set.of();
     }
 
-    Set<UUID> memberUuids = getMembers().stream()
-        .map(GameProfile::id)
-        .collect(Collectors.toSet());
-
     return world.getPlayers().stream()
-        .filter(entity -> memberUuids.contains(entity.getUuid()))
+        .filter(entity -> getMembers().contains(entity.getUuid()))
         .collect(Collectors.toSet());
   }
 
@@ -105,7 +104,6 @@ public class IslesParty {
           isJoin = true;
       } else if (leaveMatcher.find()) {
           username = leaveMatcher.group(1);
-          isJoin = false;
       }
     } catch (Exception e) {
       //TODO: Find out how to actually resolve these errors, cannot test since no alt
@@ -119,8 +117,8 @@ public class IslesParty {
     if (entry != null) {
         GameProfile profile = entry.getProfile();
         LOGGER.info("Found Player: {}", profile.name());
-        if (isJoin) addMember(profile); 
-        else removeMember(profile);
+        if (isJoin) addMember(profile.id());
+        else removeMember(profile.id());
     }
   }
 }

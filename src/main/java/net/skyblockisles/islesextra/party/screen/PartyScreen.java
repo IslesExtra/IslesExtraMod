@@ -122,7 +122,7 @@ public class PartyScreen extends Screen {
             }
             case PARTY: {
                 this.hiddenTabButton.setMessage(SELECTED_PARTY_TAB_TITLE);
-                Set<UUID> set = IslesParty.getMembers().stream().map(GameProfile::id).collect(Collectors.toSet());
+                Set<UUID> set = IslesParty.getMembers();
                 if (!set.isEmpty()) set.add(client.player.getUuid());
                 this.playerList.update(set, this.playerList.getScrollY());
                 break;

@@ -1,8 +1,0 @@
-{
-  "java.compile.nullAnalysis.mode": "disabled",
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "java.import.gradle.enabled": true,
-  "java.import.gradle.wrapper.enabled": true,
-  "java.jdt.ls.java.home": "/nix/store/imqrk5lxp6fv2xndnz7wndxn4f1mzni2-openjdk-21.0.9+10/lib/openjdk/",
-  "jdk.jdkhome": "/nix/store/imqrk5lxp6fv2xndnz7wndxn4f1mzni2-openjdk-21.0.9+10/lib/openjdk/",
-}
