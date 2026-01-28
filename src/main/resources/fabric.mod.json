@@ -3,10 +3,11 @@
   "id": "islesextra",
   "version": "${version}",
   "name": "IslesExtra",
-  "description": "",
-  "authors": [],
+  "icon": "assets/islesextra/textures/icon.png",
+  "description": "QOL features for Skyblock Isles",
+  "authors": [ "Trivaris", "Kyllian", "Joshinn" ],
   "contact": {},
-  "license": "MIT",
+  "license": "GNUPL",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -29,6 +30,13 @@
   "custom": {
     "mc-publish": {
       "modrinth": "rRWXJ5cp"
+    },
+    "modmenu": {
+      "links": {
+        "isles.discord": "https://discord.gg/isles"
+      },
+      "badges": [ ],
+      "update_checker": true
     }
   }
 }

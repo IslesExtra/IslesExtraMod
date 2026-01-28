@@ -14,7 +14,7 @@
   "text.islesextra.config.category.party.group.glow.color" : "Color of the glowing Party Members",
   "text.islesextra.config.category.party.group.lowhealth" : "Low Health Party Member Warning",
   "text.islesextra.config.category.party.group.lowhealth.enable" : "Enable Warning",
-  "text.islesextra.config.category.party.group.lowhealth.threshold" : "Percentage of Health to ping at",
+  "text.islesextra.config.category.party.group.lowhealth.threshold" : "Remaining Health to ping at",
 
   "text.islesextra.party.lowhealth" : "%s is at low health!",
 

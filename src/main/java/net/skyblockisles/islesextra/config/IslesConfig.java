@@ -14,7 +14,7 @@ public class IslesConfig {
     public static ConfigClassHandler<IslesConfig> HANDLER = ConfigClassHandler.createBuilder(IslesConfig.class)
         .id(Identifier.of(IslesExtra.MOD_ID, "isles_config"))
         .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                .setPath(FabricLoader.getInstance().getConfigDir().resolve("isles_config.json5"))
+                .setPath(FabricLoader.getInstance().getConfigDir().resolve("isles_extra_config.json5"))
                 .appendGsonBuilder(GsonBuilder::setPrettyPrinting)
                 .setJson5(true)
                 .build())

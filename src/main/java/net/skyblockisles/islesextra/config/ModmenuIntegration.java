@@ -13,7 +13,9 @@ import java.awt.*;
 public class ModmenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        IslesConfig.HANDLER.load();
         return parentScreen -> YetAnotherConfigLib.createBuilder()
+                .save(IslesConfig.HANDLER::save)
                 .title(Text.translatable("text.islesextra.config"))
                 .category(ConfigCategory.createBuilder()
                         .name(Text.translatable("text.islesextra.config.category.helpers"))
@@ -46,7 +48,7 @@ public class ModmenuIntegration implements ModMenuApi {
                                         .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                                 .range(0.0, 1.0)
                                                 .step(0.05)
-                                                .formatValue(value -> Text.literal(value*100 + "%")))
+                                                .formatValue(value -> Text.literal((int) (value*100) + "%")))
                                         .build())
                                 .build())
                         .group(OptionGroup.createBuilder()
