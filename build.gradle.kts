@@ -1,13 +1,13 @@
 val version: String by project
 val group: String by project
 val name: String by project
+val id: String by project
 val targetJavaVersion = 21
 
 plugins {
     alias(libs.plugins.fabric.loom)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.shadow)
-    // id("net.skyblockisles.islesextra.annotation-processor")
 }
 
 repositories {
@@ -62,10 +62,17 @@ tasks {
 
     withType<ProcessResources> {
         inputs.property("version", version)
+        inputs.property("id", id)
+        inputs.property("name", name)
+
         filteringCharset = "UTF-8"
 
         filesMatching("fabric.mod.json") {
-            expand("version" to version)
+            expand(
+                "version" to version,
+                "id" to id,
+                "name" to name
+            )
         }
     }
 
@@ -102,6 +109,7 @@ publishing {
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
+
 
     }
 }

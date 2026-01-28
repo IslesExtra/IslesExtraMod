@@ -8,7 +8,7 @@ public class DefaultTest {
 
     @Test
     public void test() {
-        assertEquals(IslesExtra.MOD_ID, "islesextra");
+        assertEquals("islesextra", IslesExtra.MOD_ID);
     }
 
 }

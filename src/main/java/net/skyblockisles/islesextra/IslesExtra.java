@@ -20,7 +20,6 @@ import net.skyblockisles.islesextra.annotations.Init;
 public class IslesExtra implements ClientModInitializer {
 
   public final static String MOD_ID = "islesextra";
-  public final static String ISLES_ID = "isles";
 
   private final static Logger LOGGER = LogManager.getLogger();
 
@@ -30,6 +29,7 @@ public class IslesExtra implements ClientModInitializer {
   }
 
   private static void init() {
+
     Reflections reflections = new Reflections(new ConfigurationBuilder()
         .setUrls(ClasspathHelper.forPackage("net.skyblockisles.islesextra"))
         .setScanners(Scanners.MethodsAnnotated));
