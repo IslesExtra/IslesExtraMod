@@ -2,6 +2,16 @@
   "text.islesextra.connectButton": "Join Isles",
   "category.islesextra.general" : "Isles Extra",
 
+  "text.islesextra.config.name" : "IslesExtra Config",
+  "text.islesextra.config.category.helpers.name" : "Helpers",
+  "text.islesextra.config.category.helpers.tooltip" : "Enable, disable and configure the various helpers of IslesExtra",
+  "text.islesextra.config.category.helpers.group.qte.name" : "Resource Gathering QTE",
+  "text.islesextra.config.category.helpers.group.qte.tooltip" : "Notifies you and shows you where the Bonus popped up",
+  "text.islesextra.config.category.helpers.group.qte.options.enable.name" : "Enable QTE Helper",
+  "text.islesextra.config.category.helpers.group.qte.options.enable.desc" : "Enable the Helper",
+  "text.islesextra.config.category.helpers.group.qte.options.enableTitle.name" : "Enable QTE Helper Title",
+  "text.islesextra.config.category.helpers.group.qte.options.enableTitle.desc" : "Enable the Title that displays when a bonus pops up",
+
   "keybinds.islesextra.open_party" : "Open Party Management",
   "party_management_screen.islesextra.name" : "Party Management",
   "text.islesextra.TextWidget" : "TestTestTest"

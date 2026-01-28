@@ -1,0 +1,4 @@
+- Added Inventory Shortcuts
+- Added YACL and Modmenu config
+- Added Party Member highlighting (theoretically, had no way to test if it acurately detects party members, but you can add/remove them manually by running `/isles_debug party_add_other` while looking at them, if they already are in the party, it will remove them)
+- Other debug commands include `/isles_debug party_add_self` to add/remvoe yourself from the party and `/isles_debug set_render_target` to set/unset the target to the entity you are currently looking at for the qte line

@@ -7,29 +7,25 @@ import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.text.Text;
 
 public class ModmenuIntegration implements ModMenuApi {
-    private boolean enableQTEHelper;
-    private boolean enableQTEHelperTitle;
-
-
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parentScreen -> YetAnotherConfigLib.createBuilder()
-                .title(Text.literal("IslesExtra Config"))
+                .title(Text.translatable("text.islesextra.config.name"))
                 .category(ConfigCategory.createBuilder()
-                        .name(Text.literal("Helpers"))
-                        .tooltip(Text.literal("Enable, disable and configure the various helpers of IslesExtra"))
+                        .name(Text.translatable("text.islesextra.config.category.helpers.name"))
+                        .tooltip(Text.translatable("text.islesextra.config.category.helpers.tooltip"))
                         .group(OptionGroup.createBuilder()
-                                .name(Text.literal("Resource Gathering QTE"))
-                                .description(OptionDescription.of(Text.literal("Notifies you and shows you where the Bonus popped up")))
+                                .name(Text.translatable("text.islesextra.config.category.helpers.group.qte.name"))
+                                .description(OptionDescription.of(Text.translatable("text.islesextra.config.category.helpers.group.qte.tooltip")))
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.literal("Enable QTE Helper"))
-                                        .description(OptionDescription.of(Text.literal("Enable the Helper")))
+                                        .name(Text.translatable("text.islesextra.config.category.helpers.group.qte.options.enable.name"))
+                                        .description(OptionDescription.of(Text.translatable("text.islesextra.config.category.helpers.group.qte.options.enable.desc")))
                                         .binding(true, () -> IslesConfig.HANDLER.instance().enableQTEHelper, newVal -> IslesConfig.HANDLER.instance().enableQTEHelper = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())
                                 .option(Option.<Boolean>createBuilder()
-                                        .name(Text.literal("Enable QTE Helper Title"))
-                                        .description(OptionDescription.of(Text.literal("Enable the Title that displays when a bonus pops up")))
+                                        .name(Text.translatable("text.islesextra.config.category.helpers.group.qte.options.enableTitle.name"))
+                                        .description(OptionDescription.of(Text.translatable("text.islesextra.config.category.helpers.group.qte.options.enableTitle.desc")))
                                         .binding(true, () -> IslesConfig.HANDLER.instance().enableQTEHelperTitle, newVal -> IslesConfig.HANDLER.instance().enableQTEHelperTitle = newVal)
                                         .controller(TickBoxControllerBuilder::create)
                                         .build())

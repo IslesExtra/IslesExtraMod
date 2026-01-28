@@ -33,7 +33,7 @@ public class Debug {
             }))
             .then(ClientCommandManager.literal("party_add_other").executes(context -> {
                 MinecraftClient mc = MinecraftClient.getInstance();
-                if (mc.targetedEntity != null && mc.targetedEntity instanceof PlayerEntity)
+                if (mc.targetedEntity instanceof PlayerEntity)
                     togglePartyMember(mc.targetedEntity.getUuid());
                 else context.getSource().sendError(Text.literal("Not targeting a Player!"));
                 return 1;
