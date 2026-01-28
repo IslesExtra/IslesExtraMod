@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "islesextra",
+  "id": "${id}",
   "version": "${version}",
-  "name": "IslesExtra",
+  "name": "${name}",
   "icon": "assets/islesextra/textures/icon.png",
   "description": "QOL features for Skyblock Isles",
   "authors": [ "Trivaris", "Kyllian", "Joshinn" ],

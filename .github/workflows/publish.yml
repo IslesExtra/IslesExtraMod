@@ -1,35 +1,14 @@
 name: "Publish on Modrinth"
 
 on:
-  push:
-    branches: [main, develop]
   pull_request:
     branches: [main]
 
 env:
-  MINECRAFT_VERSION: 1.21.11
   JAVA_VERSION: 21
-  RELEASE_NAME: IslesExtra
-  VERSION: 0.1.2
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6.0.1
-
-      - name: Setup Java
-        uses: actions/setup-java@v5.2.0
-        with:
-          distribution: "temurin"
-          java-version: ${{env.JAVA_VERSION}}
-      
-      - name: Run Tests
-        run: ./gradlew test
-  
   publish:
-    needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check Environment Variables
@@ -48,14 +27,26 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
 
+      - name: Extract Version
+        id: get_version
+        run: |
+          MOD_VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2 | xargs)
+          echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
+               
+          MOD_NAME=$(grep '^name=' gradle.properties | cut -d'=' -f2 | xargs)
+          echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
+          
+          MINECRAFT_VERSION=$(sed -n 's/^minecraft = "\(.*\)"/\1/p' gradle/libs.versions.toml | xargs)
+          echo "MINECRAFT_VERSION=$MINECRAFT_VERSION" >> $GITHUB_ENV
+
       - name: Build
         run: ./gradlew clean build
 
       - name: Publish
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
-          name: "${{env.RELEASE_NAME}}" 
-          version: "${{env.VERSION}}"
+          name: "${{env.MOD_NAME}}"
+          version: "${{env.MOD_VERSION}}"
           version-type: release
           changelog-file: CHANGELOG.md
 
