@@ -4,7 +4,8 @@
 
   "text.islesextra.config" : "IslesExtra Config",
   "text.islesextra.config.category.helpers" : "Helpers",
-  "text.islesextra.config.category.helpers.options.enableLowInv" : "Helpers",
+  "text.islesextra.config.category.helpers.options.enableLowInv" : "Low Inventory Space Warning",
+  "text.islesextra.config.category.helpers.options.inventoryShortcuts" : "Manage custom Inventory Shortcuts",
   "text.islesextra.config.category.helpers.group.qte" : "Resource Gathering QTE",
   "text.islesextra.config.category.helpers.group.qte.options.enable" : "Enable QTE Helper",
   "text.islesextra.config.category.helpers.group.qte.options.enableTitle" : "Enable QTE Helper Title",
