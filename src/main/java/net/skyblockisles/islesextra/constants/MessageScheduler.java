@@ -14,23 +14,29 @@ public class MessageScheduler {
   private static final Queue<Text> titleQueue = new LinkedList<>();
   private static final Queue<Text> messageQueue = new LinkedList<>();
 
+  private static int titleDisplayTicks = 0;
+  private static final int TITLE_DURATION = 40;
+
   @Init
   public static void init() {
     ClientTickEvents.START_CLIENT_TICK.register(client -> {
-      InGameHud hud = client.inGameHud;
-      ClientPlayerEntity player = client.player;
+      if (client.player != null && !messageQueue.isEmpty()) {
+        client.player.sendMessage(messageQueue.poll(), false);
+      }
 
-      if (hud != null && titleQueue.peek() != null)
-        hud.setTitle(titleQueue.poll());
-    
-      if (player != null && messageQueue.peek() != null)
-        player.sendMessage(messageQueue.poll(), false);
-    
+      if (titleDisplayTicks > 0) {
+        titleDisplayTicks--;
+      } else if (client.inGameHud != null && !titleQueue.isEmpty()) {
+        client.inGameHud.setTitle(titleQueue.poll());
+        titleDisplayTicks = TITLE_DURATION;
+      }
     });
   }
 
   public static void scheduleTitle(Text text) {
-    titleQueue.add(text);
+    if (!titleQueue.contains(text)) {
+      titleQueue.add(text);
+    }
   }
 
   public static void scheduleTitle(String string) {

@@ -3,8 +3,8 @@
 minecraft = "1.21.11"
 fabric-mappings = "1.21.11+build.4"
 fabric-loader = "0.18.4"
-fabric-api = "0.141.1+1.21.11"
-fabric-loom = "1.14.10"
+fabric-api = "0.141.2+1.21.11"
+fabric-loom = "1.15-SNAPSHOT"
 
 # Additional Dependencies from your build.gradle
 devauth = "1.2.2"
@@ -18,8 +18,10 @@ commands = "1.0.18"
 junixsocket = "2.10.1"
 mockito = "5.+"
 junit = "6.0.2"
+
 yacl = "3.8.2+1.21.11-fabric"
 modmenu = "17.0.0-beta.2"
+owo = "0.13.0+1.21.11"
 
 [libraries]
 # Minecraft
@@ -39,6 +41,8 @@ reflections = { group = "org.reflections", name = "reflections", version.ref = "
 
 yacl = { group = "dev.isxander", name = "yet-another-config-lib", version.ref = "yacl" }
 modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu" }
+owo-core = { group = "io.wispforest", name = "owo-lib", version.ref = "owo" }
+owo-sentinel = { group = "io.wispforest", name = "owo-sentinel", version.ref = "owo" }
 
 junixsocket-core = { group = "com.kohlschutter.junixsocket", name = "junixsocket-core", version.ref = "junixsocket" }
 junixsocket-common = { group = "com.kohlschutter.junixsocket", name = "junixsocket-common", version.ref = "junixsocket" }

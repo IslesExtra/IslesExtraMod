@@ -8,9 +8,9 @@
     "ItemStackMixin"
   ],
   "client": [
-    "BossBarHudMixin",
-    "InventoryScreenMixin",
-    "TitleScreenMixin"
+    "TitleScreenMixin",
+    "BossBarS2CPacketMixin",
+    "InventoryScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

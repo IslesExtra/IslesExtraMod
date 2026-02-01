@@ -18,7 +18,7 @@ import java.awt.*;
 public class LowHealthWarning {
     @Init
     public static void init() {
-        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(IslesExtra.MOD_ID, "low_health_display"), LowHealthWarning::lowHealthDisplay);
+        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(IslesExtra.MOD_ID, "low_inventory_warning"), LowHealthWarning::lowHealthDisplay);
     }
 
     public static void lowHealthDisplay(DrawContext context, RenderTickCounter counter) {
