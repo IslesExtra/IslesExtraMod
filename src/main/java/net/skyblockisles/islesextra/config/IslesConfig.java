@@ -37,4 +37,7 @@ public class IslesConfig {
 
     @SerialEntry
     public Double partyLowHealthThreshold = 0.2;
+
+    @SerialEntry
+    public boolean lowInventoryEnable = true;
 }
