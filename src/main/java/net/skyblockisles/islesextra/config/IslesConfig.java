@@ -7,8 +7,11 @@ import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import net.skyblockisles.islesextra.IslesExtra;
+import net.skyblockisles.islesextra.constants.IslesShortcutWidget;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IslesConfig {
     public static ConfigClassHandler<IslesConfig> HANDLER = ConfigClassHandler.createBuilder(IslesConfig.class)
@@ -40,4 +43,7 @@ public class IslesConfig {
 
     @SerialEntry
     public boolean lowInventoryEnable = true;
+
+    @SerialEntry
+    public List<IslesShortcutWidget.ShortcutData> inventoryShortcuts = ModmenuIntegration.shortcuts;
 }
