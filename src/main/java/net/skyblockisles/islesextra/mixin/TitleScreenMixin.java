@@ -18,31 +18,34 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin extends Screen {
   @Unique
-    private static final ServerInfo islesInfo = new ServerInfo("Skyblock Isles", "play.skyblockisles.net", ServerInfo.ServerType.OTHER);
-    static { islesInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED); }
+  private static final ServerInfo islesInfo = new ServerInfo("Skyblock Isles", "play.skyblockisles.net", ServerInfo.ServerType.OTHER);
+
+  static { islesInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED); }
 
   protected TitleScreenMixin(Text text) {
     super(text);
   }
 
-  @Inject(at = @At("RETURN"), method = "addNormalWidgets")
+    @Inject(at = @At("RETURN"), method = "addNormalWidgets", cancellable = true)
     private void addConnectButton(int y, int spacing, CallbackInfoReturnable<Integer> cir) {
-        int buttonWidth = 150;
+        int buttonWidth = 200;
         int buttonHeight = 20;
-        int xPos = this.width / 2 + buttonWidth;
-        int yPos = y + spacing;
+
+        int xPos = this.width / 2 - 100;
+        int yPos = cir.getReturnValue() + buttonHeight + spacing;
 
         var address = new ServerAddress("play.skyblockisles.net", 25565);
-        var text = Text.translatable("text.islesextra.connectButton");
+        Text text = Text.translatable("text.islesextra.connectButton");
         PressAction onPress = button -> ConnectScreen.connect(this, MinecraftClient.getInstance(), address, islesInfo, false, null);
 
-        var widget = ButtonWidget
-            .builder(text, onPress)
-            .size(buttonWidth, buttonHeight)
-            .position(xPos, yPos)
-            .build();
+        ButtonWidget widget = ButtonWidget
+                .builder(text, onPress)
+                .dimensions(xPos, yPos, buttonWidth, buttonHeight)
+                .build();
 
         this.addDrawableChild(widget);
+
+        cir.setReturnValue(yPos + buttonHeight);
     }
 
 }
