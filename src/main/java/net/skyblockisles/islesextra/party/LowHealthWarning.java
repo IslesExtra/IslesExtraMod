@@ -18,7 +18,7 @@ import java.awt.*;
 public class LowHealthWarning {
     @Init
     public static void init() {
-        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(IslesExtra.MOD_ID, "low_inventory_warning"), LowHealthWarning::lowHealthDisplay);
+        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(IslesExtra.MOD_ID, "low_health_warning"), LowHealthWarning::lowHealthDisplay);
     }
 
     public static void lowHealthDisplay(DrawContext context, RenderTickCounter counter) {
@@ -27,7 +27,6 @@ public class LowHealthWarning {
 
         TextRenderer renderer = MinecraftClient.getInstance().textRenderer;
 
-        // Use array to be able to access within lambda
         int[] y = { context.getScaledWindowHeight() / 2 };
         int x = 5;
 

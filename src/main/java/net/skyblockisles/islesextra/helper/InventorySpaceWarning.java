@@ -17,7 +17,7 @@ public class InventorySpaceWarning {
 
     @Init
     public static void init() {
-        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(IslesExtra.MOD_ID, "low_health_display"), InventorySpaceWarning::noInventorySpace);
+        HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.of(IslesExtra.MOD_ID, "low_inventory_warning"), InventorySpaceWarning::noInventorySpace);
     }
 
     public static void noInventorySpace(DrawContext context, RenderTickCounter counter) {

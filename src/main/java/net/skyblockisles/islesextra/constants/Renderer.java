@@ -22,7 +22,6 @@ public class Renderer {
     @Init
     public static void init() {
         HudElementRegistry.addLast(Identifier.of(IslesExtra.MOD_ID, "last_element"), Renderer::traceToEntity);
-        HudElementRegistry.addLast(Identifier.of(IslesExtra.MOD_ID, "other_element"), Renderer::drawWindow);
     }
 
     private static void traceToEntity(DrawContext context, RenderTickCounter counter) {
@@ -69,16 +68,6 @@ public class Renderer {
         context.fill(0, 0, (int) finalLength, 1, color);
 
         matrices.popMatrix();
-    }
-
-    public static void drawWindow(DrawContext context, RenderTickCounter counter) {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-
-        int width = 150;
-        int height = 50;
-
-
-
     }
 
     public static void setTarget(Entity entity) {
