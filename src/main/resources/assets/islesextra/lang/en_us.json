@@ -8,6 +8,9 @@
   "text.islesextra.config.category.helpers.group.qte.options.enable" : "Enable QTE Helper",
   "text.islesextra.config.category.helpers.group.qte.options.enableTitle" : "Enable QTE Helper Title",
 
+  "text.islesextra.config.category.bosstimer" : "World Boss Timer",
+  "text.islesextra.config.category.bosstimer.enable" : "Enable Boss Timer",
+
   "text.islesextra.config.category.party" : "Party Features",
   "text.islesextra.config.category.party.group.glow" : "Glowing Party Members",
   "text.islesextra.config.category.party.group.glow.enable" : "Enable Glowing",

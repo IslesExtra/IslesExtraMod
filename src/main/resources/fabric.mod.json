@@ -5,7 +5,7 @@
   "name": "${name}",
   "icon": "assets/islesextra/textures/icon.png",
   "description": "QOL features for Skyblock Isles",
-  "authors": [ "Trivaris", "Kyllian", "Joshinn" ],
+  "authors": [ "Trivaris", "wechandoit", "Kyllian", "Joshinn" ],
   "contact": {},
   "license": "GNUPL",
   "environment": "client",

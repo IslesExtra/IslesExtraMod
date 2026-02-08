@@ -10,7 +10,10 @@
   "client": [
     "TitleScreenMixin",
     "BossBarS2CPacketMixin",
-    "InventoryScreenMixin"
+    "InventoryScreenMixin",
+    "HudRenderMixin",
+    "ClientPlayNetworkHandlerMixin",
+    "BossBarRenderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
