@@ -8,7 +8,6 @@ fabric-loom = "1.14.10"
 
 # Additional Dependencies from your build.gradle
 devauth = "1.2.2"
-discord-ipc = "0.8.2"
 jackson = "2.14.2"
 shadow = "8.1.1"
 log4j = "2.25.2"
@@ -20,6 +19,7 @@ mockito = "5.+"
 junit = "6.0.2"
 yacl = "3.8.2+1.21.11-fabric"
 modmenu = "17.0.0-beta.2"
+antiope = "v0.2.2"
 
 [libraries]
 # Minecraft
@@ -32,7 +32,7 @@ javassist = { group = "org.javassist", name = "javassist", version.ref = "javass
 
 # Additional Dependencies
 dev-auth = { group = "me.djtheredstoner", name = "DevAuth-fabric", version.ref = "devauth" }
-discord-ipc = { group = "io.github.CDAGaming", name = "DiscordIPC", version.ref = "discord-ipc" }
+antiope = { group = "com.github.wynntils", name = "antiope", version.ref = "antiope"}
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
 log4j = { group = "org.apache.logging.log4j", name = "log4j-bom", version.ref = "log4j" }
 reflections = { group = "org.reflections", name = "reflections", version.ref = "reflections" }

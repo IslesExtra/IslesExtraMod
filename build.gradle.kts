@@ -30,7 +30,7 @@ dependencies {
     modRuntimeOnly(libs.dev.auth)
 
     implementation(platform(libs.log4j))
-    implementation(libs.discord.ipc)
+    implementation(libs.antiope)
     implementation(libs.jackson.databind)
     implementation(libs.reflections)
     implementation(libs.javassist)
@@ -40,8 +40,8 @@ dependencies {
     implementation(libs.junixsocket.native.common)
 
     include(libs.reflections)
+    include(libs.antiope)
     include(libs.javassist)
-    include(libs.discord.ipc)
     include(libs.junixsocket.core)
     include(libs.junixsocket.common)
     include(libs.junixsocket.native.common)

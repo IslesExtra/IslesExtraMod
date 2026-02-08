@@ -2,18 +2,17 @@ package net.skyblockisles.islesextra.discord;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.jagrosh.discordipc.IPCClient;
-import com.jagrosh.discordipc.entities.RichPresence;
-import com.jagrosh.discordipc.exceptions.NoDiscordClientException;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ActionResult;
+import net.skyblockisles.islesextra.IslesClientState;
 import net.skyblockisles.islesextra.callback.JoinedIslesCallback;
 import net.skyblockisles.islesextra.callback.LeftIslesCallback;
-import net.skyblockisles.islesextra.constants.MessageScheduler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,111 +23,65 @@ public class DiscordHandler {
 
   private static final Logger LOGGER = LogManager.getLogger();
 
-  private static final IPCClient discordClient = new IPCClient(1128526559016394874L);
-  private static final JsonObject BUTTON = createButton();
-  private static final RichPresence.Builder richPresenceBuilder = new RichPresence.Builder().setStartTimestamp(System.currentTimeMillis());
+    public static DiscordService Discord;
+    public static DiscordRichPresenceFeature discordRichPresenceFeature;
 
-  private static boolean ready = false;
-  private static boolean active;
+    private static int clientTick = 1;
+    private static int discordAppCount = 0;
 
   private DiscordHandler() { }
   
   @Init
   public static void init() {
-    PayloadTypeRegistry.playS2C().register(DiscordRPPayload.ID, DiscordRPPayload.CODEC);
-    start();
+      Discord = new DiscordService();
+      discordRichPresenceFeature = new DiscordRichPresenceFeature();
+      start();
   }
 
   private static void start() {
-    JoinedIslesCallback.EVENT.register(() -> {
-      discordClient.setListener(new IPCListenerImpl());
-      enable();
-      setRichPresence(true, "In Wharfmolo", "Killing innocent citizens");
-      return ActionResult.PASS;
-    });
+      JoinedIslesCallback.EVENT.register(() -> {
+          discordRichPresenceFeature.enableRichPresence();
+          setRichPresence("In Wharfmolo", "Killing innocent citizens");
+          return ActionResult.PASS;
+      });
+      LeftIslesCallback.EVENT.register(() -> {
+          discordRichPresenceFeature.disableRichPresence();
+          return ActionResult.PASS;
+      });
 
-    LeftIslesCallback.EVENT.register(() -> {
-      if (active) {
-        disable();
-      }
-      return ActionResult.PASS;
-    });
+      ClientLifecycleEvents.CLIENT_STOPPING.register((handler) -> discordRichPresenceFeature.disableRichPresence());
 
-    ClientPlayNetworking.registerGlobalReceiver(DiscordRPPayload.ID, (payload, context) -> {
-      String s = payload.text();
-      String[] lines = s.split(";");
-      if (lines.length == 2) {
-        setRichPresence(false, lines[0], lines[1]);
-      }
-    });
+      ClientTickEvents.END_WORLD_TICK.register(clientWorld -> runnableRunner());
   }
 
-  private static void setRichPresence(boolean reset, String... lines) {
-    if (!ready) {
-      if (reset) {
-        MessageScheduler.scheduleMessage("§4Discord not found.");
-      }
-      return;
+  private static void setRichPresence(String... lines) {
+    ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+    Discord.setDetails(lines.length > 0 ? lines[0] : "");
+    Discord.setState(lines.length > 1 ? lines[1] : "");
+    Discord.setLargeImage("https://cdn.discordapp.com/app-icons/1015667892601241640/5beeb6c9d0196f7d8a45ea8b6123b13b.png");
+    Discord.setLargeImageText("play.skyblockisles.com");
+    Discord.setSmallImage("https://mc-heads.net/avatar/" + player.getUuidAsString() + "/100");
+    Discord.setSmallImageText(player.getName().getString());
+  }
+
+    private static void runnableRunner() {
+        clientTick++;
+
+        // run discord service tick events
+        Discord.onTick();
+
+        if (clientTick > 20) clientTick = 1;
+        else if (clientTick == 20) {
+            discordAppCount++;
+            if (discordAppCount > 5) discordAppCount = 0;
+            else if (discordAppCount == 5) {
+                if (IslesClientState.isOnIsles()) {
+                    if (MinecraftClient.getInstance().player != null) Discord.setDetails(MinecraftClient.getInstance().player.getName().getString());
+                }
+            }
+        }
     }
 
-    if (MinecraftClient.getInstance().player == null) {
-      return;
-    }
-
-    final ClientPlayerEntity player = MinecraftClient.getInstance().player;
-
-    /* Buttons */
-    JsonObject playerButton = new JsonObject();
-    playerButton.addProperty("label", player.getName().getString());
-    playerButton.addProperty("url", "https://www.youtube.com/watch?v=lpiB2wMc49g");
-    JsonArray buttons = new JsonArray(2);
-    buttons.add(BUTTON);
-    buttons.add(playerButton);
-
-    richPresenceBuilder
-        .setDetails(lines.length > 0 ? lines[0] : "")
-        .setState(lines.length > 1 ? lines[1] : "")
-        .setLargeImage(
-            "https://cdn.discordapp.com/app-icons/1015667892601241640/5beeb6c9d0196f7d8a45ea8b6123b13b.png",
-            "play.skyblockisles.com"
-        )
-        .setSmallImage(
-            "https://crafatar.com/renders/head/" + player.getUuidAsString()
-                + "?overlay&default=MHF_Steve.png",
-            player.getName().getString()
-        )
-        .setButtons(buttons);
-    //.setButtons(new RichPresenceButton[]{BUTTON, new RichPresenceButton("https://www.youtube.com/watch?v=lpiB2wMc49g", player.getName().getString() + " - Stats")});
-    if (reset) {
-      richPresenceBuilder.setStartTimestamp(System.currentTimeMillis());
-    }
-    discordClient.sendRichPresence(richPresenceBuilder.build());
-    LOGGER.info("RICH PRESENCE SET");
-  }
-
-  public static void setReady() {
-    ready = true;
-  }
-
-  private static void disable() {
-    discordClient.close();
-    ready = active = false;
-  }
-
-  private static void enable() {
-    try {
-      discordClient.connect();
-      active = true;
-    } catch (NoDiscordClientException | InterruptedException e) {
-      LOGGER.error("Failed to connect to Discord!", e);
-    }
-  }
-
-  private static JsonObject createButton() {
-    var button = new JsonObject();
-    button.addProperty("label", "Skyblock Isles");
-    button.addProperty("url", "https://skyblockisles.com");
-    return button;
-  }
 
 }
