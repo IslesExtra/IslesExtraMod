@@ -1,5 +1,10 @@
 package net.skyblockisles.islesextra;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.scoreboard.ScoreboardObjective;
+import net.minecraft.scoreboard.Team;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,6 +18,7 @@ import net.skyblockisles.islesextra.callback.LeftIslesCallback;
 import net.skyblockisles.islesextra.callback.SwitchedIslesServerCallback;
 import net.skyblockisles.islesextra.party.IslesParty;
 import net.skyblockisles.islesextra.annotations.Init;
+import org.jspecify.annotations.Nullable;
 
 public class IslesClientState {
 
@@ -67,5 +73,21 @@ public class IslesClientState {
   public static boolean isOnIsles() {
     return onIsles;
   }
+
+    public static String getIslesServerNameAndVersion() {
+        if (MinecraftClient.getInstance().world != null) {
+            Scoreboard scoreboard = MinecraftClient.getInstance().world.getScoreboard();
+            ScoreboardObjective objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
+
+            if (objective != null) {
+                if (scoreboard.getTeamNames().contains("sidebar_line_1")) {
+                    Team team = scoreboard.getTeam("sidebar_line_1");
+                    return team.getPrefix().getString() + team.getSuffix().getString();
+                }
+            }
+        }
+
+        return "";
+    }
 
 }
