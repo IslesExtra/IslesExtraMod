@@ -8,7 +8,7 @@
     "ItemStackMixin"
   ],
   "client": [
-    "BossBarS2CPacketMixin",
+    "BossBarHudMixin",
     "HotbarMixin",
     "InventoryScreenMixin",
     "ItemRenderMixin",
