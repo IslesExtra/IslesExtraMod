@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
 import net.skyblockisles.islesextra.IslesClientState;
+import net.skyblockisles.islesextra.config.IslesConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -54,7 +55,7 @@ public class BossBarRenderMixin {
                 // redo this so we can account for the edge case that there is npc dialogue/quest info/hotbar
                 // as this only accounts for quest info/hotbar
 
-                if (IslesClientState.isOnIsles() && text != null) {
+                if (IslesConfig.HANDLER.instance().hideQuestInfo && IslesClientState.isOnIsles() && text != null) {
                     if (text.getString().indexOf("\uF058") > 0) {
                         Text newText = text.copy();
                         newText.getSiblings().clear();

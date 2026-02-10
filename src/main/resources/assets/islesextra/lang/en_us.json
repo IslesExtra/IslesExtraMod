@@ -11,6 +11,9 @@
   "text.islesextra.config.category.bosstimer" : "World Boss Timer",
   "text.islesextra.config.category.bosstimer.enable" : "Enable Boss Timer",
 
+  "text.islesextra.config.category.quests" : "Quests",
+  "text.islesextra.config.category.quests.hide" : "Hide Quest Information",
+
   "text.islesextra.config.category.party" : "Party Features",
   "text.islesextra.config.category.party.group.glow" : "Glowing Party Members",
   "text.islesextra.config.category.party.group.glow.enable" : "Enable Glowing",

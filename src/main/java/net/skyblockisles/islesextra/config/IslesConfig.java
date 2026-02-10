@@ -40,4 +40,7 @@ public class IslesConfig {
 
     @SerialEntry
     public boolean enableWorldBossTimer = true;
+
+    @SerialEntry
+    public boolean hideQuestInfo = true; // in the future, this should change to use a better quest ui
 }
