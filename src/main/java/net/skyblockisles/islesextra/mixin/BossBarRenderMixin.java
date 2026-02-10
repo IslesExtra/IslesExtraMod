@@ -110,39 +110,43 @@ public class BossBarRenderMixin {
     }
 
     /**
-     * @author
-     * @reason
+     * @author wechandoit, Trivaris
+     * @reason Injects at the start of handlePacket to check if the update is valid. If the packet is an update but the client doesn't have the bar, we cancel.
      */
     @Overwrite
     public void handlePacket(BossBarS2CPacket bossBarS2CPacket) {
         bossBarS2CPacket.accept(new BossBarS2CPacket.Consumer() {
-            public void add(UUID uUID, Text text, float f, BossBar.Color color, BossBar.Style style, boolean bl, boolean bl2, boolean bl3) {
-                bossBars.put(uUID, new ClientBossBar(uUID, text, f, color, style, bl, bl2, bl3));
+            public void add(UUID uuid, Text text, float f, BossBar.Color color, BossBar.Style style, boolean bl, boolean bl2, boolean bl3) {
+                bossBars.put(uuid, new ClientBossBar(uuid, text, f, color, style, bl, bl2, bl3));
             }
 
-            public void remove(UUID uUID) {
-                bossBars.remove(uUID);
+            public void remove(UUID uuid) {
+                bossBars.remove(uuid);
             }
 
-            public void updateProgress(UUID uUID, float f) {
-                ((ClientBossBar)bossBars.get(uUID)).setPercent(f);
+            public void updateProgress(UUID uuid, float f) {
+                if (bossBars.containsKey(uuid)) bossBars.get(uuid).setPercent(f);
             }
 
-            public void updateName(UUID uUID, Text text) {
-                ((ClientBossBar)bossBars.get(uUID)).setName(text);
+            public void updateName(UUID uuid, Text text) {
+                if (bossBars.containsKey(uuid)) bossBars.get(uuid).setName(text);
             }
 
-            public void updateStyle(UUID uUID, BossBar.Color color, BossBar.Style style) {
-                ClientBossBar clientBossBar = (ClientBossBar)bossBars.get(uUID);
-                clientBossBar.setColor(color);
-                clientBossBar.setStyle(style);
+            public void updateStyle(UUID uuid, BossBar.Color color, BossBar.Style style) {
+                if (bossBars.containsKey(uuid)) {
+                    ClientBossBar clientBossBar = bossBars.get(uuid);
+                    clientBossBar.setColor(color);
+                    clientBossBar.setStyle(style);
+                }
             }
 
-            public void updateProperties(UUID uUID, boolean bl, boolean bl2, boolean bl3) {
-                ClientBossBar clientBossBar = (ClientBossBar)bossBars.get(uUID);
-                clientBossBar.setDarkenSky(bl);
-                clientBossBar.setDragonMusic(bl2);
-                clientBossBar.setThickenFog(bl3);
+            public void updateProperties(UUID uuid, boolean bl, boolean bl2, boolean bl3) {
+                if (bossBars.containsKey(uuid)) {
+                    ClientBossBar clientBossBar = bossBars.get(uuid);
+                    clientBossBar.setDarkenSky(bl);
+                    clientBossBar.setDragonMusic(bl2);
+                    clientBossBar.setThickenFog(bl3);
+                }
             }
         });
     }
