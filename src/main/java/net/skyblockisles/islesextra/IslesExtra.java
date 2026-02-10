@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.skyblockisles.islesextra.annotations.EveryTick;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
@@ -34,13 +36,23 @@ public class IslesExtra implements ClientModInitializer {
         .setUrls(ClasspathHelper.forPackage("net.skyblockisles.islesextra"))
         .setScanners(Scanners.MethodsAnnotated));
 
-    Set<Method> methods = reflections.getMethodsAnnotatedWith(Init.class);
+    Set<Method> initMethods = reflections.getMethodsAnnotatedWith(Init.class);
+    Set<Method> tickMethods = reflections.getMethodsAnnotatedWith(EveryTick.class);
 
-    for (Method m : methods) {
+    for (Method m : initMethods) {
       try { m.invoke(null); }
       catch(IllegalAccessException | InvocationTargetException e) {
-        LOGGER.warn("Method could not be invoked: {}", e.toString());
+        LOGGER.warn("Init method could not be invoked: {}", e.toString());
       }
     }
+
+    ClientTickEvents.START_CLIENT_TICK.register(client -> {
+      for (Method m : tickMethods) {
+        try { m.invoke(null, client); }
+        catch (IllegalAccessException | InvocationTargetException e) {
+          LOGGER.warn("Tick method could not be invoked: {}", e.toString());
+        }
+      }
+    });
   }
 }

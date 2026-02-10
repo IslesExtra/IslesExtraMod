@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "icon": "assets/islesextra/textures/icon.png",
+  "description": "QOL features for Skyblock Isles",
+  "authors": [ "Trivaris", "Kyllian", "Joshinn" ],
+  "contact": {},
+  "license": "GNUPL",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.skyblockisles.islesextra.IslesExtra"
+    ],
+    "modmenu": [
+      "net.skyblockisles.islesextra.config.ModmenuIntegration"
+    ]
+  },
+  "mixins": [
+    "islesextra.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "fabric": "*",
+    "minecraft": "1.21.x",
+    "java": ">=21",
+    "yet_another_config_lib_v3": ">=3.8.2"
+  },
+  "custom": {
+    "mc-publish": {
+      "modrinth": "rRWXJ5cp"
+    },
+    "modmenu": {
+      "links": {
+        "isles.discord": "https://discord.gg/isles"
+      },
+      "badges": [ ],
+      "update_checker": true
+    }
+  }
+}

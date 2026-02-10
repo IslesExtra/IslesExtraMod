@@ -4,17 +4,9 @@
 
   "text.islesextra.config" : "IslesExtra Config",
   "text.islesextra.config.category.helpers" : "Helpers",
-  "text.islesextra.config.category.helpers.options.enableLowInv" : "Low Inventory Space Warning",
-  "text.islesextra.config.category.helpers.options.inventoryShortcuts" : "Manage custom Inventory Shortcuts",
   "text.islesextra.config.category.helpers.group.qte" : "Resource Gathering QTE",
   "text.islesextra.config.category.helpers.group.qte.options.enable" : "Enable QTE Helper",
   "text.islesextra.config.category.helpers.group.qte.options.enableTitle" : "Enable QTE Helper Title",
-
-  "text.islesextra.config.category.bosstimer" : "World Boss Timer",
-  "text.islesextra.config.category.bosstimer.enable" : "Enable Boss Timer",
-
-  "text.islesextra.config.category.quests" : "Quests",
-  "text.islesextra.config.category.quests.hide" : "Hide Quest Information",
 
   "text.islesextra.config.category.party" : "Party Features",
   "text.islesextra.config.category.party.group.glow" : "Glowing Party Members",
@@ -25,8 +17,6 @@
   "text.islesextra.config.category.party.group.lowhealth.threshold" : "Remaining Health to ping at",
 
   "text.islesextra.party.lowhealth" : "%s is at low health!",
-
-  "text.islesextra.inventoryFull" : "Inventory Full!",
 
   "keybinds.islesextra.open_party" : "Open Party Management",
   "party_management_screen.islesextra.name" : "Party Management",
