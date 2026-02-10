@@ -1,5 +1,7 @@
 package net.skyblockisles.islesextra.constants;
 
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.text.Text;
 import org.joml.Matrix3x2fStack;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;

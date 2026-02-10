@@ -17,6 +17,8 @@ repositories {
     maven { url = uri("https://maven.terraformersmc.com/") }
     maven { url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1") }
     maven { url = uri("https://libraries.minecraft.net") }
+    // maven { url = uri("https://maven.wispforest.io/releases/") }
+    // maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -26,6 +28,7 @@ dependencies {
     modImplementation(libs.fabric.api)
     modImplementation(libs.modmenu)
     modImplementation(libs.yacl)
+    // modImplementation(libs.owo.core)
 
     modRuntimeOnly(libs.dev.auth)
 
@@ -45,6 +48,7 @@ dependencies {
     include(libs.junixsocket.core)
     include(libs.junixsocket.common)
     include(libs.junixsocket.native.common)
+    // include(libs.owo.sentinel)
 
     testImplementation(libs.mockito)
     testImplementation(platform(libs.junit.bom))

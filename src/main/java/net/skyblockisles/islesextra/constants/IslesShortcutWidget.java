@@ -1,8 +1,13 @@
 package net.skyblockisles.islesextra.constants;
 
+import java.util.List;
 import java.util.function.Consumer;
 
-import org.joml.Matrix3x2fStack;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
+import net.skyblockisles.islesextra.config.IslesConfig;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
@@ -19,14 +24,14 @@ public class IslesShortcutWidget extends PressableWidget {
     public static final int PADDING = 5;
     private static final Identifier BACKGROUND = Identifier.of(IslesExtra.MOD_ID, "textures/gui/shortcut_bg.png");
 
-    private final Identifier icon;
+    private final ItemStack itemStack;
     private final Consumer<AbstractInput> action;
 
     protected IslesShortcutWidget(
-		Identifier icon, int x, int y, net.minecraft.text.Text text, Consumer<AbstractInput> action
+		ItemStack itemStack, int x, int y, net.minecraft.text.Text text, Consumer<AbstractInput> action
 	) {
         super(x, y, WIDTH, HEIGHT, text);
-        this.icon = icon;
+        this.itemStack = itemStack;
         this.action = action;
     }
 
@@ -34,20 +39,13 @@ public class IslesShortcutWidget extends PressableWidget {
     @Override
     protected void drawIcon(DrawContext context, int mouseX, int mouseY, float delta) {
         context.drawTexture(RenderPipelines.GUI_TEXTURED, BACKGROUND, getX(), getY(), 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
-        
-        float scale = 0.75f;
-        float offset = (WIDTH * (1.0f - scale)) / 2.0f;
 
-        Matrix3x2fStack matrices = context.getMatrices().pushMatrix();
-        matrices.translate(getX() + offset, getY() + offset, matrices);
-        matrices.scale(scale, scale, matrices);
-
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, icon, 0, 0, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
-
-        matrices.popMatrix();
-
+        int itemX = getX() + (WIDTH - 16) / 2;
+        int itemY = getY() + (HEIGHT - 16) / 2;
+        context.drawItem(itemStack, itemX, itemY);
         if (isHovered()) {
             context.fill(getX(), getY(), getX() + WIDTH, getY() + HEIGHT, 0x40FFFFFF);
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, this.getMessage(), mouseX, mouseY);
         }
     }
 
@@ -58,32 +56,42 @@ public class IslesShortcutWidget extends PressableWidget {
 
     @Override
     protected void appendClickableNarrations(NarrationMessageBuilder narrationMessageBuilder) {
-
+        this.appendDefaultNarrations(narrationMessageBuilder);
     }
 
     public static IslesShortcutWidget[] getWidgets(int x, int y) {
-        ShortcutData[] shortcuts = {
-            new ShortcutData("Open Trash", "textures/item/barrier.png", "trash"),
-            new ShortcutData("Open Backpack", "textures/item/brown_bundle.png", "backpack")
-        };
+        List<ShortcutData> shortcuts = IslesConfig.HANDLER.instance().inventoryShortcuts;
 
-        IslesShortcutWidget[] widgets = new IslesShortcutWidget[shortcuts.length];
+        IslesShortcutWidget[] widgets = new IslesShortcutWidget[shortcuts.size()];
 
-        for (int i = 0; i < shortcuts.length; i++) {
-            ShortcutData shortcut = shortcuts[i]; 
+        for (int i = 0; i < shortcuts.size(); i++) {
+            ShortcutData shortcut = shortcuts.get(i);
             widgets[i] = shortcut.getWidget(x - WIDTH + PADDING, y + HEIGHT + (i * (HEIGHT + PADDING)));
         }
 
         return widgets;
     }
 
-    private record ShortcutData (
+    public record ShortcutData (
         String name,
         String iconPath,
         String command
     ) {
         IslesShortcutWidget getWidget(int x, int y) {
-            return new IslesShortcutWidget(Identifier.ofVanilla(iconPath()), x, y, net.minecraft.text.Text.literal(name()), input -> {
+            ItemStack stack;
+            try {
+                Identifier id = Identifier.tryParse(iconPath());
+                if (id == null) {
+                    stack = new ItemStack(Items.BARRIER);
+                } else {
+                    Item item = Registries.ITEM.get(id);
+                    stack = (item == Items.AIR) ? new ItemStack(Items.BARRIER) : new ItemStack(item);
+                }
+            } catch (Exception e) {
+                stack = new ItemStack(Items.BARRIER);
+            }
+
+            return new IslesShortcutWidget(stack, x, y, net.minecraft.text.Text.literal(name()), input -> {
                 MinecraftClient client = MinecraftClient.getInstance();
                 if (client.getNetworkHandler() != null) {
                     client.getNetworkHandler().sendChatCommand(command());
