@@ -10,8 +10,8 @@ import net.skyblockisles.islesextra.IslesExtra;
 import net.skyblockisles.islesextra.constants.IslesShortcutWidget;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class IslesConfig {
     public static ConfigClassHandler<IslesConfig> HANDLER = ConfigClassHandler.createBuilder(IslesConfig.class)

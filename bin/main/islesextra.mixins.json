@@ -8,9 +8,14 @@
     "ItemStackMixin"
   ],
   "client": [
-    "TitleScreenMixin",
-    "BossBarS2CPacketMixin",
-    "InventoryScreenMixin"
+    "BossBarRenderMixin",
+    "ClientPlayNetworkHandlerMixin",
+    "HotbarMixin",
+    "HudRenderMixin",
+    "InventoryScreenMixin",
+    "ItemRenderMixin",
+    "ItemStackMixin",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
