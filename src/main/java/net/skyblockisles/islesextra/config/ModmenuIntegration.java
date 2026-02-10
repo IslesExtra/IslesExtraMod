@@ -7,10 +7,18 @@ import dev.isxander.yacl3.api.controller.ColorControllerBuilder;
 import dev.isxander.yacl3.api.controller.DoubleSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.text.Text;
+import net.skyblockisles.islesextra.config.invshortcut.InvShortcutController;
+import net.skyblockisles.islesextra.constants.IslesShortcutWidget;
 
 import java.awt.*;
+import java.util.List;
 
 public class ModmenuIntegration implements ModMenuApi {
+    static final List<IslesShortcutWidget.ShortcutData> shortcuts = List.of(
+        new IslesShortcutWidget.ShortcutData("Open Trash", "barrier", "trash"),
+        new IslesShortcutWidget.ShortcutData("Open Backpack", "brown_bundle", "backpack")
+    );
+
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         IslesConfig.HANDLER.load();
@@ -19,6 +27,17 @@ public class ModmenuIntegration implements ModMenuApi {
                 .title(Text.translatable("text.islesextra.config"))
                 .category(ConfigCategory.createBuilder()
                         .name(Text.translatable("text.islesextra.config.category.helpers"))
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.translatable("text.islesextra.config.category.helpers.options.enableLowInv"))
+                                .binding(true, () -> IslesConfig.HANDLER.instance().lowInventoryEnable, newVal -> IslesConfig.HANDLER.instance().lowInventoryEnable = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(ListOption.<IslesShortcutWidget.ShortcutData>createBuilder()
+                                .name(Text.translatable("text.islesextra.config.category.helpers.options.inventoryShortcuts"))
+                                .binding(shortcuts, () -> IslesConfig.HANDLER.instance().inventoryShortcuts, newVal -> IslesConfig.HANDLER.instance().inventoryShortcuts = newVal)
+                                .customController(InvShortcutController::new)
+                                .initial(new IslesShortcutWidget.ShortcutData("Name", "Icon Path", "Command (no slash)"))
+                                .build())
                         .group(OptionGroup.createBuilder()
                                 .name(Text.translatable("text.islesextra.config.category.helpers.group.qte"))
                                 .option(Option.<Boolean>createBuilder()

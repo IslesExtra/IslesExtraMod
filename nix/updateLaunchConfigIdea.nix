@@ -22,7 +22,16 @@ let
           pkgs.xorg.libXcursor
           pkgs.xorg.libXrandr
           pkgs.xorg.libXi
+          pkgs.xorg.libXext
+          pkgs.wayland
+          pkgs.vulkan-loader
+          pkgs.libglvnd
           pkgs.libxkbcommon
+          pkgs.openal
+          pkgs.libpulseaudio
+          pkgs.udev
+          pkgs.flac
+          pkgs.flite
         ])}";
       }
     ];
